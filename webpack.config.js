@@ -2,13 +2,13 @@ const webpack = require('webpack');
 const path = require('path');
 const packageList = require('./package.json');
 
-const isProduction = process.argv.indexOf('-p') >= 0 || process.env.NODE_ENV === 'production';
-const sourcePath = path.join(__dirname, './src');
-const outPath = path.join(__dirname, './build');
-
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+
+const isProduction = process.argv.indexOf('-p') >= 0 || process.env.NODE_ENV === 'production';
+const sourcePath = path.join(__dirname, './src');
+const outPath = path.join(__dirname, './build');
 
 module.exports = {
   context: sourcePath,
