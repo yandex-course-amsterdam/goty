@@ -4,7 +4,6 @@
   "description": "Top game",
   "main": "main.tsx",
   "scripts": {
-    "predeploy": "npm run build",
     "start": "webpack-dev-server --mode development --hot --progress --color --port 3000 --open",
     "build": "webpack -p --progress --colors"
   },
