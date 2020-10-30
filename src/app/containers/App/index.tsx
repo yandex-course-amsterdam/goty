@@ -1,13 +1,13 @@
-import React from 'react';
+import React from 'react'
 
-import style from './style.css';
+import { Header } from 'app/components'
 
-import { Header } from 'app/components';
+import style from './style.css'
 
 export const App = () => {
   return (
     <section className={style.app}>
       <Header />
     </section>
-  );
-};
+  )
+}
