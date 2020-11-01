@@ -1,0 +1,10 @@
+@font-face {
+  src: url('../../../fonts/inter-bold.woff') format('woff');
+  font-family: 'Inter Bold';
+}
+
+.title {
+  font: normal 700 48px/56px 'Inter Bold', sans-serif;
+  color: #eeecf1;
+  letter-spacing: -1.25px;
+}

@@ -1,0 +1,29 @@
+@font-face {
+  src: url('../../../fonts/inter-bold.woff') format('woff');
+  font-family: 'Inter Bold';
+}
+
+.avatar {
+  display: flex;
+  align-items: center;
+}
+
+.image {
+  width: 48px;
+  height: 48px;
+}
+
+.title {
+  font: normal bold 34px/44px 'Inter Bold', sans-serif;
+  letter-spacing: -0.56px;
+  color: #9590a0;
+
+  margin: 0 0 0 16px;
+}
+
+@media (max-width: 1399px) {
+  .title {
+    margin-left: 200px;
+  }
+
+}

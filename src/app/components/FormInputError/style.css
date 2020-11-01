@@ -1,0 +1,16 @@
+@font-face {
+  src: url('../../../fonts/inter-medium.woff') format('woff');
+  font-family: 'Inter Medium';
+}
+
+.error {
+  height: 24px;
+
+  font: normal 500 16px/24px 'Inter Medium', sans-serif;
+  letter-spacing: 0.44px;
+  color: #eeecf1;
+
+  box-sizing: border-box;
+  margin: 5px 0;
+  padding-left: 6px;
+}

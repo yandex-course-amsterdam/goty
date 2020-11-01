@@ -1,0 +1,11 @@
+@font-face {
+  src: url('../../../fonts/inter-regular.woff') format('woff');
+  font-family: 'Inter Regular';
+}
+
+.label {
+  font: normal 400 20px/32px 'Inter Regular', sans-serif;
+  color: #eeecf1;
+  letter-spacing: 0.22px;
+  margin-right: 24px;
+}
