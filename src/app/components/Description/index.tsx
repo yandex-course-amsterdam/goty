@@ -4,13 +4,13 @@ import cn from 'classnames'
 
 import style from './style.css'
 
-type MainDescriptionProps = {
+type DescriptionProps = {
   title: string
   subtitle: string
   className: string | undefined
 }
 
-export const MainDescription = ({ title, subtitle, className }: MainDescriptionProps): ReactElement => {
+export const Description = ({ title, subtitle, className }: DescriptionProps): ReactElement => {
   return (
     <div className={cn(style.container, className)}>
       <p className={style.title}>{title}</p>

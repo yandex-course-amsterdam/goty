@@ -1,4 +1,25 @@
-.form {
+.container {
   display: flex;
-  flex-direction: column;
+  align-items: flex-start;
+  position: relative;
+}
+
+.wrapper {
+  margin: 0 0 0 178px;
+  width: 337px;
+}
+
+.label {
+  width: 157px;
+  text-align: right;
+  margin-top: 12px;
+}
+
+hr {
+  width: 100%;
+  border: 1px solid #3c3844;
+}
+
+.error {
+  text-align: center;
 }

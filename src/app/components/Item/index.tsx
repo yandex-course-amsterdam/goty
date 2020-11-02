@@ -1,17 +1,20 @@
 import React, { ReactElement } from 'react'
 
+import cn from 'classnames'
+
 import { ReactSVG } from 'react-svg'
 
 import style from './style.css'
 
-type NavigationItemProps = {
+type ItemProps = {
   text: string
   src: string
+  active?: boolean
 }
 
-export const NavigationItem = ({ text, src }: NavigationItemProps): ReactElement => {
+export const Item = ({ text, src, active }: ItemProps): ReactElement => {
   return (
-    <li className={style.item}>
+    <li className={cn(style.item, active && style.active)}>
       <ReactSVG src={src} className={style.icon} />
       <p className={style.text}>{text}</p>
     </li>

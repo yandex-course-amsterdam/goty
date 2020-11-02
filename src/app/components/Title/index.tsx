@@ -4,11 +4,11 @@ import cn from 'classnames'
 
 import style from './style.css'
 
-type MainTitleProps = {
+type TitleProps = {
   title: string
-  className: string | undefined
+  className?: string
 }
 
-export const MainTitle = ({ title, className }: MainTitleProps): ReactElement => {
+export const Title = ({ title, className }: TitleProps): ReactElement => {
   return <h2 className={cn(style.title, className)}>{title}</h2>
 }
