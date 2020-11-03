@@ -4,6 +4,7 @@ import { Button, Error, Label, Input } from 'app/components'
 import { ERRORS } from 'app/constants'
 
 import { Validation } from 'app/utils'
+import * as status from 'app/utils/set-validation-status'
 
 import style from './style.css'
 
@@ -16,7 +17,7 @@ type FormSignUpProps = {
 }
 
 export const Form = ({ formName, handler, buttonText, buttonType, formData }: FormSignUpProps): ReactElement => {
-  const validation = new Validation(ERRORS, formName)
+  const validation = new Validation(ERRORS, formName, status)
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>): void => {
     validation.validate(e)
