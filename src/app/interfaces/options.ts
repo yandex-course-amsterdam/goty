@@ -1,4 +1,4 @@
-export interface Options {
+export interface OptionsInterface {
   method: string
   body?:
     | string

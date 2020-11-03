@@ -1,8 +1,8 @@
-import { Options } from './options'
+import { OptionsInterface } from './options'
 import { PromiseInterface } from './promise'
 
 export interface ApiInterface {
-  request(options: Options, timeout: number): Promise<PromiseInterface>
+  request(options: OptionsInterface, timeout: number): Promise<PromiseInterface>
   get(path: string): Promise<PromiseInterface>
   post(path: string, body: string): Promise<PromiseInterface>
   put(

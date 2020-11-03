@@ -2,7 +2,7 @@ import { PromiseInterface } from 'app/interfaces/promise'
 
 import { ApiInterface } from '../interfaces/api'
 
-import { Options } from '../interfaces/options'
+import { OptionsInterface } from '../interfaces/options'
 
 import { method as regMethod } from './methods'
 
@@ -13,7 +13,7 @@ export class Api implements ApiInterface {
     this.url = url
   }
 
-  request(options: Options, timeout = 10000): Promise<PromiseInterface> {
+  request(options: OptionsInterface, timeout = 10000): Promise<PromiseInterface> {
     const { method, body, path, contentType } = options
 
     return new Promise((res, rej) => {
