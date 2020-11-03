@@ -5,9 +5,15 @@ import { ValidationInterface } from 'app/interfaces/validation'
 import { StatusInterface } from 'app/interfaces/status'
 
 export class Validation implements ValidationInterface {
+  private fields: Element[]
+
+  private readonly button: HTMLButtonElement | null
+
   constructor(protected errors: ErrorsInterface, protected form: HTMLFormElement, protected status: StatusInterface) {
     this.errors = errors
     this.form = form
+    this.fields = Array.from(this.form.elements)
+    this.button = this.form.querySelector('button')
     this.status = status
   }
 
@@ -47,7 +53,7 @@ export class Validation implements ValidationInterface {
   }
 
   checkAllInputs(): boolean {
-    return Array.from(this.form.elements).every((el) => {
+    return this.fields.every((el) => {
       const input = el as HTMLInputElement
 
       return input.validity.valid
@@ -63,18 +69,14 @@ export class Validation implements ValidationInterface {
   }
 
   disableButton(): void {
-    const button = this.form.querySelector('button')
-
-    if (button) {
-      button.setAttribute('disabled', 'true')
+    if (this.button) {
+      this.button.setAttribute('disabled', 'true')
     }
   }
 
   activateButton(): void {
-    const button = this.form.querySelector('button')
-
-    if (button) {
-      button.removeAttribute('disabled')
+    if (this.button) {
+      this.button.removeAttribute('disabled')
     }
   }
 }
