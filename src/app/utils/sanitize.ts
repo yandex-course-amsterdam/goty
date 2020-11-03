@@ -1,4 +1,4 @@
-export const sanitize = (string: string): string => {
+export const sanitize = (str: string): string => {
   const map: Record<string, string> = {
     '&': '&amp;',
     '<': '&lt;',
@@ -9,5 +9,5 @@ export const sanitize = (string: string): string => {
   }
   const reg = /[&<>"'/]/gi
 
-  return string.replace(reg, (match) => map[match])
+  return str.replace(reg, (match) => map[match])
 }
