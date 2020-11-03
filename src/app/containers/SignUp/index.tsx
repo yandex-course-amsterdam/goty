@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react'
 import { Avatar, Form, Main, Description, Title, Navigation, Item, List, Sidebar } from 'app/components'
 
-import { handleReg } from 'app/utils/handle-reg'
+import { handleReg } from 'app/utils/handleReg'
 
 import { FORM_DATA } from 'app/constants'
 import { DATA } from './data'
@@ -25,7 +25,7 @@ export const SignUp = (): ReactElement => {
         </Navigation>
       </Sidebar>
       <Main>
-        <section className={style.container}>
+        <div className={style.container}>
           <Title className={style.title} title={mainTitle} />
           <div className={style.overflow}>
             <Description
@@ -41,7 +41,7 @@ export const SignUp = (): ReactElement => {
               buttonType="submit"
             />
           </div>
-        </section>
+        </div>
       </Main>
     </div>
   )

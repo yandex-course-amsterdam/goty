@@ -1,13 +1,3 @@
-@font-face {
-  src: url('../../../fonts/inter-regular.woff') format('woff');
-  font-family: 'Inter Regular';
-}
-
-@font-face {
-  src: url('../../../fonts/red-hat-italic.woff') format('woff');
-  font-family: 'Red Hat Italic';
-}
-
 .input {
   width: 337px;
   height: 56px;

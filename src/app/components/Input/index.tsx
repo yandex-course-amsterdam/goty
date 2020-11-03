@@ -4,7 +4,7 @@ import { ReactSVG } from 'react-svg'
 import style from './style.css'
 
 type FormInputProps = {
-  type: string | undefined
+  type?: string
   id: string
   placeholder: string
   handleChange: (e: ChangeEvent<HTMLInputElement>) => void

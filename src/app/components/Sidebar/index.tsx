@@ -3,9 +3,9 @@ import React, { ReactElement } from 'react'
 import style from './style.css'
 
 type SidebarProps = {
-  children?: ReactElement | ReactElement[]
+  children?: ReactElement[] | ReactElement
 }
 
 export const Sidebar = ({ children }: SidebarProps): ReactElement => {
-  return <section className={style.sidebar}>{children}</section>
+  return <aside className={style.sidebar}>{children}</aside>
 }

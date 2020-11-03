@@ -1,8 +1,3 @@
-@font-face {
-  src: url('../../../fonts/inter-bold.woff') format('woff');
-  font-family: 'Inter Bold';
-}
-
 .navigation {
   display: flex;
   flex-direction: column;

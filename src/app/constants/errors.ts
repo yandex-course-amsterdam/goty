@@ -1,5 +1,5 @@
 export const ERRORS = {
-  ru: {
+  RU: {
     emptyInput: 'is required',
     outOfRange: 'must be between 2 and 30 characters long',
     email: 'format is incorrect',

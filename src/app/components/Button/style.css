@@ -1,8 +1,3 @@
-@font-face {
-  src: url('../../../fonts/inter-bold.woff') format('woff');
-  font-family: 'Inter Bold';
-}
-
 .button {
   width: 337px;
   height: 56px;

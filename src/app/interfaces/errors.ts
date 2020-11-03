@@ -1,5 +1,5 @@
 export interface ErrorsInterface {
-  ru: {
+  RU: {
     emptyInput: string
     outOfRange: string
     email: string

@@ -1,8 +1,8 @@
 import { FormEvent } from 'react'
 
 import { Validation } from 'app/utils/Validation'
-import { getDataOnSubmit } from 'app/utils/get-data-on-submit'
-import * as status from 'app/utils/set-validation-status'
+import { getDataOnSubmit } from 'app/utils/getDataOnSubmit'
+import * as status from 'app/utils/setValidationStatus'
 
 import { ERRORS } from 'app/constants'
 
@@ -15,7 +15,7 @@ export const handleReg = async (event: FormEvent): Promise<void> => {
 
   const apiError = form.querySelector('#api_error')
 
-  const validation = new Validation(ERRORS, form.id, status)
+  const validation = new Validation(ERRORS, form, status)
 
   const formData = getDataOnSubmit(validation, form.id)
 

@@ -4,14 +4,16 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 
 import 'normalize.css'
 
-import { Game } from 'app'
+import './fonts/fonts.css'
+
+import { SignUpView } from 'app/views'
 
 export const Main = (): ReactElement => {
   return (
     <Router>
       <Switch>
         <Route exact path="/">
-          <Game />
+          <SignUpView />
         </Route>
       </Switch>
     </Router>

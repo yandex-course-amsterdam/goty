@@ -50,7 +50,7 @@ export class Api implements ApiInterface {
   get(path: string): Promise<PromiseInterface> {
     return this.request({
       path,
-      method: METHOD.get
+      method: METHOD.GET
     })
   }
 
@@ -58,7 +58,7 @@ export class Api implements ApiInterface {
     return this.request({
       path,
       body,
-      method: METHOD.post
+      method: METHOD.POST
     })
   }
 
@@ -78,7 +78,7 @@ export class Api implements ApiInterface {
     return this.request({
       path,
       body,
-      method: METHOD.put,
+      method: METHOD.PUT,
       contentType
     })
   }
@@ -87,7 +87,7 @@ export class Api implements ApiInterface {
     return this.request({
       path,
       body,
-      method: METHOD.delete,
+      method: METHOD.DELETE,
       contentType
     })
   }

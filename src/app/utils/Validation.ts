@@ -5,7 +5,7 @@ import { ValidationInterface } from 'app/interfaces/validation'
 import { StatusInterface } from 'app/interfaces/status'
 
 export class Validation implements ValidationInterface {
-  constructor(protected errors: ErrorsInterface, protected form: string, protected status: StatusInterface) {
+  constructor(protected errors: ErrorsInterface, protected form: HTMLFormElement, protected status: StatusInterface) {
     this.errors = errors
     this.form = form
     this.status = status
@@ -22,19 +22,19 @@ export class Validation implements ValidationInterface {
   }
 
   checkValidity(event: ChangeEvent<HTMLInputElement>): void {
-    const err = document.querySelector(`#${this.form} #${event.target.name}`)
+    const err = event.target.closest('div')?.nextSibling
 
     const isValidityLengthAndErrTrue = !event.target.validity.valid && event.target.value.length > 0 && err
 
     if (event.target.value.length === 0 && err) {
-      err.textContent = `${event.target.id} ${this.errors.ru.emptyInput}`
+      err.textContent = `${event.target.id} ${this.errors.RU.emptyInput}`
 
       this.status.setWrongStatus(event)
 
       this.disableButton()
     } else if (isValidityLengthAndErrTrue) {
       // @ts-ignore
-      err.textContent = `${event.target.id} ${this.errors.ru[event.target.type]}`
+      err.textContent = `${event.target.id} ${this.errors.RU[event.target.type]}`
 
       this.status.setWrongStatus(event)
 
@@ -47,13 +47,17 @@ export class Validation implements ValidationInterface {
   }
 
   checkAllInputs(): boolean {
-    const inputs = document.querySelectorAll(`#${this.form} input`) as NodeListOf<HTMLInputElement>
+    return Array.from(this.form.elements)
+      .slice(0, -1)
+      .every((el) => {
+        const input = el as HTMLInputElement
 
-    return Array.from(inputs).every((input) => input.validity.valid)
+        return input.validity.valid
+      })
   }
 
   removeErrors(event: ChangeEvent<HTMLInputElement>): void {
-    const err = document.querySelector(`#${this.form} #${event.target.name}`)
+    const err = event.target.closest('div')?.nextSibling
 
     if (err) {
       err.textContent = ''
@@ -61,18 +65,14 @@ export class Validation implements ValidationInterface {
   }
 
   disableButton(): void {
-    const button = document.querySelector(`#${this.form} button[type="submit"]`) as HTMLElement
-
-    if (button) {
-      button.setAttribute('disabled', 'true')
+    if (this.form.button) {
+      this.form.button.setAttribute('disabled', 'true')
     }
   }
 
   activateButton(): void {
-    const button = document.querySelector(`#${this.form} button[type="submit"]`) as HTMLElement
-
-    if (button) {
-      button.removeAttribute('disabled')
+    if (this.form.button) {
+      this.form.button.removeAttribute('disabled')
     }
   }
 }

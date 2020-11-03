@@ -1,10 +1,10 @@
-import React, { ChangeEvent, FormEvent, ReactElement } from 'react'
+import React, { ChangeEvent, FormEvent, MutableRefObject, ReactElement, useEffect, useRef, useState } from 'react'
 import { Button, Error, Label, Input } from 'app/components'
 
 import { ERRORS } from 'app/constants'
 
 import { Validation } from 'app/utils'
-import * as status from 'app/utils/set-validation-status'
+import * as status from 'app/utils/setValidationStatus'
 
 import style from './style.css'
 
@@ -17,14 +17,20 @@ type FormSignUpProps = {
 }
 
 export const Form = ({ formName, handler, buttonText, buttonType, formData }: FormSignUpProps): ReactElement => {
-  const validation = new Validation(ERRORS, formName, status)
+  const [formValidation, setFormValidation] = useState<Validation | undefined>(undefined)
+
+  const formRef = useRef() as MutableRefObject<HTMLFormElement>
+
+  useEffect(() => {
+    setFormValidation(new Validation(ERRORS, formRef.current, status))
+  }, [])
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>): void => {
-    validation.validate(e)
+    formValidation?.validate(e)
   }
 
   return (
-    <form id={formName} onSubmit={handler} noValidate>
+    <form ref={formRef} id={formName} onSubmit={handler} noValidate>
       {formData.map(({ id, labelText, type, placeholder, name, ...props }) => (
         <div key={labelText} className={style.container}>
           <Label className={style.label} id={id} labelText={labelText} />

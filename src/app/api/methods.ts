@@ -1,6 +1,6 @@
 export const METHOD = {
-  get: 'GET',
-  post: 'POST',
-  put: 'PUT',
-  delete: 'DELETE'
+  GET: 'GET',
+  POST: 'POST',
+  PUT: 'PUT',
+  DELETE: 'DELETE'
 }

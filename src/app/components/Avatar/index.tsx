@@ -4,9 +4,9 @@ import cn from 'classnames'
 import style from './style.css'
 
 type AvatarProps = {
-  avatar: string | undefined
-  name: string | undefined
-  className: string | undefined
+  avatar?: string
+  name?: string
+  className?: string
 }
 
 export const Avatar = ({ avatar, name, className }: AvatarProps): ReactElement => {

@@ -6,7 +6,7 @@ import style from './style.css'
 type DescriptionProps = {
   title: string
   subtitle: string
-  className: string | undefined
+  className?: string
 }
 
 export const Description = ({ title, subtitle, className }: DescriptionProps): ReactElement => {
