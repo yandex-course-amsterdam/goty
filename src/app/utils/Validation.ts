@@ -1,7 +1,6 @@
 import { ChangeEvent } from 'react'
 
 import { ErrorsInterface } from 'app/interfaces/errors'
-
 import { ValidationInterface } from 'app/interfaces/validation'
 
 export class Validation implements ValidationInterface {

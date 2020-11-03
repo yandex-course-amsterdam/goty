@@ -1,5 +1,4 @@
 import { PromiseInterface } from 'app/interfaces/promise'
-
 import { UsersApiInterface } from 'app/interfaces/users-api'
 
 import { Api } from './Api'

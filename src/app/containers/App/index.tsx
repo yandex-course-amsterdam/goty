@@ -1,5 +1,4 @@
 import React, { ReactElement } from 'react'
-
 import { SignUp } from 'app/containers/SignUp'
 
 import style from './style.css'

@@ -1,10 +1,9 @@
-import { Validation } from 'app/utils/Validation'
-
-import { ERRORS } from 'app/constants'
-
 import { FormEvent } from 'react'
 
+import { Validation } from 'app/utils/Validation'
 import { getDataOnSubmit } from 'app/utils/get-data-on-submit'
+
+import { ERRORS } from 'app/constants'
 
 import { authApi } from 'app/init/api'
 

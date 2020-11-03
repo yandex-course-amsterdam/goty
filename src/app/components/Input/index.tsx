@@ -1,5 +1,4 @@
 import React, { ChangeEvent, ReactElement } from 'react'
-
 import { ReactSVG } from 'react-svg'
 
 import style from './style.css'

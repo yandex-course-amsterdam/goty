@@ -1,5 +1,4 @@
 import { Validation } from 'app/utils/Validation'
-
 import { sanitize } from 'app/utils/sanitize'
 
 export const getDataOnSubmit = (

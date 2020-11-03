@@ -1,8 +1,6 @@
 import React, { ReactElement } from 'react'
-
-import cn from 'classnames'
-
 import { ReactSVG } from 'react-svg'
+import cn from 'classnames'
 
 import style from './style.css'
 

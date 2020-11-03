@@ -1,5 +1,4 @@
 import React, { ReactElement } from 'react'
-
 import cn from 'classnames'
 
 import style from './style.css'

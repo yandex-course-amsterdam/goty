@@ -1,7 +1,5 @@
 import { PromiseInterface } from 'app/interfaces/promise'
-
 import { ApiInterface } from '../interfaces/api'
-
 import { OptionsInterface } from '../interfaces/options'
 
 import { METHOD } from './methods'

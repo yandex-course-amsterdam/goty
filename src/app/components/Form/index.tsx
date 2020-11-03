@@ -1,5 +1,4 @@
 import React, { ChangeEvent, FormEvent, ReactElement } from 'react'
-
 import { Button, Error, Label, Input } from 'app/components'
 
 import { ERRORS } from 'app/constants'

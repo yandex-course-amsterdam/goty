@@ -1,4 +1,4 @@
-export const data = {
+export const DATA = {
   mainTitle: 'Sign Up',
   mainDescriptionTitle: 'User info details',
   mainDescriptionSubtitle:
