@@ -47,13 +47,11 @@ export class Validation implements ValidationInterface {
   }
 
   checkAllInputs(): boolean {
-    return Array.from(this.form.elements)
-      .slice(0, -1)
-      .every((el) => {
-        const input = el as HTMLInputElement
+    return Array.from(this.form.elements).every((el) => {
+      const input = el as HTMLInputElement
 
-        return input.validity.valid
-      })
+      return input.validity.valid
+    })
   }
 
   removeErrors(event: ChangeEvent<HTMLInputElement>): void {
@@ -65,14 +63,18 @@ export class Validation implements ValidationInterface {
   }
 
   disableButton(): void {
-    if (this.form.button) {
-      this.form.button.setAttribute('disabled', 'true')
+    const button = this.form.querySelector('button')
+
+    if (button) {
+      button.setAttribute('disabled', 'true')
     }
   }
 
   activateButton(): void {
-    if (this.form.button) {
-      this.form.button.removeAttribute('disabled')
+    const button = this.form.querySelector('button')
+
+    if (button) {
+      button.removeAttribute('disabled')
     }
   }
 }
