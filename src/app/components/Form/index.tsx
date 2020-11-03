@@ -24,7 +24,7 @@ export const Form = ({ formName, handler, buttonText, buttonType, formData }: Fo
   }
 
   return (
-    <form id={formName} onSubmit={handler} className={style.form} noValidate>
+    <form id={formName} onSubmit={handler} noValidate>
       {formData.map(({ id, labelText, type, placeholder, name, ...props }) => (
         <div key={labelText} className={style.container}>
           <Label className={style.label} id={id} labelText={labelText} />
