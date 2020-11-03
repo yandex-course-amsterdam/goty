@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react'
 import { Avatar, Form, Main, Description, Title, Navigation, Item, List, Sidebar } from 'app/components'
 
-import { handleReg } from 'app/utils/handleReg'
+import { handleReg } from 'app/utils/handle-reg'
 
 import { FORM_DATA } from 'app/constants'
 import { DATA } from './data'
