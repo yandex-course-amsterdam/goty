@@ -6,7 +6,7 @@ import * as status from 'app/utils/set-validation-status'
 
 import { ERRORS } from 'app/constants'
 
-import { authApi } from 'app/init/api'
+import { authApi } from 'app/api'
 
 export const handleReg = async (event: FormEvent): Promise<void> => {
   event.preventDefault()
