@@ -4,7 +4,7 @@ import { Avatar, Form, Main, Description, Title, Navigation, Item, List, Sidebar
 
 import { handleReg } from 'app/utils/handleReg'
 
-import { formData } from 'app/constants'
+import { FORM_DATA } from 'app/constants'
 
 import { data } from './data'
 
@@ -13,7 +13,7 @@ import style from './style.css'
 export const SignUp = (): ReactElement => {
   const { mainTitle, formName, mainDescriptionSubtitle, mainDescriptionTitle } = data
 
-  const { name, email, login, password, phone, surname } = formData
+  const { name, email, login, password, phone, surname } = FORM_DATA
 
   return (
     <div className={style.signup}>

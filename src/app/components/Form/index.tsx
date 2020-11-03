@@ -2,7 +2,7 @@ import React, { ChangeEvent, FormEvent, ReactElement } from 'react'
 
 import { Button, Error, Label, Input } from 'app/components'
 
-import { errors } from 'app/constants'
+import { ERRORS } from 'app/constants'
 
 import { Validation } from 'app/utils'
 
@@ -17,7 +17,7 @@ type FormSignUpProps = {
 }
 
 export const Form = ({ formName, handler, buttonText, buttonType, formData }: FormSignUpProps): ReactElement => {
-  const validation = new Validation(errors, formName)
+  const validation = new Validation(ERRORS, formName)
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>): void => {
     validation.validate(e)

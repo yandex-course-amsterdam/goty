@@ -4,7 +4,7 @@ import { ApiInterface } from '../interfaces/api'
 
 import { OptionsInterface } from '../interfaces/options'
 
-import { method as regMethod } from './methods'
+import { METHOD } from './methods'
 
 export class Api implements ApiInterface {
   url: string
@@ -52,7 +52,7 @@ export class Api implements ApiInterface {
   get(path: string): Promise<PromiseInterface> {
     return this.request({
       path,
-      method: regMethod.get
+      method: METHOD.get
     })
   }
 
@@ -60,7 +60,7 @@ export class Api implements ApiInterface {
     return this.request({
       path,
       body,
-      method: regMethod.post
+      method: METHOD.post
     })
   }
 
@@ -80,7 +80,7 @@ export class Api implements ApiInterface {
     return this.request({
       path,
       body,
-      method: regMethod.put,
+      method: METHOD.put,
       contentType
     })
   }
@@ -89,7 +89,7 @@ export class Api implements ApiInterface {
     return this.request({
       path,
       body,
-      method: regMethod.delete,
+      method: METHOD.delete,
       contentType
     })
   }

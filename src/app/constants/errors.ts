@@ -1,4 +1,4 @@
-export const errors = {
+export const ERRORS = {
   ru: {
     emptyInput: 'is required',
     outOfRange: 'must be between 2 and 30 characters long',

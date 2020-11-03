@@ -1,2 +1,2 @@
-export { formData } from './form-data'
-export { errors } from './errors'
+export { FORM_DATA } from './form-data'
+export { ERRORS } from './errors'
