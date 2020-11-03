@@ -47,23 +47,39 @@ export class Validation implements ValidationInterface {
   setWrongStatus(event: ChangeEvent<HTMLInputElement>): void {
     event.target.style.borderColor = '#F6655A'
 
-    event.target.closest('div').querySelectorAll('span')[2].style.display = 'none'
+    const closestDiv = event.target.closest('div') as HTMLElement
 
-    event.target.closest('div').querySelectorAll('span')[0].style.display = 'block'
+    const wrongIcon = closestDiv.querySelector('#wrong') as HTMLElement
+
+    const correctIcon = closestDiv.querySelector('#correct') as HTMLElement
+
+    if (closestDiv && wrongIcon && correctIcon) {
+      wrongIcon.style.display = 'block'
+
+      correctIcon.style.display = 'none'
+    }
   }
 
   setCorrectStatus(event: ChangeEvent<HTMLInputElement>): void {
     event.target.style.borderColor = '#87C289'
 
-    event.target.closest('div').querySelectorAll('span')[0].style.display = 'none'
+    const closestDiv = event.target.closest('div') as HTMLElement
 
-    event.target.closest('div').querySelectorAll('span')[2].style.display = 'block'
+    const wrongIcon = closestDiv.querySelector('#wrong') as HTMLElement
+
+    const correctIcon = closestDiv.querySelector('#correct') as HTMLElement
+
+    if (closestDiv && wrongIcon && correctIcon) {
+      wrongIcon.style.display = 'none'
+
+      correctIcon.style.display = 'block'
+    }
   }
 
   checkAllInputs(): boolean {
     const inputs = document.querySelectorAll(`#${this.form} input`) as NodeListOf<HTMLInputElement>
 
-    return Array.from(inputs).every((input) => input.validity.valid === true)
+    return Array.from(inputs).every((input) => input.validity.valid)
   }
 
   removeErrors(event: ChangeEvent<HTMLInputElement>): void {
@@ -75,10 +91,18 @@ export class Validation implements ValidationInterface {
   }
 
   disableButton(): void {
-    document.querySelector(`#${this.form} button[type="submit"]`).setAttribute('disabled', 'true')
+    const button = document.querySelector(`#${this.form} button[type="submit"]`) as HTMLElement
+
+    if (button) {
+      button.setAttribute('disabled', 'true')
+    }
   }
 
   activateButton(): void {
-    document.querySelector(`#${this.form} button[type="submit"]`).removeAttribute('disabled')
+    const button = document.querySelector(`#${this.form} button[type="submit"]`) as HTMLElement
+
+    if (button) {
+      button.removeAttribute('disabled')
+    }
   }
 }

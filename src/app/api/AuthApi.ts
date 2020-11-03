@@ -20,6 +20,6 @@ export class AuthApi {
   }
 
   logout(): Promise<PromiseInterface> {
-    return this.api.post('/auth/logout', undefined)
+    return this.api.post('/auth/logout', '')
   }
 }

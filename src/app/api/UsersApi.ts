@@ -9,11 +9,11 @@ export class UsersApi implements UsersApiInterface {
   }
 
   updateProfile(body: string): Promise<PromiseInterface> {
-    return this.api.put('/user/profile', body, null)
+    return this.api.put('/user/profile', body, '')
   }
 
   updatePass(body: string): Promise<PromiseInterface> {
-    return this.api.put('/user/password', body, null)
+    return this.api.put('/user/password', body, '')
   }
 
   updateAvatar(body: FormData): Promise<PromiseInterface> {

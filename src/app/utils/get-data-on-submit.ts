@@ -7,7 +7,7 @@ export const getDataOnSubmit = (
 ): { status: boolean; data?: Record<string, string> } => {
   const form = document.querySelector(`#${elem}`)
 
-  if (validation.checkAllInputs()) {
+  if (validation.checkAllInputs() && form) {
     const data = Array.from(form.querySelectorAll('input') as NodeListOf<HTMLInputElement>).reduce(
       (acc: Record<string, string>, curr: HTMLInputElement) => {
         acc[curr.name] = sanitize(curr.value)

@@ -24,7 +24,7 @@ export const handleReg = async (event: FormEvent): Promise<void> => {
 
       if (res.status === 200) {
         console.log('Рега прошла, можно куда-то переходить')
-      } else {
+      } else if (res.status !== 200 && apiError) {
         apiError.textContent = JSON.parse(res.response).reason
 
         setTimeout(() => {
