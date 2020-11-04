@@ -1,4 +1,5 @@
 import React, { ReactElement } from 'react'
+import { Link } from 'react-router-dom'
 import { Avatar, Form, Main, Description, Title, Navigation, Item, List, Sidebar } from 'app/components'
 
 import { handleReg } from 'app/utils/handleReg'
@@ -19,8 +20,10 @@ export const SignUp = (): ReactElement => {
         <Avatar avatar="https://i.imgur.com/Cbyhdku.png" name="Top game" className={style.avatar} />
         <Navigation>
           <List>
-            <Item src="../../../images/user.svg" text="Sign In" />
-            <Item src="../../../images/settings.svg" text="Sign Up" active />
+            <Link className={style.link} to="/sign-in">
+              <Item src="images/user.svg" text="Sign In" />
+            </Link>
+            <Item src="images/settings.svg" text="Sign Up" active />
           </List>
         </Navigation>
       </Sidebar>
