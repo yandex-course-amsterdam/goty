@@ -22,7 +22,7 @@ module.exports = {
       }
     ],
     'import/no-unresolved': 'off',
-    'import/prefer-default-export': 'off',
+    'import/prefer-default-export': 'warn',
     'no-param-reassign': 'off',
     'class-methods-use-this': 'off',
     'react/jsx-props-no-spreading': 'off',
