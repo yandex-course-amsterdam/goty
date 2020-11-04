@@ -2,28 +2,28 @@ import React, { ReactElement } from 'react'
 import { Link } from 'react-router-dom'
 import { Avatar, Form, Main, Description, Title, Navigation, Item, List, Sidebar } from 'app/components'
 
-import { handleReg } from 'app/utils/handleReg'
+import { handleAuth } from 'app/utils'
 
 import { FORM_DATA } from 'app/constants'
 import { DATA } from './data'
 
 import style from './style.css'
 
-export const SignUp = (): ReactElement => {
+export const SignIn = (): ReactElement => {
   const { mainTitle, formName, mainDescriptionSubtitle, mainDescriptionTitle } = DATA
 
-  const { name, email, login, password, phone, surname } = FORM_DATA
+  const { login, password } = FORM_DATA
 
   return (
-    <div className={style.signup}>
+    <div className={style.signin}>
       <Sidebar>
         <Avatar avatar="https://i.imgur.com/Cbyhdku.png" name="Top game" className={style.avatar} />
         <Navigation>
           <List>
-            <Link className={style.link} to="/sign-in">
-              <Item src="images/user.svg" text="Sign In" />
+            <Item src="images/user.svg" text="Sign In" active />
+            <Link className={style.link} to="/sign-up">
+              <Item src="images/settings.svg" text="Sign Up" />
             </Link>
-            <Item src="images/settings.svg" text="Sign Up" active />
           </List>
         </Navigation>
       </Sidebar>
@@ -37,10 +37,10 @@ export const SignUp = (): ReactElement => {
               subtitle={mainDescriptionSubtitle}
             />
             <Form
-              formData={[name, surname, login, email, password, phone]}
-              handler={handleReg}
+              formData={[login, password]}
+              handler={handleAuth}
               formName={formName}
-              buttonText="Sign Up"
+              buttonText="Sign In"
               buttonType="submit"
             />
           </div>
