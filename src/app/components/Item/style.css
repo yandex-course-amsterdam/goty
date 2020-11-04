@@ -1,0 +1,44 @@
+.item {
+  display: flex;
+  align-items: center;
+
+  padding: 0 10px;
+  margin: 0 0 40px;
+
+  cursor: pointer;
+}
+
+.text {
+  font: normal 600 20px/32px 'Inter Medium', sans-serif;
+  color: #9590a0;
+
+  margin: 0 0 0 20px;
+}
+
+.item:hover .text {
+  font-size: 24px;
+  line-height: 36px;
+  color: #eeecf1;
+}
+
+.item:hover .icon path {
+  stroke-width: 3;
+  stroke: #9dc2ff;
+}
+
+.active .text {
+  font-size: 24px;
+  line-height: 36px;
+  color: #eeecf1;
+}
+
+.active .icon path {
+  stroke-width: 3;
+  stroke: #9dc2ff;
+}
+
+@media (max-width: 1399px) {
+  .text {
+    display: none;
+  }
+}

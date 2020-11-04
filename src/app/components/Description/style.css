@@ -1,0 +1,17 @@
+.container {
+  max-width: 764px;
+}
+
+.title {
+  font: normal 700 24px/36px 'Inter Bold', sans-serif;
+  color: #eeecf1;
+
+  margin: 0;
+}
+
+.subtitle {
+  font: normal 400 20px/32px 'Inter Regular', sans-serif;
+  color: #eeecf1;
+
+  margin: 0;
+}

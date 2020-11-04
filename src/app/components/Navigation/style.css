@@ -1,0 +1,18 @@
+.navigation {
+  display: flex;
+  flex-direction: column;
+}
+
+.title {
+  font: normal bold 14px/16px 'Inter Bold', sans-serif;
+  letter-spacing: 0.75px;
+  color: #605b6a;
+  padding: 0 0 19px 15px;
+  border-bottom: 1px solid #605b6a;
+}
+
+@media (max-width: 1399px) {
+  .title {
+    display: none;
+  }
+}

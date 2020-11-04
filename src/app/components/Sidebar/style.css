@@ -1,0 +1,20 @@
+.sidebar {
+  box-sizing: border-box;
+  background: #000000;
+
+  padding: 24px;
+  width: 378px;
+
+  overflow-y: hidden;
+}
+
+.avatar {
+  margin-bottom: 45px;
+}
+
+@media (max-width: 1399px) {
+  .sidebar {
+    width: 100px;
+    overflow-y: hidden;
+  }
+}

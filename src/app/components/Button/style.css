@@ -1,0 +1,15 @@
+.button {
+  width: 337px;
+  height: 56px;
+
+  font: normal 700 24px/36px 'Inter Bold', sans-serif;
+  color: #000000;
+
+  background: #ffb41f;
+  border: none;
+  border-radius: 99px;
+}
+
+.button:disabled {
+  background: #d1941a;
+}

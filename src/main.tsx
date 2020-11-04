@@ -1,17 +1,17 @@
 import React, { ReactElement } from 'react'
 import ReactDOM from 'react-dom'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
+import { SignUpView } from 'app/views'
 
 import 'normalize.css'
-
-import { Game } from 'app'
+import './fonts/fonts.css'
 
 export const Main = (): ReactElement => {
   return (
     <Router>
       <Switch>
         <Route exact path="/">
-          <Game />
+          <SignUpView />
         </Route>
       </Switch>
     </Router>
