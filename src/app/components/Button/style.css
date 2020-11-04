@@ -8,6 +8,8 @@
   background: #ffb41f;
   border: none;
   border-radius: 99px;
+
+  cursor: pointer;
 }
 
 .button:disabled {
