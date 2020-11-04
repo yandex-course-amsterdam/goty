@@ -21,17 +21,17 @@ export type TDeck = {
   cards: TCard[]
 }
 
-export type TCard = {
-  type: ECardType
-  power: number
-  state: TCardState
-}
-
 export enum ECardType {
   BASE,
   ADD,
   SUBCTRACT,
   FLIP
+}
+
+export type TCard = {
+  type: keyof typeof ECardType
+  power: number
+  state: TCardState | null
 }
 
 export type TCardState = {
