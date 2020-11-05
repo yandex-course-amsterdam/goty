@@ -39,6 +39,22 @@ export const FORM_DATA = {
     placeholder: 'Enter your password',
     pattern: '^([\\w\\W]{8,30})$'
   },
+  oldPassword: {
+    id: 'OldPassword',
+    labelText: 'Old Password',
+    type: 'password',
+    name: 'oldPassword',
+    placeholder: 'Enter your old password',
+    pattern: '^([\\w\\W]{8,30})$'
+  },
+  newPassword: {
+    id: 'NewPassword',
+    labelText: 'New Password',
+    type: 'password',
+    name: 'newPassword',
+    placeholder: 'Enter your new password',
+    pattern: '^([\\w\\W]{8,30})$'
+  },
   phone: {
     id: 'Phone',
     labelText: 'Phone',
@@ -46,5 +62,20 @@ export const FORM_DATA = {
     name: 'phone',
     placeholder: 'Enter your phone number',
     pattern: '^(\\+7((\\(\\d{3}\\)\\s?\\d{3}-\\d{2}-\\d{2})|(\\s\\d{3}-\\d{3}-\\d{2}-\\d{2})|(\\d{10})))|(8\\d{10})$'
+  },
+  displayName: {
+    id: 'DisplayName',
+    labelText: 'Display Name',
+    type: 'text',
+    name: 'display_name',
+    placeholder: 'Enter your display name',
+    pattern: '^([\\w\\W]{2,30})$'
+  },
+  profilePicture: {
+    id: 'ProfilePicture',
+    labelText: 'Profile picture',
+    type: 'file',
+    name: 'avatar',
+    placeholder: 'Choose file'
   }
 }

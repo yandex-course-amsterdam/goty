@@ -18,7 +18,7 @@ export const SignUp = (): ReactElement => {
     <div className={style.signup}>
       <Sidebar>
         <Avatar avatar="https://i.imgur.com/Cbyhdku.png" name="Top game" className={style.avatar} />
-        <Navigation>
+        <Navigation title="Options">
           <List>
             <Link className={style.link} to="/sign-in">
               <Item src="images/user.svg" text="Sign In" />

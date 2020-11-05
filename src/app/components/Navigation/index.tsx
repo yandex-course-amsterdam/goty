@@ -4,12 +4,13 @@ import style from './style.css'
 
 type NavigationProps = {
   children: ReactElement
+  title?: string
 }
 
-export const Navigation = ({ children }: NavigationProps): ReactElement => {
+export const Navigation = ({ children, title }: NavigationProps): ReactElement => {
   return (
     <nav className={style.navigation}>
-      <p className={style.title}>Options</p>
+      {title && <p className={style.title}>{title}</p>}
       {children}
     </nav>
   )

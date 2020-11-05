@@ -14,8 +14,8 @@ type FormInputProps = {
 export const Input = ({ id, type, placeholder, handleChange, name, ...props }: FormInputProps): ReactElement => {
   return (
     <div className={style.wrapper}>
-      <ReactSVG src="images/wrong.svg" wrapper="span" className={style.wrong} id="wrong" />
-      <ReactSVG src="images/correct.svg" wrapper="span" className={style.correct} id="correct" />
+      <ReactSVG src="../../images/wrong.svg" wrapper="span" className={style.wrong} id="wrong" />
+      <ReactSVG src="../../images/correct.svg" wrapper="span" className={style.correct} id="correct" />
       <input
         name={name}
         id={id}
