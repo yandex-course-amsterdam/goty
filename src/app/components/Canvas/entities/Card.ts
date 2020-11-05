@@ -1,4 +1,4 @@
-import { CardInterface, CardTypeEnum, CardStateInterface } from './Types'
+import { CardInterface, CardTypeEnum, CardStateInterface } from '../../../interfaces/index'
 
 export class Card implements CardInterface {
   type: keyof typeof CardTypeEnum

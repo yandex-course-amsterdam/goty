@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect, ReactElement } from 'react'
 import { Player } from './entities'
-import { GameStateEnum } from './entities/Types'
+import { GameStateEnum } from '../../interfaces/index'
 import { GameState } from './entities/GameState'
 import { drawInitial, drawPick, drawPlay, drawEnd } from './helpers'
 
@@ -12,11 +12,10 @@ export const Canvas = ({ players }: CanvasProps): ReactElement => {
   const [gameState] = useState<GameState>(new GameState())
   const boardRef = useRef<HTMLCanvasElement>(null)
 
-  // eslint-disable-next-line
-  const animate = (gameState: GameState, ctx: CanvasRenderingContext2D): void => {
+  const animate = (ctx: CanvasRenderingContext2D): void => {
     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height)
 
-    requestAnimationFrame(() => animate(gameState, ctx))
+    requestAnimationFrame(() => animate(ctx))
 
     switch (gameState.state) {
       case GameStateEnum.INITIAL:
@@ -41,7 +40,7 @@ export const Canvas = ({ players }: CanvasProps): ReactElement => {
       gameState.addPlayer(new Player(player, ctx))
     })
 
-    animate(gameState, ctx)
+    animate(ctx)
   }
 
   const handleClick = (): void => {
@@ -52,7 +51,10 @@ export const Canvas = ({ players }: CanvasProps): ReactElement => {
   }
 
   useEffect(() => {
-    if (!boardRef.current) return
+    if (!boardRef.current) {
+      return
+    }
+
     const ctx = boardRef.current.getContext('2d')
 
     if (ctx) {

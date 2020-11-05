@@ -1,4 +1,4 @@
-import { HandInterface } from './Types'
+import { HandInterface } from '../../../interfaces/index'
 import { Slot } from './Slot'
 import { Card } from './Card'
 

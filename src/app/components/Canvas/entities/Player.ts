@@ -1,4 +1,4 @@
-import { PlayerInterface } from './Types'
+import { PlayerInterface } from '../../../interfaces/index'
 
 export class Player implements PlayerInterface {
   name = ''

@@ -1,4 +1,4 @@
-import { ControlInterface } from './Types'
+import { ControlInterface } from '../../../interfaces/index'
 
 export class Control implements ControlInterface {
   text = ''

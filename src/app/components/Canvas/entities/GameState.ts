@@ -1,4 +1,4 @@
-import { GameStateInterface, GameStateEnum } from './Types'
+import { GameStateInterface, GameStateEnum } from '../../../interfaces/index'
 import { Player } from './Player'
 
 export class GameState implements GameStateInterface {

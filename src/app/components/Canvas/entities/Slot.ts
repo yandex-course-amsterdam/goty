@@ -1,4 +1,4 @@
-import { SlotInterface } from './Types'
+import { SlotInterface } from '../../../interfaces/index'
 import { Card } from './Card'
 
 export class Slot implements SlotInterface {

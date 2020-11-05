@@ -1,4 +1,4 @@
-import { DeckInterface, CardTypeEnum } from './Types'
+import { DeckInterface, CardTypeEnum } from '../../../interfaces/index'
 import { Card } from './Card'
 
 export class Deck implements DeckInterface {
