@@ -4,11 +4,8 @@ import { Card } from './Card'
 
 export class Hand implements HandInterface {
   slots: Slot[] = []
-
   x = 0
-
   y = 0
-
   ctx
 
   constructor(ctx: CanvasRenderingContext2D) {

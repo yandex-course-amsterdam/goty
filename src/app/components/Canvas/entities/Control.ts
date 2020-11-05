@@ -2,11 +2,8 @@ import { ControlInterface } from '../../../interfaces/index'
 
 export class Control implements ControlInterface {
   text = ''
-
   x = 0
-
   y = 0
-
   ctx
 
   constructor(text: string, ctx: CanvasRenderingContext2D) {

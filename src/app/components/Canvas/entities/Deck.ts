@@ -3,9 +3,7 @@ import { Card } from './Card'
 
 export class Deck implements DeckInterface {
   cards: Card[] = []
-
   setCount = 4
-
   ctx
 
   constructor(ctx: CanvasRenderingContext2D) {
@@ -26,7 +24,10 @@ export class Deck implements DeckInterface {
   shuffleDeck(): void {
     for (let i = this.cards.length - 1; i > 0; i -= 1) {
       const j = Math.floor(Math.random() * (i + 1))
-      ;[this.cards[i], this.cards[j]] = [this.cards[j], this.cards[i]]
+
+      const tmp = this.cards[j]
+      this.cards[j] = this.cards[i]
+      this.cards[i] = tmp
     }
   }
 

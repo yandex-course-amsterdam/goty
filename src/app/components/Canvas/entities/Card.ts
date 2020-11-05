@@ -2,15 +2,10 @@ import { CardInterface, CardTypeEnum, CardStateInterface } from '../../../interf
 
 export class Card implements CardInterface {
   type: keyof typeof CardTypeEnum
-
   power: number
-
   state: CardStateInterface
-
   x = 0
-
   y = 0
-
   ctx
 
   constructor(

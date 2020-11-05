@@ -3,11 +3,8 @@ import { Player } from './Player'
 
 export class GameState implements GameStateInterface {
   players: Player[] = []
-
   state = GameStateEnum.INITIAL
-
   roundCounter = 0
-
   turn = null
 
   addPlayer(player: Player): void {

@@ -3,11 +3,8 @@ import { Slot } from './Slot'
 
 export class Board implements BoardInterface {
   slots: Slot[] = []
-
   x = 0
-
   y = 0
-
   ctx
 
   constructor(ctx: CanvasRenderingContext2D) {

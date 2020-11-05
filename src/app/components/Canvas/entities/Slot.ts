@@ -3,13 +3,9 @@ import { Card } from './Card'
 
 export class Slot implements SlotInterface {
   id: number
-
   card: Card | null = null
-
   x = 0
-
   y = 0
-
   ctx
 
   constructor(id: number, ctx: CanvasRenderingContext2D) {

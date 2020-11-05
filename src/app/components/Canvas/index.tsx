@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect, ReactElement } from 'react'
 import { Player } from './entities'
-import { GameStateEnum } from '../../interfaces/index'
+import { GameStateEnum } from '../../interfaces'
 import { GameState } from './entities/GameState'
 import { drawInitial, drawPick, drawPlay, drawEnd } from './helpers'
 

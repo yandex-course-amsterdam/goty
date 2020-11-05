@@ -2,15 +2,10 @@ import { PlayerInterface } from '../../../interfaces/index'
 
 export class Player implements PlayerInterface {
   name = ''
-
   score = 0
-
   roundsWon = 0
-
   x = 0
-
   y = 0
-
   ctx
 
   constructor(name: string, ctx: CanvasRenderingContext2D) {
