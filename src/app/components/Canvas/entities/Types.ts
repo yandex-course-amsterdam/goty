@@ -43,7 +43,6 @@ export interface DeckInterface {
   ctx: CanvasRenderingContext2D
 }
 
-<<<<<<< HEAD
 export enum CardTypeEnum {
   BASE = 'BASE',
   ADD = 'ADD',
@@ -58,22 +57,6 @@ export interface CardInterface extends CanvasElementInterface {
 }
 
 export interface CardStateInterface {
-=======
-export enum ECardType {
-  BASE,
-  ADD,
-  SUBCTRACT,
-  FLIP
-}
-
-export type TCard = {
-  type: keyof typeof ECardType
-  power: number
-  state: TCardState | null
-}
-
-export type TCardState = {
->>>>>>> [GOTY-11] Обновил типы и Deck
   slot: number | null
   played: boolean
 }
