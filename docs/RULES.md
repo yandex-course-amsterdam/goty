@@ -30,7 +30,7 @@ When both players have their hands filled the game starts
 Pazaak is a turn-based game so each turn of the round you:
 
 - play top card of main deck
-- could play card from your hand to change the score
+- could play card from your hand to change the score or pass
 - could skip
 
 When you took your action the turn goes to your opponent. If you reach 20 in a previous turn then you automatically skip. If you bust then your opponent automatically wins the round
