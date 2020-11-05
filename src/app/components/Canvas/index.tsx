@@ -1,59 +1,75 @@
-import React, { useRef, useEffect, MutableRefObject, ReactElement } from 'react'
+import React, { useState, useRef, useEffect, ReactElement } from 'react'
+import { Player } from './entities'
+import { GameStateEnum } from './entities/Types'
+import { GameState } from './entities/GameState'
+import { drawInitial, drawPick, drawPlay, drawEnd } from './helpers'
 
-enum CardType {
-  BASE,
-  ADD,
-  SUBSTRACT,
-  FLIP
-}
+import style from './style.css'
 
-type Slot = {
-  left: number
-  top: number
-}
+type CanvasProps = { players: string[] }
 
-type Card = {
-  type: CardType
-  power: number
-}
+export const Canvas = ({ players }: CanvasProps): ReactElement => {
+  const [gameState] = useState<GameState>(new GameState())
+  const boardRef = useRef<HTMLCanvasElement>(null)
 
-const drawCard = (ctx: CanvasRenderingContext2D, slot: Slot, card: Card): void => {
-  const { left, top } = slot
-  const { power } = card
+  // eslint-disable-next-line
+  const animate = (gameState: GameState, ctx: CanvasRenderingContext2D): void => {
+    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height)
 
-  ctx.fillStyle = '#95856B'
-  ctx.fillRect(left, top, 80, 100)
+    requestAnimationFrame(() => animate(gameState, ctx))
 
-  const gradient = ctx.createLinearGradient(left + 15, 0, left + 65, 0)
-  gradient.addColorStop(0, '#06330B')
-  gradient.addColorStop(0.5, '#197726')
-  gradient.addColorStop(1, '#06330B')
-  ctx.fillStyle = gradient
-  ctx.fillRect(left + 10, top + 10, 60, 80)
+    switch (gameState.state) {
+      case GameStateEnum.INITIAL:
+        drawInitial(gameState, ctx)
+        break
+      case GameStateEnum.PICK:
+        drawPick(gameState, ctx)
+        break
+      case GameStateEnum.PLAY:
+        drawPlay(gameState, ctx)
+        break
+      case GameStateEnum.END:
+        drawEnd(gameState, ctx)
+        break
+      default:
+        break
+    }
+  }
 
-  ctx.fillStyle = '#FFFFFF'
-  ctx.font = '12px Arial'
-  ctx.textAlign = 'center'
-  ctx.fillText(`${power}`, left + 40, 50)
-}
+  const init = (ctx: CanvasRenderingContext2D): void => {
+    players.slice(0, 2).forEach((player) => {
+      gameState.addPlayer(new Player(player, ctx))
+    })
 
-const drawBoard = (ctx: CanvasRenderingContext2D): void => {
-  ctx.fillRect(0, 0, 300, 300)
-  drawCard(ctx, { left: 10, top: 10 }, { type: CardType.SUBSTRACT, power: 1 })
-}
+    animate(gameState, ctx)
+  }
 
-export const Canvas = (): ReactElement => {
-  const boardRef = useRef() as MutableRefObject<HTMLCanvasElement>
+  const handleClick = (): void => {
+    // Just for quick test
+    gameState.endGame()
+    gameState.startGame()
+    gameState.startPick()
+  }
 
   useEffect(() => {
     if (!boardRef.current) return
     const ctx = boardRef.current.getContext('2d')
-    if (ctx) drawBoard(ctx)
-  }, [])
+
+    if (ctx) {
+      const canvasParent: HTMLElement = boardRef.current.parentElement as HTMLElement
+      const canvasParentRect: DOMRect = canvasParent.getBoundingClientRect()
+      const canvasWidth = canvasParentRect.width
+      const canvasHeight = canvasParentRect.height
+      boardRef.current.width = canvasWidth
+      boardRef.current.height = canvasHeight
+
+      init(ctx)
+    }
+  })
 
   return (
-    <section>
-      <canvas id="board" ref={boardRef} width="300" height="300" />
-    </section>
+    <div className={style.canvasWrapper}>
+      <canvas id="board" ref={boardRef} onClick={handleClick} />
+    </div>
   )
 }

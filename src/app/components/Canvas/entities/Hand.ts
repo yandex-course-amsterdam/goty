@@ -1,11 +1,28 @@
-import { THand, TSlot, TCard } from './Types'
+import { HandInterface } from './Types'
+import { Slot } from './Slot'
+import { Card } from './Card'
 
-export class Hand implements THand {
-  slots: TSlot[] = []
+export class Hand implements HandInterface {
+  slots: Slot[] = []
 
-  playCard(id: number): TCard | null {
+  x = 0
+
+  y = 0
+
+  ctx
+
+  constructor(ctx: CanvasRenderingContext2D) {
+    this.ctx = ctx
+  }
+
+  playCard(id: number): Card | null {
     const slot = this.slots.splice(id, 1)
     const card = slot[0]?.card
     return card ?? null
+  }
+
+  draw(x: number, y: number): void {
+    this.x = x
+    this.y = y
   }
 }

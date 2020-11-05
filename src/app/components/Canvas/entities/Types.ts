@@ -1,40 +1,66 @@
-export type TPlayer = {
+interface CanvasElementInterface {
+  x: number
+  y: number
+  ctx: CanvasRenderingContext2D | null
+}
+
+export enum GameStateEnum {
+  INITIAL = 'INITIAL',
+  PICK = 'PICK',
+  PLAY = 'PLAY',
+  END = 'END'
+}
+
+export interface GameStateInterface {
+  players: PlayerInterface[]
+  state: keyof typeof GameStateEnum
+  roundCounter: number
+  turn: PlayerInterface | null
+}
+
+export interface PlayerInterface extends CanvasElementInterface {
   name: string
   score: number
+  roundsWon: number
 }
 
-export type TBoard = {
-  slots: TSlot[]
+export interface BoardInterface extends CanvasElementInterface {
+  slots: SlotInterface[]
 }
 
-export type THand = {
-  slots: TSlot[]
+export interface HandInterface extends CanvasElementInterface {
+  slots: SlotInterface[]
 }
 
-export type TSlot = {
+export interface SlotInterface extends CanvasElementInterface {
   id: number
-  pos: Record<'x' | 'y', number>
-  card: TCard | null
+  card: CardInterface | null
 }
 
-export type TDeck = {
-  cards: TCard[]
+export interface DeckInterface {
+  cards: CardInterface[]
+  setCount: number
+  ctx: CanvasRenderingContext2D
 }
 
-export type TCard = {
-  type: ECardType
+export enum CardTypeEnum {
+  BASE = 'BASE',
+  ADD = 'ADD',
+  SUBCTRACT = 'SUBCTRACT',
+  FLIP = 'FLIP'
+}
+
+export interface CardInterface extends CanvasElementInterface {
+  type: keyof typeof CardTypeEnum
   power: number
-  state: TCardState
+  state: CardStateInterface
 }
 
-export enum ECardType {
-  BASE,
-  ADD,
-  SUBCTRACT,
-  FLIP
-}
-
-export type TCardState = {
+export interface CardStateInterface {
   slot: number | null
   played: boolean
+}
+
+export interface ControlInterface extends CanvasElementInterface {
+  text: string
 }

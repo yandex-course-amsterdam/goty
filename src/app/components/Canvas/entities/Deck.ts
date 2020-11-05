@@ -1,13 +1,36 @@
-import { TDeck, TCard } from './Types'
+import { DeckInterface, CardTypeEnum } from './Types'
+import { Card } from './Card'
 
-export class Deck implements TDeck {
-  cards: TCard[] = []
+export class Deck implements DeckInterface {
+  cards: Card[] = []
 
-  shuffleDeck(): void {
-    // shuffle deck
+  setCount = 4
+
+  ctx
+
+  constructor(ctx: CanvasRenderingContext2D) {
+    this.ctx = ctx
+    this.buildDeck()
   }
 
-  serveCard(): TCard | null {
+  buildDeck(): void {
+    this.cards = []
+
+    for (let i = 1; i <= 10; i += 1) {
+      for (let j = 0; j < this.setCount; j += 1) {
+        this.cards.push(new Card(CardTypeEnum.BASE, i, { slot: null, played: false }, this.ctx))
+      }
+    }
+  }
+
+  shuffleDeck(): void {
+    for (let i = this.cards.length - 1; i > 0; i -= 1) {
+      const j = Math.floor(Math.random() * (i + 1))
+      ;[this.cards[i], this.cards[j]] = [this.cards[j], this.cards[i]]
+    }
+  }
+
+  serveCard(): Card | null {
     const card = this.cards.pop()
     return card ?? null
   }
