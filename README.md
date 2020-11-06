@@ -53,4 +53,4 @@ Rules:
 
 ## Make pazaak great again
 
-Styleguides and other stuff goes here
+Please check [contributing guideline](https://github.com/yandex-course-amsterdam/goty/blob/main/CONTRIBUTING.md) to start contributing to this project

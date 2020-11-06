@@ -22,10 +22,11 @@ module.exports = {
       }
     ],
     'import/no-unresolved': 'off',
-    'import/prefer-default-export': 'warn',
+    'import/prefer-default-export': 'off',
     'no-param-reassign': 'off',
     'class-methods-use-this': 'off',
     'react/jsx-props-no-spreading': 'off',
-    'react/require-default-props': 'off'
+    'react/require-default-props': 'off',
+    'lines-between-class-members': 'off'
   }
 }

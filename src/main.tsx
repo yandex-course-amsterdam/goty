@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react'
 import ReactDOM from 'react-dom'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
-import { SignUpView, SignInView, ProfileView } from 'app/views'
+import { SignUpView, SignInView, ProfileView, GameView } from 'app/views'
 
 import 'normalize.css'
 import './fonts/fonts.css'
@@ -18,6 +18,8 @@ export const Main = (): ReactElement => {
         </Route>
         <Route path="/profile">
           <ProfileView />
+        <Route exact path="/play">
+          <GameView />
         </Route>
       </Switch>
     </Router>
