@@ -18,6 +18,7 @@ export const Main = (): ReactElement => {
         </Route>
         <Route path="/profile">
           <ProfileView />
+        </Route>
         <Route exact path="/play">
           <GameView />
         </Route>
