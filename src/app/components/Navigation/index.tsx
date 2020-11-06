@@ -3,7 +3,7 @@ import React, { ReactElement } from 'react'
 import style from './style.css'
 
 type NavigationProps = {
-  children: ReactElement
+  children?: ReactElement[] | ReactElement
   title?: string
 }
 
