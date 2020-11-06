@@ -27,7 +27,6 @@ module.exports = {
     'class-methods-use-this': 'off',
     'react/jsx-props-no-spreading': 'off',
     'react/require-default-props': 'off',
-    'lines-between-class-members': 'off',
-    'no-param-reassign': 'warn'
+    'lines-between-class-members': 'off'
   }
 }
