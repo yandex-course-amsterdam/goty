@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react'
 import { Link } from 'react-router-dom'
 import { Avatar, Form, Main, Description, Title, Navigation, Item, List, Sidebar } from 'app/components'
 
-import { handleAuth } from 'app/utils'
+import { handleLoadAuth } from 'app/utils'
 
 import { FORM_DATA } from 'app/constants'
 import { DATA } from './data'
@@ -38,7 +38,7 @@ export const SignIn = (): ReactElement => {
             />
             <Form
               formData={[login, password]}
-              handler={handleAuth}
+              handler={handleLoadAuth}
               formName={formName}
               buttonText="Sign In"
               buttonType="submit"

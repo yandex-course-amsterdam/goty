@@ -3,7 +3,7 @@ import { Avatar, Description, Form, Item, List, Main, Navigation, Sidebar, Title
 import { Link, useRouteMatch, Route, NavLink, Switch } from 'react-router-dom'
 
 import { FORM_DATA } from 'app/constants'
-import { getUserInfo, handleUserInfo, handleUserPassword, handleAvatar } from 'app/utils'
+import { getUserInfo, handleUpdateUserInfo, handleUpdateUserPassword, handleLoadAvatar } from 'app/utils'
 
 import { DATA } from './data'
 
@@ -21,11 +21,11 @@ export const Profile = (): ReactElement => {
         <Navigation title="Options">
           <List className={style.list}>
             <Link className={style.link} to="/game">
-              <Item src="images/game.svg" text="Game" />
+              <Item src="../../images/game.svg" text="Game" />
             </Link>
-            <Item src="images/user.svg" text="Profile" active />
-            <Item src="images/score.svg" text="Score" />
-            <Item className={style.exit} src="images/exit.svg" text="Exit" />
+            <Item src="../../images/user.svg" text="Profile" active />
+            <Item src="../../images/score.svg" text="Score" />
+            <Item className={style.exit} src="../../images/exit.svg" text="Exit" />
           </List>
         </Navigation>
       </Sidebar>
@@ -55,7 +55,7 @@ export const Profile = (): ReactElement => {
                 />
                 <Form
                   getData={getUserInfo}
-                  handler={handleUserInfo}
+                  handler={handleUpdateUserInfo}
                   formData={[name, surname, displayName, login, email, phone]}
                   formName={detailsForm}
                   buttonText="Update Profile"
@@ -71,7 +71,7 @@ export const Profile = (): ReactElement => {
                   subtitle={mainDescriptionSubtitle}
                 />
                 <Form
-                  handler={handleAvatar}
+                  handler={handleLoadAvatar}
                   formData={[profilePicture]}
                   formName={pictureForm}
                   buttonText="Update Avatar"
@@ -87,7 +87,7 @@ export const Profile = (): ReactElement => {
                   subtitle={mainDescriptionSubtitle}
                 />
                 <Form
-                  handler={handleUserPassword}
+                  handler={handleUpdateUserPassword}
                   formData={[oldPassword, newPassword]}
                   formName={passwordForm}
                   buttonText="Update Password"

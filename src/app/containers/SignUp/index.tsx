@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react'
 import { Link } from 'react-router-dom'
 import { Avatar, Form, Main, Description, Title, Navigation, Item, List, Sidebar } from 'app/components'
 
-import { handleReg } from 'app/utils/handleReg'
+import { handleLoadReg } from 'app/utils'
 
 import { FORM_DATA } from 'app/constants'
 import { DATA } from './data'
@@ -38,7 +38,7 @@ export const SignUp = (): ReactElement => {
             />
             <Form
               formData={[name, surname, login, email, password, phone]}
-              handler={handleReg}
+              handler={handleLoadReg}
               formName={formName}
               buttonText="Sign Up"
               buttonType="submit"

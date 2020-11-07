@@ -1,0 +1,6 @@
+export { getUserInfo } from './getUserInfo'
+export { handleLoadAuth } from './handleLoadAuth'
+export { handleLoadAvatar } from './handleLoadAvatar'
+export { handleLoadReg } from './handleLoadReg'
+export { handleUpdateUserInfo } from './handleUpdateUserInfo'
+export { handleUpdateUserPassword } from './handleUpdateUserPassword'
