@@ -8,7 +8,7 @@ import { ERRORS } from 'app/constants'
 
 import { userApi } from 'app/api'
 
-export const handleUserInfo = async (event: FormEvent): Promise<void> => {
+export const handleUpdateUserPassword = async (event: FormEvent): Promise<void> => {
   event.preventDefault()
 
   const form = event.target as HTMLFormElement
@@ -19,14 +19,16 @@ export const handleUserInfo = async (event: FormEvent): Promise<void> => {
 
   const formData = getDataOnSubmit(validation, form.id)
 
+  console.log(formData.data)
+
   if (formData.status) {
     try {
-      const res = await userApi.updateProfile(JSON.stringify(formData.data))
+      const res = await userApi.updatePass(JSON.stringify(formData.data))
 
       if (res.status === 200 && apiText) {
         apiText.textContent = 'Successfully updated'
       } else if (res.status !== 200 && apiText) {
-        apiText.textContent = JSON.parse(res.response).reason
+        apiText.textContent = JSON.parse(res.response)
       }
       setTimeout(() => {
         if (apiText) {

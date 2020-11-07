@@ -8,7 +8,7 @@ import { ERRORS } from 'app/constants'
 
 import { authApi } from 'app/api'
 
-export const handleAuth = async (event: FormEvent): Promise<void> => {
+export const handleLoadAuth = async (event: FormEvent): Promise<void> => {
   event.preventDefault()
 
   const form = event.target as HTMLFormElement

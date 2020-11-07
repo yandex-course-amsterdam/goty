@@ -2,7 +2,7 @@ import { FormEvent } from 'react'
 
 import { userApi } from 'app/api'
 
-export const handleAvatar = async (event: FormEvent): Promise<void> => {
+export const handleLoadAvatar = async (event: FormEvent): Promise<void> => {
   event.preventDefault()
 
   const form = event.target as HTMLFormElement
