@@ -24,7 +24,9 @@ export const Profile = (): ReactElement => {
               <Item src="../../images/game.svg" text="Game" />
             </Link>
             <Item src="../../images/user.svg" text="Profile" active />
-            <Item src="../../images/score.svg" text="Score" />
+            <Link className={style.link} to="/score/leaderboard">
+              <Item src="../../images/score.svg" text="Score" />
+            </Link>
             <Item className={style.exit} src="../../images/exit.svg" text="Exit" />
           </List>
         </Navigation>

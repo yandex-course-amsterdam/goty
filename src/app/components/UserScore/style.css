@@ -1,0 +1,44 @@
+.user {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  margin-bottom: 25px;
+
+  cursor: pointer;
+}
+
+.user:hover .name {
+  color: #eeecf1;
+}
+
+.user:hover .points {
+  background-color: #2264d1;
+  color: #ebf2ff;
+}
+
+.name {
+  font: normal 700 20px/36px 'Inter Bold', sans-serif;
+  letter-spacing: 0.22px;
+  color: #9590a0;
+
+  margin: 0 50px 0 0;
+}
+
+.points {
+  height: 65px;
+
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+
+  padding: 0 10px;
+
+  font: normal 700 14px/16px 'Inter Bold', sans-serif;
+  letter-spacing: 0.75px;
+  color: #c4daff;
+  text-align: right;
+
+  border-radius: 10px 0 0 10px;
+  background-color: #1b4ea3;
+}
