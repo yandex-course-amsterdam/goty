@@ -1,5 +1,7 @@
 import React, { ChangeEvent, ReactElement } from 'react'
-import { ReactSVG } from 'react-svg'
+
+import WrongIcon from 'images/wrong.svg'
+import CorrectIcon from 'images/correct.svg'
 
 import style from './style.css'
 
@@ -14,8 +16,12 @@ type FormInputProps = {
 export const Input = ({ id, type, placeholder, handleChange, name, ...props }: FormInputProps): ReactElement => {
   return (
     <div className={style.wrapper}>
-      <ReactSVG src="../../images/wrong.svg" wrapper="span" className={style.wrong} id="wrong" />
-      <ReactSVG src="../../images/correct.svg" wrapper="span" className={style.correct} id="correct" />
+      <div className={style.wrong} id="wrong">
+        <WrongIcon />
+      </div>
+      <div className={style.correct} id="correct">
+        <CorrectIcon />
+      </div>
       <input
         name={name}
         id={id}

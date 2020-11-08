@@ -5,8 +5,12 @@ import { Link, useRouteMatch, Route, NavLink, Switch } from 'react-router-dom'
 import { FORM_DATA } from 'app/constants'
 import { getUserInfo, handleUpdateUserInfo, handleUpdateUserPassword, handleLoadAvatar } from 'app/utils'
 
-import { DATA } from './data'
+import UserIcon from 'images/user.svg'
+import GameIcon from 'images/game.svg'
+import ScoreIcon from 'images/score.svg'
+import ExitIcon from 'images/exit.svg'
 
+import { DATA } from './data'
 import style from './style.css'
 
 export const Profile = (): ReactElement => {
@@ -21,13 +25,21 @@ export const Profile = (): ReactElement => {
         <Navigation title="Options">
           <List className={style.list}>
             <Link className={style.link} to="/game">
-              <Item src="../../images/game.svg" text="Game" />
+              <Item text="Game">
+                <GameIcon />
+              </Item>
             </Link>
-            <Item src="../../images/user.svg" text="Profile" active />
+            <Item text="Profile" active>
+              <UserIcon />
+            </Item>
             <Link className={style.link} to="/score/leaderboard">
-              <Item src="../../images/score.svg" text="Score" />
+              <Item text="Score">
+                <ScoreIcon />
+              </Item>
             </Link>
-            <Item className={style.exit} src="../../images/exit.svg" text="Exit" />
+            <Item className={style.exit} text="Exit">
+              <ExitIcon />
+            </Item>
           </List>
         </Navigation>
       </Sidebar>

@@ -1,8 +1,8 @@
 .item {
   display: flex;
   align-items: center;
+  justify-content: center;
 
-  padding: 0 10px;
   margin: 0 0 40px;
 
   cursor: pointer;
@@ -20,12 +20,12 @@
   color: #eeecf1;
 }
 
-.item:hover .icon path {
+.item:hover svg path {
   stroke-width: 3;
   stroke: #9dc2ff;
 }
 
-.icon {
+svg {
   margin-right: 20px;
 }
 
@@ -35,7 +35,7 @@
   color: #eeecf1;
 }
 
-.active .icon path {
+.active svg path {
   stroke-width: 3;
   stroke: #9dc2ff;
 }
@@ -43,5 +43,9 @@
 @media (max-width: 1399px) {
   .text {
     display: none;
+  }
+
+  svg {
+    margin-right: 0;
   }
 }

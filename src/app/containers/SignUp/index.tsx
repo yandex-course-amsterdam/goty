@@ -5,6 +5,9 @@ import { Avatar, Form, Main, Description, Title, Navigation, Item, List, Sidebar
 import { handleLoadReg } from 'app/utils'
 
 import { FORM_DATA } from 'app/constants'
+import UserIcon from 'images/user.svg'
+import SettingsIcon from 'images/settings.svg'
+
 import { DATA } from './data'
 
 import style from './style.css'
@@ -21,9 +24,13 @@ export const SignUp = (): ReactElement => {
         <Navigation title="Options">
           <List>
             <Link className={style.link} to="/sign-in">
-              <Item src="images/user.svg" text="Sign In" />
+              <Item text="Sign In">
+                <UserIcon />
+              </Item>
             </Link>
-            <Item src="images/settings.svg" text="Sign Up" active />
+            <Item text="Sign Up" active>
+              <SettingsIcon />
+            </Item>
           </List>
         </Navigation>
       </Sidebar>

@@ -1,6 +1,10 @@
 import React, { ReactElement } from 'react'
 import { Sidebar, Avatar, Navigation, List, Item, Main, Canvas } from 'app/components'
 
+import UserIcon from 'images/user.svg'
+import SettingsIcon from 'images/settings.svg'
+import CorrectIcon from 'images/correct.svg'
+
 import style from './style.css'
 
 export const Game = (): ReactElement => {
@@ -11,9 +15,15 @@ export const Game = (): ReactElement => {
         {/* TODO: пометь TODO, чтобы переделать навигацию, она уже в 3 местах повторяется по проекту. подобные контейнеры должны быть один раз описаны и переиспользуемы. имею ввиду List и Item компоненты нужно спрятать внутрь какого-то нового SidebarNavigation контейнера и его использовать везде */}
         <Navigation>
           <List>
-            <Item src="../../../images/user.svg" text="Sign In" />
-            <Item src="../../../images/settings.svg" text="Sign Up" />
-            <Item src="../../../images/correct.svg" text="Play" active />
+            <Item text="Sign In">
+              <UserIcon />
+            </Item>
+            <Item text="Sign Up">
+              <SettingsIcon />
+            </Item>
+            <Item text="Play" active>
+              <CorrectIcon />
+            </Item>
           </List>
         </Navigation>
       </Sidebar>

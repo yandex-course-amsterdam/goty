@@ -5,6 +5,10 @@ import { Avatar, Form, Main, Description, Title, Navigation, Item, List, Sidebar
 import { handleLoadAuth } from 'app/utils'
 
 import { FORM_DATA } from 'app/constants'
+
+import UserIcon from 'images/user.svg'
+import SettingsIcon from 'images/settings.svg'
+
 import { DATA } from './data'
 
 import style from './style.css'
@@ -20,9 +24,13 @@ export const SignIn = (): ReactElement => {
         <Avatar avatar="https://i.imgur.com/Cbyhdku.png" name="Top game" className={style.avatar} />
         <Navigation title="Options">
           <List>
-            <Item src="images/user.svg" text="Sign In" active />
+            <Item text="Sign In" active>
+              <UserIcon />
+            </Item>
             <Link className={style.link} to="/sign-up">
-              <Item src="images/settings.svg" text="Sign Up" />
+              <Item text="Sign Up">
+                <SettingsIcon />
+              </Item>
             </Link>
           </List>
         </Navigation>

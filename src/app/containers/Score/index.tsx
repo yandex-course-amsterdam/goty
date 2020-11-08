@@ -13,10 +13,15 @@ import {
   UserScore
 } from 'app/components'
 
-import { DATA } from './data'
-import { USER_SCORE_DATA } from './userScoreData'
+import UserIcon from 'images/user.svg'
+import GameIcon from 'images/game.svg'
+import ScoreIcon from 'images/score.svg'
+import ExitIcon from 'images/exit.svg'
 
 import style from './style.css'
+
+import { USER_SCORE_DATA } from './userScoreData'
+import { DATA } from './data'
 
 type userScoreData = {
   name: string
@@ -39,13 +44,21 @@ export const Score = (): ReactElement => {
         <Navigation title="Options">
           <List className={style.list}>
             <Link className={style.link} to="/game">
-              <Item src="../../images/game.svg" text="Game" />
+              <Item text="Game">
+                <GameIcon />
+              </Item>
             </Link>
             <Link className={style.link} to="/profile/details">
-              <Item src="../../images/user.svg" text="Profile" />
+              <Item text="Profile">
+                <UserIcon />
+              </Item>
             </Link>
-            <Item src="../../images/score.svg" text="Score" active />
-            <Item className={style.exit} src="../../images/exit.svg" text="Exit" />
+            <Item text="Score" active>
+              <ScoreIcon />
+            </Item>
+            <Item className={style.exit} text="Exit">
+              <ExitIcon />
+            </Item>
           </List>
         </Navigation>
       </Sidebar>
