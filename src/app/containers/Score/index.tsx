@@ -78,7 +78,7 @@ export const Score = (): ReactElement => {
                   {sortUserData(USER_SCORE_DATA).map(({ id, score, name }, index, array) => {
                     const width = `${index === 0 ? 100 : (array[index].score / array[0].score) * 100}%`
 
-                    return <UserScore id={id} score={score} name={name} width={width} />
+                    return <UserScore key={id} score={score} name={name} width={width} />
                   })}
                 </div>
               </div>
