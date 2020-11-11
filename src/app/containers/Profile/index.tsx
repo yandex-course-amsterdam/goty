@@ -1,33 +1,55 @@
 import React, { ReactElement } from 'react'
-import { Avatar, Description, Form, Item, List, Main, Navigation, Sidebar, Title, SubNavigation } from 'app/components'
+import {
+  Avatar,
+  Description,
+  Item,
+  List,
+  Main,
+  Navigation,
+  Sidebar,
+  Title,
+  SubNavigation,
+  DetailsForm,
+  PasswordForm,
+  AvatarForm
+} from 'app/components'
 import { Link, useRouteMatch, Route, NavLink, Switch } from 'react-router-dom'
 
-import { FORM_DATA } from 'app/constants'
-import { getUserInfo, handleUpdateUserInfo, handleUpdateUserPassword, handleLoadAvatar } from 'app/utils'
-
+import { ExitIcon, GameIcon, ScoreIcon, UserIcon } from 'icons'
 import { DATA } from './data'
 
 import style from './style.css'
 
 export const Profile = (): ReactElement => {
   const { path, url } = useRouteMatch()
-  const { mainTitle, mainDescriptionSubtitle, mainDescriptionTitle, detailsForm, passwordForm, pictureForm } = DATA
-  const { name, email, login, phone, surname, displayName, oldPassword, newPassword, profilePicture } = FORM_DATA
+  const { mainTitle, mainDescriptionSubtitle, mainDescriptionTitle } = DATA
 
   return (
     <div className={style.profile}>
       <Sidebar>
-        <Avatar avatar="https://i.imgur.com/Cbyhdku.png" name="Top game" className={style.avatar} />
+        <Avatar
+          avatar="https://i.imgur.com/Cbyhdku.png"
+          name="Top game"
+          className={style.avatar}
+        />
         <Navigation title="Options">
           <List className={style.list}>
             <Link className={style.link} to="/game">
-              <Item src="../../images/game.svg" text="Game" />
+              <Item text="Game">
+                <GameIcon />
+              </Item>
             </Link>
-            <Item src="../../images/user.svg" text="Profile" active />
+            <Item text="Profile" active>
+              <UserIcon />
+            </Item>
             <Link className={style.link} to="/score/leaderboard">
-              <Item src="../../images/score.svg" text="Score" />
+              <Item text="Score">
+                <ScoreIcon />
+              </Item>
             </Link>
-            <Item className={style.exit} src="../../images/exit.svg" text="Exit" />
+            <Item className={style.exit} text="Exit">
+              <ExitIcon />
+            </Item>
           </List>
         </Navigation>
       </Sidebar>
@@ -36,13 +58,25 @@ export const Profile = (): ReactElement => {
           <div>
             <Title className={style.title} title={mainTitle} />
             <SubNavigation title="Account">
-              <NavLink className={style.sublink} activeClassName={style.active} to={`${url}/details`}>
+              <NavLink
+                className={style.sublink}
+                activeClassName={style.active}
+                to={`${url}/details`}
+              >
                 Details
               </NavLink>
-              <NavLink className={style.sublink} activeClassName={style.active} to={`${url}/picture`}>
+              <NavLink
+                className={style.sublink}
+                activeClassName={style.active}
+                to={`${url}/picture`}
+              >
                 Picture
               </NavLink>
-              <NavLink className={style.sublink} activeClassName={style.active} to={`${url}/password`}>
+              <NavLink
+                className={style.sublink}
+                activeClassName={style.active}
+                to={`${url}/password`}
+              >
                 Password
               </NavLink>
             </SubNavigation>
@@ -55,14 +89,7 @@ export const Profile = (): ReactElement => {
                   title={mainDescriptionTitle}
                   subtitle={mainDescriptionSubtitle}
                 />
-                <Form
-                  getData={getUserInfo}
-                  handler={handleUpdateUserInfo}
-                  formData={[name, surname, displayName, login, email, phone]}
-                  formName={detailsForm}
-                  buttonText="Update Profile"
-                  buttonType="submit"
-                />
+                <DetailsForm />
               </div>
             </Route>
             <Route exact path={`${path}/picture`}>
@@ -72,13 +99,7 @@ export const Profile = (): ReactElement => {
                   title={mainDescriptionTitle}
                   subtitle={mainDescriptionSubtitle}
                 />
-                <Form
-                  handler={handleLoadAvatar}
-                  formData={[profilePicture]}
-                  formName={pictureForm}
-                  buttonText="Update Avatar"
-                  buttonType="submit"
-                />
+                <AvatarForm />
               </div>
             </Route>
             <Route exact path={`${path}/password`}>
@@ -88,13 +109,7 @@ export const Profile = (): ReactElement => {
                   title={mainDescriptionTitle}
                   subtitle={mainDescriptionSubtitle}
                 />
-                <Form
-                  handler={handleUpdateUserPassword}
-                  formData={[oldPassword, newPassword]}
-                  formName={passwordForm}
-                  buttonText="Update Password"
-                  buttonType="submit"
-                />
+                <PasswordForm />
               </div>
             </Route>
           </Switch>

@@ -5,7 +5,7 @@ import cn from 'classnames'
 import style from './style.css'
 
 type ListProps = {
-  children?: ReactElement[] | ReactElement
+  children?: React.ReactNode
   className?: string
 }
 

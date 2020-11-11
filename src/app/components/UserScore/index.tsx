@@ -8,7 +8,11 @@ type UserScoreProps = {
   width: string
 }
 
-export const UserScore = ({ score, name, width }: UserScoreProps): ReactElement => {
+export const UserScore = ({
+  score,
+  name,
+  width
+}: UserScoreProps): ReactElement => {
   return (
     <div className={style.user}>
       <p className={style.name}>{name}</p>

@@ -1,31 +1,79 @@
-import React, { ChangeEvent, ReactElement } from 'react'
-import { ReactSVG } from 'react-svg'
+import React, { ReactElement } from 'react'
+import cn from 'classnames'
+import { useField } from 'formik'
+
+import { CorrectIcon, WrongIcon } from 'icons'
 
 import style from './style.css'
 
-type FormInputProps = {
+type InputProps = {
+  label?: string
   type?: string
-  id: string
-  placeholder: string
-  handleChange: (e: ChangeEvent<HTMLInputElement>) => void
+  id?: string
+  placeholder?: string
   name: string
 }
 
-export const Input = ({ id, type, placeholder, handleChange, name, ...props }: FormInputProps): ReactElement => {
+export const Input = ({ label, ...props }: InputProps): ReactElement => {
+  const [field, meta] = useField(props)
+  const { id, name } = props
+
+  const setInputBorder = (): string => {
+    if (!meta.error && field.value.length !== 0) {
+      return style.correctinput
+    }
+
+    if (meta.touched && field.value.length === 0) {
+      return style.wronginput
+    }
+    if (meta.touched && meta.error) {
+      return style.wronginput
+    }
+    if (!meta.touched) {
+      return ''
+    }
+
+    return style.correctinput
+  }
+
+  const setInputIcon = (): ReactElement | null => {
+    if (!meta.error && field.value.length !== 0) {
+      return <CorrectIcon className={style.icon} />
+    }
+
+    if (meta.touched && field.value.length === 0) {
+      return <WrongIcon className={style.icon} />
+    }
+    if (meta.touched && meta.error) {
+      return <WrongIcon className={style.icon} />
+    }
+    if (!meta.touched) {
+      return null
+    }
+
+    return <WrongIcon className={style.icon} />
+  }
+
   return (
     <div className={style.wrapper}>
-      <ReactSVG src="../../images/wrong.svg" wrapper="span" className={style.wrong} id="wrong" />
-      <ReactSVG src="../../images/correct.svg" wrapper="span" className={style.correct} id="correct" />
-      <input
-        name={name}
-        id={id}
-        className={style.input}
-        type={type || 'text'}
-        placeholder={placeholder}
-        onChange={handleChange}
-        required
-        {...props}
-      />
+      <label className={style.label} htmlFor={id || name}>
+        {label}
+      </label>
+      <div>
+        <div>
+          <input
+            className={cn(style.input, setInputBorder())}
+            {...field}
+            {...props}
+          />
+          {setInputIcon()}
+        </div>
+        {meta.touched && meta.error ? (
+          <div className={style.error}>{meta.error}</div>
+        ) : (
+          <div className={style.error} />
+        )}
+      </div>
     </div>
   )
 }

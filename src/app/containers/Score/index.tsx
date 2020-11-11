@@ -13,6 +13,7 @@ import {
   UserScore
 } from 'app/components'
 
+import { ExitIcon, GameIcon, ScoreIcon, UserIcon } from 'icons'
 import { DATA } from './data'
 import { USER_SCORE_DATA } from './userScoreData'
 
@@ -35,17 +36,29 @@ export const Score = (): ReactElement => {
   return (
     <div className={style.score}>
       <Sidebar>
-        <Avatar avatar="https://i.imgur.com/Cbyhdku.png" name="Top game" className={style.avatar} />
+        <Avatar
+          avatar="https://i.imgur.com/Cbyhdku.png"
+          name="Top game"
+          className={style.avatar}
+        />
         <Navigation title="Options">
           <List className={style.list}>
             <Link className={style.link} to="/game">
-              <Item src="../../images/game.svg" text="Game" />
+              <Item text="Game">
+                <GameIcon />
+              </Item>
             </Link>
             <Link className={style.link} to="/profile/details">
-              <Item src="../../images/user.svg" text="Profile" />
+              <Item text="Profile">
+                <UserIcon />
+              </Item>
             </Link>
-            <Item src="../../images/score.svg" text="Score" active />
-            <Item className={style.exit} src="../../images/exit.svg" text="Exit" />
+            <Item text="Score" active>
+              <ScoreIcon />
+            </Item>
+            <Item className={style.exit} text="Exit">
+              <ExitIcon />
+            </Item>
           </List>
         </Navigation>
       </Sidebar>
@@ -54,10 +67,18 @@ export const Score = (): ReactElement => {
           <div>
             <Title className={style.title} title={mainTitle} />
             <SubNavigation title="Score details">
-              <NavLink className={style.sublink} activeClassName={style.active} to={`${url}/leaderboard`}>
+              <NavLink
+                className={style.sublink}
+                activeClassName={style.active}
+                to={`${url}/leaderboard`}
+              >
                 Leaderboard
               </NavLink>
-              <NavLink className={style.sublink} activeClassName={style.active} to={`${url}/personal-stats`}>
+              <NavLink
+                className={style.sublink}
+                activeClassName={style.active}
+                to={`${url}/personal-stats`}
+              >
                 Personal stats
               </NavLink>
             </SubNavigation>
@@ -75,11 +96,24 @@ export const Score = (): ReactElement => {
                   <p className={style.header}>Score</p>
                 </div>
                 <div className={style.overflow}>
-                  {sortUserData(USER_SCORE_DATA).map(({ id, score, name }, index, array) => {
-                    const width = `${index === 0 ? 100 : (array[index].score / array[0].score) * 100}%`
+                  {sortUserData(USER_SCORE_DATA).map(
+                    ({ id, score, name }, index, array) => {
+                      const width = `${
+                        index === 0
+                          ? 100
+                          : (array[index].score / array[0].score) * 100
+                      }%`
 
-                    return <UserScore key={id} score={score} name={name} width={width} />
-                  })}
+                      return (
+                        <UserScore
+                          key={id}
+                          score={score}
+                          name={name}
+                          width={width}
+                        />
+                      )
+                    }
+                  )}
                 </div>
               </div>
             </Route>
