@@ -18,7 +18,7 @@ export const Game = (): ReactElement => {
         </Navigation>
       </Sidebar>
       <Main>
-        <Canvas players={['Han', 'Greedo']} />
+        <Canvas />
       </Main>
     </div>
   )
