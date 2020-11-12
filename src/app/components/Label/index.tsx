@@ -9,7 +9,11 @@ type FormInputLabelProps = {
   className?: string
 }
 
-export const Label = ({ id, labelText, className }: FormInputLabelProps): ReactElement => {
+export const Label = ({
+  id,
+  labelText,
+  className
+}: FormInputLabelProps): ReactElement => {
   return (
     <label className={cn(style.label, className)} htmlFor={id}>
       {labelText}

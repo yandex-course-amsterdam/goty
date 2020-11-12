@@ -73,3 +73,9 @@
   margin-top: auto;
   margin-bottom: 0;
 }
+
+@media (max-width: 1399px) {
+  .exit svg {
+    position: absolute;
+  }
+}

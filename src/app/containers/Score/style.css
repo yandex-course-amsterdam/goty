@@ -88,3 +88,9 @@
 
   margin-bottom: 30px;
 }
+
+@media (max-width: 1399px) {
+  .exit svg {
+    position: absolute;
+  }
+}

@@ -27,7 +27,8 @@ module.exports = {
     mainFields: ['module', 'browser', 'main'],
     alias: {
       app: path.resolve(__dirname, 'src/app/'),
-      images: path.resolve(__dirname, 'src/images/')
+      images: path.resolve(__dirname, 'src/images/'),
+      icons: path.resolve(__dirname, 'src/icons/')
     }
   },
   module: {

@@ -1,5 +1,4 @@
 import React, { ReactElement } from 'react'
-
 import cn from 'classnames'
 
 import style from './style.css'
@@ -8,7 +7,7 @@ type ItemProps = {
   text: string
   active?: boolean
   className?: string
-  children?: ReactElement[] | ReactElement
+  children?: React.ReactNode
 }
 
 export const Item = ({ text, active, className, children }: ItemProps): ReactElement => {

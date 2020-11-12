@@ -29,5 +29,6 @@ module.exports = {
     'react/require-default-props': 'off',
     'lines-between-class-members': 'off',
     '@typescript-eslint/no-var-requires': 'warn'
+    'camelcase': 'off'
   }
 }
