@@ -9,7 +9,11 @@ type DescriptionProps = {
   className?: string
 }
 
-export const Description = ({ title, subtitle, className }: DescriptionProps): ReactElement => {
+export const Description = ({
+  title,
+  subtitle,
+  className
+}: DescriptionProps): ReactElement => {
   return (
     <div className={cn(style.container, className)}>
       <p className={style.title}>{title}</p>

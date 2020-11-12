@@ -1,5 +1,2 @@
-export { getDataOnSubmit } from './getDataOnSubmit'
-export { Validation } from './Validation'
 export { sanitize } from './sanitize'
-export { setCorrectStatus, setWrongStatus } from './setValidationStatus'
-export { handleAuth } from './handleAuth'
+export { checkResponseStatus } from './checkResponseStatus'

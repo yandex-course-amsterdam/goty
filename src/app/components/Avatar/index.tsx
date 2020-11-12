@@ -9,7 +9,11 @@ type AvatarProps = {
   className?: string
 }
 
-export const Avatar = ({ avatar, name, className }: AvatarProps): ReactElement => {
+export const Avatar = ({
+  avatar,
+  name,
+  className
+}: AvatarProps): ReactElement => {
   return (
     <div className={cn(style.avatar, className)}>
       <img className={style.image} src={avatar} alt={name} />
