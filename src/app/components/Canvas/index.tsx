@@ -29,8 +29,7 @@ export const Canvas = (): ReactElement => {
   }
 
   const createPopup = () => {
-    if (showEndGamePopup) return <div className={style.score}>We end {score}</div>
-    return
+    return showEndGamePopup ? <div className={style.score}>We end {score}</div> : <></>
   }
 
   const endGame = () => {
@@ -138,9 +137,15 @@ export const Canvas = (): ReactElement => {
   }
 
   const handleClick = (evt: React.MouseEvent<HTMLCanvasElement>): void => {
-    const player = state.getPlayer() as Player
-    const angle = Math.atan2(evt.clientY - player.y, evt.clientX - player.x)
+    const { canvas } = ctx as CanvasRenderingContext2D
+    const canvasRect = canvas.getBoundingClientRect()
 
+    const player = state.getPlayer() as Player
+    const clickPos = {
+      x: evt.clientX - canvasRect.x,
+      y: evt.clientY - canvasRect.y
+    }
+    const angle = Math.atan2(clickPos.y - player.y, clickPos.x - player.x)
     const velocity = {
       x: Math.cos(angle) * 10,
       y: Math.sin(angle) * 10
