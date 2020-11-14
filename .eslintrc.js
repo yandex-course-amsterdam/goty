@@ -28,7 +28,7 @@ module.exports = {
     'react/jsx-props-no-spreading': 'off',
     'react/require-default-props': 'off',
     'lines-between-class-members': 'off',
-    '@typescript-eslint/no-var-requires': 'warn'
+    '@typescript-eslint/no-var-requires': 'warn',
     'camelcase': 'off'
   }
 }
