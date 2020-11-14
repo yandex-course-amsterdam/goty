@@ -1,9 +1,16 @@
 .list {
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
 
   list-style-type: none;
 
   padding: 10px 0 0;
   margin: 0;
+}
+
+@media (max-width: 1399px) {
+  .list {
+    align-items: center;
+  }
 }

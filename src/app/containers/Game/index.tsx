@@ -10,6 +10,7 @@ import {
 } from 'app/components'
 
 import { CorrectIcon, SettingsIcon, UserIcon } from 'icons'
+
 import style from './style.css'
 
 export const Game = (): ReactElement => {
@@ -31,7 +32,7 @@ export const Game = (): ReactElement => {
               <SettingsIcon />
             </Item>
             <Item text="Play" active>
-              <CorrectIcon />{' '}
+              <CorrectIcon />
             </Item>
           </List>
         </Navigation>
