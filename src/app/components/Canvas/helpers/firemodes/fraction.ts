@@ -1,7 +1,7 @@
 import { State } from '../../entities'
 import { fire } from './fire'
 
-export function fireFraction(state: State, angle: number, context: CanvasRenderingContext2D): void {
+export const fireFraction = (state: State, angle: number, context: CanvasRenderingContext2D): void => {
   const deviations = [-20, -10, 0, 10, 20]
 
   for (let i = 0; i < 5; i += 1) {

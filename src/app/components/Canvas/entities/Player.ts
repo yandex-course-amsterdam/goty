@@ -52,7 +52,9 @@ export class Player {
   }
 
   useBoost(boost: string): void {
-    if (this.boostInterval) clearInterval(this.boostInterval)
+    if (this.boostInterval) {
+      clearInterval(this.boostInterval)
+    }
 
     this.boost = boost
 

@@ -20,7 +20,7 @@ const points = [
   [-0.5, 1]
 ]
 
-export function fireSpree(state: State, context: CanvasRenderingContext2D): void {
+export const fireSpree = (state: State, context: CanvasRenderingContext2D): void => {
   const player = state.getPlayer() as Player
   let i = 0
   let round = 0
@@ -44,6 +44,8 @@ export function fireSpree(state: State, context: CanvasRenderingContext2D): void
       i = 0
       round += 1
     }
-    if (round === 3) clearInterval(spreeInterval)
+    if (round === 3) {
+      clearInterval(spreeInterval)
+    }
   }, 50)
 }

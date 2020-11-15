@@ -80,7 +80,7 @@ export class State {
   }
 
   storeResult(): void {
-    // sotring here
+    // storing here and possible API leaderport post
   }
 
   endGame(): void {
