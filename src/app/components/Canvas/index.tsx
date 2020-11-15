@@ -36,6 +36,7 @@ export const Canvas = ({ players }: CanvasProps): ReactElement => {
   }
 
   const init = (ctx: CanvasRenderingContext2D): void => {
+    throw new Error()
     players.slice(0, 2).forEach((player) => {
       gameState.addPlayer(new Player(player, ctx))
     })
