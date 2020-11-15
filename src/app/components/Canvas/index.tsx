@@ -36,7 +36,6 @@ export const Canvas = ({ players }: CanvasProps): ReactElement => {
   }
 
   const init = (ctx: CanvasRenderingContext2D): void => {
-    throw new Error()
     players.slice(0, 2).forEach((player) => {
       gameState.addPlayer(new Player(player, ctx))
     })
@@ -59,7 +58,8 @@ export const Canvas = ({ players }: CanvasProps): ReactElement => {
     const ctx = boardRef.current.getContext('2d')
 
     if (ctx) {
-      const canvasParent: HTMLElement = boardRef.current.parentElement as HTMLElement
+      const canvasParent: HTMLElement = boardRef.current
+        .parentElement as HTMLElement
       const canvasParentRect: DOMRect = canvasParent.getBoundingClientRect()
       const canvasWidth = canvasParentRect.width
       const canvasHeight = canvasParentRect.height
