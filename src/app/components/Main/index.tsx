@@ -9,7 +9,9 @@ type MainProps = {
 }
 
 export const Main = ({ children }: MainProps): ReactElement => (
-  <ErrorBoundary>
-    <main className={style.main}>{children}</main>
-  </ErrorBoundary>
+  <div className={style.main}>
+    <ErrorBoundary>
+      <main>{children}</main>
+    </ErrorBoundary>
+  </div>
 )
