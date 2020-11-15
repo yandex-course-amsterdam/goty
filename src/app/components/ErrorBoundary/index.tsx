@@ -10,6 +10,8 @@ type Props = {
   children: React.ReactNode
 }
 
+const { mainTitle, mainDescriptionSubtitle, mainDescriptionTitle } = DATA
+
 export class ErrorBoundary extends React.Component {
   state = {
     hasError: false
@@ -24,7 +26,6 @@ export class ErrorBoundary extends React.Component {
   }
 
   render() {
-    const { mainTitle, mainDescriptionSubtitle, mainDescriptionTitle } = DATA
     if (this.state.hasError) {
       return (
         <Main>
