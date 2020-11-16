@@ -1,3 +1,5 @@
+import { ACTION_TYPES } from 'app/constants'
+
 export type UserDataState = {
   id: number | null
   first_name: string
@@ -30,7 +32,7 @@ export const userDataReducer = (
   action: UserDataAction
 ): UserDataState => {
   switch (action.type) {
-    case 'SET_USER_DATA':
+    case ACTION_TYPES.SET_USER_DATA:
       return { ...state, ...action.payload }
     default:
       return state

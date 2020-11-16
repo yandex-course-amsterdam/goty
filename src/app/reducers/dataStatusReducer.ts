@@ -1,3 +1,5 @@
+import { ACTION_TYPES } from 'app/constants'
+
 type DataStatusAction = {
   type: string
   payload: string
@@ -8,7 +10,7 @@ export const dataStatusReducer = (
   action: DataStatusAction
 ): string => {
   switch (action.type) {
-    case 'SET_DATA_STATUS':
+    case ACTION_TYPES.SET_DATA_STATUS:
       return action.payload
     default:
       return state

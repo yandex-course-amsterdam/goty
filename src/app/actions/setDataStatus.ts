@@ -1,3 +1,5 @@
+import { ACTION_TYPES } from 'app/constants'
+
 type LoadStatus = 'success' | 'pending' | 'failed'
 
 type DataStatusAction = {
@@ -7,7 +9,7 @@ type DataStatusAction = {
 
 export const setDataStatus = (status: LoadStatus): DataStatusAction => {
   return {
-    type: 'SET_DATA_STATUS',
+    type: ACTION_TYPES.SET_DATA_STATUS,
     payload: status
   }
 }
