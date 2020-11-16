@@ -40,11 +40,11 @@ export class State {
   }
 
   addProjectile(projectile: Projectile): void {
-    this.projectiles.push(projectile)
+    this.projectiles = this.projectiles.concat(projectile)
   }
 
   removeProjectile(i: number): void {
-    this.projectiles.splice(i, 1)
+    this.projectiles = this.projectiles.slice(0, i).concat(this.projectiles.slice(i + 1))
   }
 
   getEnemies(): Enemy[] {
@@ -52,11 +52,11 @@ export class State {
   }
 
   addEnemy(enemy: Enemy): void {
-    this.enemies.push(enemy)
+    this.enemies = this.enemies.concat(enemy)
   }
 
   removeEnemy(i: number): void {
-    this.enemies.splice(i, 1)
+    this.enemies = this.enemies.slice(0, i).concat(this.enemies.slice(i + 1))
   }
 
   getParticles(): Particle[] {
@@ -64,11 +64,11 @@ export class State {
   }
 
   addParticle(particle: Particle): void {
-    this.particles.push(particle)
+    this.particles = this.particles.concat(particle)
   }
 
   removeParticle(i: number): void {
-    this.particles.splice(i, 1)
+    this.particles = this.particles.slice(0, i).concat(this.particles.slice(i + 1))
   }
 
   resetState(): void {

@@ -1,3 +1,5 @@
+import { SPREE_ROUND_COUNT } from 'app/constants'
+
 import { State, Player } from '../../entities'
 import { fire } from './fire'
 
@@ -44,7 +46,7 @@ export const fireSpree = (state: State, context: CanvasRenderingContext2D): void
       i = 0
       round += 1
     }
-    if (round === 3) {
+    if (round === SPREE_ROUND_COUNT) {
       clearInterval(spreeInterval)
     }
   }, 50)

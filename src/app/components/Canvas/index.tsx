@@ -1,4 +1,7 @@
 import React, { useState, useRef, useEffect, ReactElement } from 'react'
+
+import { ENEMY_TYPE } from 'app/constants'
+
 import { State, Player, Enemy, Particle } from './entities'
 import { fire } from './helpers/firemodes'
 
@@ -17,11 +20,7 @@ export const Canvas = (): ReactElement => {
   const spawnEnemies = (): void => {
     const interval = setInterval(() => {
       const player = state.getPlayer() as Player
-      const enemy = new Enemy(
-        { type: 'SMALL', killReward: 1, radius: 30, color: 'red', velocityMultiplier: 5 },
-        ctx as CanvasRenderingContext2D,
-        player
-      )
+      const enemy = new Enemy(ENEMY_TYPE.SMALL, ctx as CanvasRenderingContext2D, player)
       state.addEnemy(enemy)
     }, 750)
 
@@ -65,9 +64,7 @@ export const Canvas = (): ReactElement => {
         projectile.y + projectile.radius < 0 ||
         projectile.y - projectile.radius > canvas.height
       ) {
-        setTimeout(() => {
-          state.removeProjectile(i)
-        })
+        state.removeProjectile(i)
       }
     })
 
@@ -99,18 +96,14 @@ export const Canvas = (): ReactElement => {
 
           const isDead = enemy.handleHit()
 
-          setTimeout(() => {
-            state.removeProjectile(projectileIndex)
-          }, 0)
+          state.removeProjectile(projectileIndex)
 
           if (isDead) {
             state.addScore(100)
             setScore(state.getScore())
             // state.addCredits(5)
 
-            setTimeout(() => {
-              state.removeEnemy(enemyIndex)
-            }, 0)
+            state.removeEnemy(enemyIndex)
           }
         }
       })
@@ -118,9 +111,7 @@ export const Canvas = (): ReactElement => {
 
     particles.forEach((particle, i) => {
       if (particle.alpha <= 0) {
-        setTimeout(() => {
-          state.removeParticle(i)
-        }, 0)
+        state.removeParticle(i)
       } else {
         particle.update()
       }
@@ -177,7 +168,7 @@ export const Canvas = (): ReactElement => {
     <div className={style.canvasWrapper}>
       {createPopup()}
       <div className={style.score}>Score: {score}</div>
-      <canvas id="board" ref={boardRef} onClick={handleClick} />
+      <canvas id="board" ref={boardRef} onClick={handleClick} className={style.canvas} />
     </div>
   )
 }
