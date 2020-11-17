@@ -1,0 +1,1 @@
+export { setUserData } from './setUserData'

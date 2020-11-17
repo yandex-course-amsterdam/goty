@@ -1,33 +1,76 @@
-import React, { ReactElement } from 'react'
+import React, { ReactElement, useEffect, useState } from 'react'
 import ReactDOM from 'react-dom'
+import { Provider, useDispatch } from 'react-redux'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
-import { SignUpView, SignInView, ProfileView, GameView, ScoreView } from 'app/views'
+import { PrivateRoute } from 'app/components'
+import {
+  SignUpView,
+  SignInView,
+  ProfileView,
+  GameView,
+  ScoreView,
+  LoaderView
+} from 'app/views'
+
+import { authApi } from 'app/api'
+import { store } from 'app/store'
+import { setUserData } from 'app/actions'
+import { ROUTES } from 'app/constants'
 
 import 'normalize.css'
 import './fonts/fonts.css'
 
 export const Main = (): ReactElement => {
-  return (
+  const [isLoading, setIsLoading] = useState(true)
+  const dispatch = useDispatch()
+
+  const getUserData = async () => {
+    try {
+      const res = await authApi.getUserInfo()
+
+      if (res.status === 200) {
+        const user = JSON.parse(res.response)
+        dispatch(setUserData(user))
+      }
+
+      setIsLoading(false)
+    } catch (error) {
+      throw new Error(error)
+    }
+  }
+
+  useEffect(() => {
+    getUserData()
+  }, [])
+
+  return isLoading ? (
+    <LoaderView />
+  ) : (
     <Router>
       <Switch>
-        <Route path="/sign-up">
+        <Route path={ROUTES.SIGN_UP}>
           <SignUpView />
         </Route>
-        <Route path="/sign-in">
+        <Route path={ROUTES.SIGN_IN}>
           <SignInView />
         </Route>
-        <Route path="/profile">
+        <PrivateRoute path={ROUTES.PROFILE}>
           <ProfileView />
-        </Route>
-        <Route path="/game">
+        </PrivateRoute>
+        <PrivateRoute path={ROUTES.GAME}>
           <GameView />
-        </Route>
-        <Route path="/score">
+        </PrivateRoute>
+        <PrivateRoute path={ROUTES.SCORE}>
           <ScoreView />
-        </Route>
+        </PrivateRoute>
       </Switch>
     </Router>
   )
 }
 
-ReactDOM.render(<Main />, document.getElementById('root'))
+ReactDOM.render(
+  <Provider store={store}>
+    <Main />
+  </Provider>,
+  document.getElementById('root')
+)

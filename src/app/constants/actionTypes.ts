@@ -1,0 +1,3 @@
+export const ACTION_TYPES = {
+  SET_USER_DATA: 'SET_USER_DATA'
+}

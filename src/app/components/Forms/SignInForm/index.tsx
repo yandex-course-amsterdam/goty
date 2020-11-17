@@ -1,4 +1,5 @@
 import React, { ReactElement, useState } from 'react'
+import { Redirect } from 'react-router-dom'
 import { Button, Error, Input } from 'app/components'
 import { Formik, Form } from 'formik'
 import * as Yup from 'yup'
@@ -11,6 +12,7 @@ import style from './style.css'
 
 export const SignInForm = (): ReactElement => {
   const [responseText, setResponseText] = useState('')
+  const [isSignIn, setIsSignIn] = useState(false)
   const { login, password } = VALIDATION_SCHEMA
 
   const signInUser = async (data: string): Promise<void> => {
@@ -18,12 +20,15 @@ export const SignInForm = (): ReactElement => {
       const res = await authApi.signIn(data)
 
       checkResponseStatus(res, setResponseText, 'Successfully sign in')
+      setIsSignIn(true)
     } catch (error) {
       console.log(error)
     }
   }
 
-  return (
+  return isSignIn ? (
+    <Redirect to="/profile" />
+  ) : (
     <Formik
       initialValues={{
         login: '',

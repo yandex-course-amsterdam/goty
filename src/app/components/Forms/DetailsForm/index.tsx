@@ -1,24 +1,28 @@
-import React, { ReactElement, useEffect, useState } from 'react'
+import React, { ReactElement, useState } from 'react'
+import { useSelector } from 'react-redux'
 import { Button, Error, Input } from 'app/components'
 import { Formik, Form } from 'formik'
 import * as Yup from 'yup'
 
-import { userApi, authApi } from 'app/api'
+import { userApi } from 'app/api'
 import { VALIDATION_SCHEMA } from 'app/constants'
 import { checkResponseStatus } from 'app/utils'
+import { UserDataState } from 'app/reducers/userDataReducer'
 
 import style from './style.css'
 
 export const DetailsForm = (): ReactElement => {
   const [responseText, setResponseText] = useState('')
-  const [initialValues, setInitialValues] = useState({
-    first_name: '',
-    second_name: '',
-    display_name: '',
-    login: '',
-    email: '',
-    phone: ''
-  })
+  const userData = useSelector(
+    (state: { userData: UserDataState }) => state.userData
+  )
+
+  const setUserData = () => {
+    const { first_name, second_name, login, email, phone } = userData
+    const display_name = userData.display_name || ''
+
+    return { first_name, second_name, login, email, phone, display_name }
+  }
 
   const {
     first_name,
@@ -29,39 +33,9 @@ export const DetailsForm = (): ReactElement => {
     phone
   } = VALIDATION_SCHEMA
 
-  useEffect(() => {
-    authApi
-      .getUserInfo()
-      .then((res) => {
-        if (res.status === 200) {
-          // eslint-disable-next-line no-shadow
-          const { first_name, second_name, login, email, phone } = JSON.parse(
-            res.response
-          )
-
-          // eslint-disable-next-line no-shadow
-          const display_name = JSON.parse(res.response).display_name
-            ? JSON.parse(res.response).display_name
-            : ''
-
-          setInitialValues({
-            ...initialValues,
-            first_name,
-            second_name,
-            display_name,
-            login,
-            email,
-            phone
-          })
-        }
-      })
-      .catch((error) => console.log(error))
-  }, [])
-
   const updateUserProfile = async (data: string): Promise<void> => {
     try {
       const res = await userApi.updateProfile(data)
-
       checkResponseStatus(res, setResponseText)
     } catch (error) {
       console.log(error)
@@ -71,7 +45,7 @@ export const DetailsForm = (): ReactElement => {
   return (
     <Formik
       enableReinitialize
-      initialValues={initialValues}
+      initialValues={setUserData()}
       validationSchema={Yup.object({
         first_name,
         second_name,
