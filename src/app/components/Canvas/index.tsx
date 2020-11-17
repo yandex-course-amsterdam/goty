@@ -3,14 +3,21 @@ import React, { useState, useRef, useEffect, ReactElement } from 'react'
 import { ENEMY_TYPE } from 'app/constants'
 
 import { State, Player, Enemy, Particle } from './entities'
-import { fire } from './helpers/firemodes'
+import {
+  handleFire,
+  handleMoveStart,
+  handleMoveStop,
+  handleBoostChoice
+} from './helpers/listeners'
 
 import style from './style.css'
 
 export const Canvas = (): ReactElement => {
   const [state] = useState<State>(new State())
   const [score, setScore] = useState(0)
-  const [enemiesSpawnInterval, setEnemiesSpawnInterval] = useState<ReturnType<typeof setInterval> | null>(null)
+  const [enemiesSpawnInterval, setEnemiesSpawnInterval] = useState<ReturnType<
+    typeof setInterval
+  > | null>(null)
   const [showEndGamePopup, setShowEndGamePopup] = useState(false)
   const [ctx, setCtx] = useState<CanvasRenderingContext2D | null>(null)
 
@@ -20,7 +27,11 @@ export const Canvas = (): ReactElement => {
   const spawnEnemies = (): void => {
     const interval = setInterval(() => {
       const player = state.getPlayer() as Player
-      const enemy = new Enemy(ENEMY_TYPE.SMALL, ctx as CanvasRenderingContext2D, player)
+      const enemy = new Enemy(
+        ENEMY_TYPE.SMALL,
+        ctx as CanvasRenderingContext2D,
+        player
+      )
       state.addEnemy(enemy)
     }, 750)
 
@@ -28,7 +39,7 @@ export const Canvas = (): ReactElement => {
   }
 
   const createPopup = () => {
-    return showEndGamePopup ? <div className={style.score}>We end {score}</div> : <></>
+    return showEndGamePopup && <div className={style.score}>We end {score}</div>
   }
 
   const endGame = () => {
@@ -39,6 +50,19 @@ export const Canvas = (): ReactElement => {
     cancelAnimationFrame(animationFrameId.current)
 
     state.endGame()
+  }
+
+  const attachKeyboardListeners = (): void => {
+    window.addEventListener('keydown', (evt) => {
+      handleMoveStart(evt, state)
+    })
+    window.addEventListener('keyup', (evt) => {
+      handleMoveStop(evt, state)
+    })
+
+    window.addEventListener('keydown', (evt) => {
+      handleBoostChoice(evt, state, ctx as CanvasRenderingContext2D)
+    })
   }
 
   const animate = (): void => {
@@ -53,7 +77,7 @@ export const Canvas = (): ReactElement => {
     ctx!.fillStyle = 'white'
     ctx!.fillRect(0, 0, canvas.width, canvas.height)
 
-    player.draw()
+    player.update()
 
     projectiles.forEach((projectile, i) => {
       projectile.update()
@@ -71,7 +95,10 @@ export const Canvas = (): ReactElement => {
     enemies.forEach((enemy, enemyIndex) => {
       enemy.update()
 
-      const enemyPlayerDistance = Math.hypot(enemy.x - player.x, enemy.y - player.y)
+      const enemyPlayerDistance = Math.hypot(
+        enemy.x - player.x,
+        enemy.y - player.y
+      )
 
       // end game
       if (enemyPlayerDistance - player.radius - enemy.radius < 1) {
@@ -79,7 +106,10 @@ export const Canvas = (): ReactElement => {
       }
 
       projectiles.forEach((projectile, projectileIndex) => {
-        const enemyProjectileDistance = Math.hypot(enemy.x - projectile.x, enemy.y - projectile.y)
+        const enemyProjectileDistance = Math.hypot(
+          enemy.x - projectile.x,
+          enemy.y - projectile.y
+        )
 
         // projectile hit an enemy
         if (enemyProjectileDistance - projectile.radius - enemy.radius < 1) {
@@ -120,29 +150,18 @@ export const Canvas = (): ReactElement => {
 
   const init = (): void => {
     const { canvas } = ctx as CanvasRenderingContext2D
-    const player = new Player(canvas.width / 2, canvas.height / 2, 10, 'black', ctx as CanvasRenderingContext2D)
+    const player = new Player(
+      canvas.width / 2,
+      canvas.height / 2,
+      10,
+      'black',
+      ctx as CanvasRenderingContext2D
+    )
     state.registerPlayer(player)
 
+    attachKeyboardListeners()
     animate()
     spawnEnemies()
-  }
-
-  const handleClick = (evt: React.MouseEvent<HTMLCanvasElement>): void => {
-    const { canvas } = ctx as CanvasRenderingContext2D
-    const canvasRect = canvas.getBoundingClientRect()
-
-    const player = state.getPlayer() as Player
-    const clickPos = {
-      x: evt.clientX - canvasRect.x,
-      y: evt.clientY - canvasRect.y
-    }
-    const angle = Math.atan2(clickPos.y - player.y, clickPos.x - player.x)
-    const velocity = {
-      x: Math.cos(angle) * 10,
-      y: Math.sin(angle) * 10
-    }
-
-    fire(state, velocity, ctx as CanvasRenderingContext2D)
   }
 
   useEffect(() => {
@@ -169,7 +188,14 @@ export const Canvas = (): ReactElement => {
     <div className={style.canvasWrapper}>
       {createPopup()}
       <div className={style.score}>Score: {score}</div>
-      <canvas id="board" ref={boardRef} onClick={handleClick} className={style.canvas} />
+      <canvas
+        id="board"
+        ref={boardRef}
+        onClick={(evt) =>
+          handleFire(evt, state, ctx as CanvasRenderingContext2D)
+        }
+        className={style.canvas}
+      />
     </div>
   )
 }
