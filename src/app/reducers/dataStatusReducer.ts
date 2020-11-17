@@ -9,9 +9,10 @@ export const dataStatusReducer = (
   state = 'pending',
   action: DataStatusAction
 ): string => {
-  if (action.type === ACTION_TYPES.SET_DATA_STATUS) {
-    return action.payload
+  switch (action.type) {
+    case ACTION_TYPES.SET_DATA_STATUS:
+      return action.payload
+    default:
+      return state
   }
-
-  return state
 }

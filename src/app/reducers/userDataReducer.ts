@@ -31,9 +31,10 @@ export const userDataReducer = (
   state: UserDataState = initialState,
   action: UserDataAction
 ): UserDataState => {
-  if (action.type === ACTION_TYPES.SET_USER_DATA) {
-    return { ...state, ...action.payload }
+  switch (action.type) {
+    case ACTION_TYPES.SET_USER_DATA:
+      return { ...state, ...action.payload }
+    default:
+      return state
   }
-
-  return state
 }
