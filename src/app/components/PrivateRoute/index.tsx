@@ -3,6 +3,7 @@ import { Redirect, Route } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 
 import { ROUTES } from 'app/constants'
+import { UserDataState } from 'app/reducers/userDataReducer'
 
 type PrivateRouteProps = {
   path: string
@@ -13,11 +14,11 @@ export const PrivateRoute = ({
   path,
   children
 }: PrivateRouteProps): ReactElement => {
-  const dataStatus = useSelector(
-    (state: { dataStatus: string }) => state.dataStatus
+  const userData = useSelector(
+    (state: { userData: UserDataState }) => state.userData
   )
 
-  return dataStatus === 'success' ? (
+  return userData.login ? (
     <Route path={path}>{children}</Route>
   ) : (
     <Redirect to={ROUTES.SIGN_IN} />

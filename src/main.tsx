@@ -14,7 +14,7 @@ import {
 
 import { authApi } from 'app/api'
 import { store } from 'app/store'
-import { setDataStatus, setUserData } from 'app/actions'
+import { setUserData } from 'app/actions'
 import { ROUTES } from 'app/constants'
 
 import 'normalize.css'
@@ -30,10 +30,7 @@ export const Main = (): ReactElement => {
 
       if (res.status === 200) {
         const user = JSON.parse(res.response)
-        dispatch(setDataStatus('success'))
         dispatch(setUserData(user))
-      } else {
-        dispatch(setDataStatus('failed'))
       }
 
       setIsLoading(false)
