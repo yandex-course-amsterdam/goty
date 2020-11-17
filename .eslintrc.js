@@ -24,10 +24,12 @@ module.exports = {
     'curly': ['error', 'all'],
     'import/no-unresolved': 'off',
     'import/prefer-default-export': 'off',
-    'no-param-reassign': 'off',
+    'no-param-reassign': 'warn',
     'class-methods-use-this': 'off',
     'react/jsx-props-no-spreading': 'off',
     'react/require-default-props': 'off',
-    'lines-between-class-members': 'off'
+    'lines-between-class-members': 'off',
+    '@typescript-eslint/no-var-requires': 'warn'
+    'camelcase': 'off'
   }
 }

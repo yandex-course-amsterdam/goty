@@ -1,0 +1,7 @@
+export { CorrectIcon } from './Correct'
+export { WrongIcon } from './Wrong'
+export { UserIcon } from './User'
+export { GameIcon } from './Game'
+export { ScoreIcon } from './Score'
+export { ExitIcon } from './Exit'
+export { SettingsIcon } from './Settings'

@@ -10,13 +10,17 @@ type ButtonProps = {
   handleClick?: () => void
 }
 
-export const Button = ({ type, buttonText, className, handleClick }: ButtonProps): ReactElement => {
+export const Button = ({
+  type,
+  buttonText,
+  className,
+  handleClick
+}: ButtonProps): ReactElement => {
   return (
     <button
       onClick={handleClick}
       className={cn(style.button, className)}
       type={type === 'submit' ? 'submit' : 'button'}
-      disabled
     >
       {buttonText}
     </button>

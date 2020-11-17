@@ -1,8 +1,9 @@
 .item {
   display: flex;
   align-items: center;
+  justify-content: center;
 
-  padding: 0 10px;
+  padding: 0;
   margin: 0 0 40px;
 
   cursor: pointer;
@@ -11,8 +12,7 @@
 .text {
   font: normal 600 20px/32px 'Inter Medium', sans-serif;
   color: #9590a0;
-
-  margin: 0 0 0 20px;
+  margin: 0;
 }
 
 .item:hover .text {
@@ -21,9 +21,13 @@
   color: #eeecf1;
 }
 
-.item:hover .icon path {
+.item:hover svg path {
   stroke-width: 3;
   stroke: #9dc2ff;
+}
+
+.item svg {
+  margin-right: 20px;
 }
 
 .active .text {
@@ -32,7 +36,7 @@
   color: #eeecf1;
 }
 
-.active .icon path {
+.active svg path {
   stroke-width: 3;
   stroke: #9dc2ff;
 }
@@ -40,5 +44,13 @@
 @media (max-width: 1399px) {
   .text {
     display: none;
+  }
+  
+  .item {
+    justify-content: center;
+  }
+
+  .item svg {
+    margin-right: 0;
   }
 }

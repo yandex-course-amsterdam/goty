@@ -1,11 +1,14 @@
 import React, { ReactElement } from 'react'
 
+import cn from 'classnames'
+
 import style from './style.css'
 
 type ListProps = {
-  children: ReactElement[]
+  children?: React.ReactNode
+  className?: string
 }
 
-export const List = ({ children }: ListProps): ReactElement => {
-  return <ul className={style.list}>{...children}</ul>
+export const List = ({ children, className }: ListProps): ReactElement => {
+  return <ul className={cn(style.list, className)}>{children}</ul>
 }

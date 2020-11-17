@@ -17,6 +17,7 @@ module.exports = {
   },
   output: {
     path: outPath,
+    publicPath: '/',
     filename: isProduction ? '[contenthash].js' : '[hash].js',
     chunkFilename: isProduction ? '[name].[contenthash].js' : '[name].[hash].js'
   },
@@ -25,7 +26,9 @@ module.exports = {
     extensions: ['.js', '.ts', '.tsx'],
     mainFields: ['module', 'browser', 'main'],
     alias: {
-      app: path.resolve(__dirname, 'src/app/')
+      app: path.resolve(__dirname, 'src/app/'),
+      images: path.resolve(__dirname, 'src/images/'),
+      icons: path.resolve(__dirname, 'src/icons/')
     }
   },
   module: {
@@ -73,7 +76,20 @@ module.exports = {
           }
         ]
       },
-      { test: /\.(a?png|svg)$/, use: 'url-loader?limit=10000' },
+      {
+        test: /\.svg$/,
+        use: [
+          {
+            loader: 'babel-loader'
+          },
+          {
+            loader: 'react-svg-loader',
+            options: {
+              jsx: true
+            }
+          }
+        ]
+      },
       {
         test: /\.(jpe?g|gif|bmp|mp3|mp4|ogg|wav|eot|ttf|woff|woff2)$/,
         use: 'file-loader'

@@ -1,0 +1,10 @@
+.nav {
+  display: flex;
+  flex-direction: column;
+}
+
+.title {
+  font: normal 500 14px/22px 'Inter Medium', sans-serif;
+  letter-spacing: 0.22px;
+  color: #7a7585;
+}
