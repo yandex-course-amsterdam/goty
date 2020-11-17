@@ -58,7 +58,8 @@ export const Canvas = ({ players }: CanvasProps): ReactElement => {
     const ctx = boardRef.current.getContext('2d')
 
     if (ctx) {
-      const canvasParent: HTMLElement = boardRef.current.parentElement as HTMLElement
+      const canvasParent: HTMLElement = boardRef.current
+        .parentElement as HTMLElement
       const canvasParentRect: DOMRect = canvasParent.getBoundingClientRect()
       const canvasWidth = canvasParentRect.width
       const canvasHeight = canvasParentRect.height
