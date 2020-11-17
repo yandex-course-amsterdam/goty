@@ -1,30 +1,65 @@
-import { PlayerInterface } from '../../../interfaces/index'
-
-export class Player implements PlayerInterface {
-  name = ''
-  score = 0
-  roundsWon = 0
-  x = 0
-  y = 0
-  ctx
-
-  constructor(name: string, ctx: CanvasRenderingContext2D) {
-    this.name = name
-    this.ctx = ctx
+export class Player {
+  x
+  y
+  radius
+  color
+  context
+  velocity = {
+    x: 0,
+    y: 0
   }
+  velocityMultiplier = 1
+  boost: string | null = null
+  boostInterval: ReturnType<typeof setTimeout> | null = null
 
-  changeScore(value: number): void {
-    this.score += value
-  }
-
-  winRound(): void {
-    this.roundsWon += 1
-
-    if (this.roundsWon === 3) console.log('ez')
-  }
-
-  draw(x: number, y: number): void {
+  constructor(x: number, y: number, radius: number, color: string, context: CanvasRenderingContext2D) {
     this.x = x
     this.y = y
+    this.radius = radius
+    this.color = color
+    this.context = context
+  }
+
+  draw(): void {
+    const { context } = this
+    context.beginPath()
+    context.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false)
+    context.fillStyle = this.color
+    context.fill()
+    context.closePath()
+  }
+
+  update(): void {
+    this.draw()
+    this.x += this.velocity.x
+    this.y += this.velocity.y
+  }
+
+  setHorizontalVelocity(dx: number): void {
+    this.velocity.x = dx * this.velocityMultiplier
+  }
+
+  setVerticalVelocity(dy: number): void {
+    this.velocity.y = dy * this.velocityMultiplier
+  }
+
+  setVelocityMultiplier(multiplier: number): void {
+    this.velocityMultiplier = multiplier
+  }
+
+  hasBoost(): boolean {
+    return !!this.boost
+  }
+
+  useBoost(boost: string): void {
+    if (this.boostInterval) {
+      clearInterval(this.boostInterval)
+    }
+
+    this.boost = boost
+
+    this.boostInterval = setTimeout(() => {
+      this.boost = null
+    }, 3000)
   }
 }

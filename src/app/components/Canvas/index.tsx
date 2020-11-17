@@ -1,53 +1,148 @@
 import React, { useState, useRef, useEffect, ReactElement } from 'react'
-import { Player } from './entities'
-import { GameStateEnum } from '../../interfaces'
-import { GameState } from './entities/GameState'
-import { drawInitial, drawPick, drawPlay, drawEnd } from './helpers'
+
+import { ENEMY_TYPE } from 'app/constants'
+
+import { State, Player, Enemy, Particle } from './entities'
+import { fire } from './helpers/firemodes'
 
 import style from './style.css'
 
-type CanvasProps = { players: string[] }
+export const Canvas = (): ReactElement => {
+  const [state] = useState<State>(new State())
+  const [score, setScore] = useState(0)
+  const [enemiesSpawnInterval, setEnemiesSpawnInterval] = useState<ReturnType<typeof setInterval> | null>(null)
+  const [showEndGamePopup, setShowEndGamePopup] = useState(false)
+  const [ctx, setCtx] = useState<CanvasRenderingContext2D | null>(null)
 
-export const Canvas = ({ players }: CanvasProps): ReactElement => {
-  const [gameState] = useState<GameState>(new GameState())
+  const animationFrameId = React.useRef(0)
   const boardRef = useRef<HTMLCanvasElement>(null)
 
-  const animate = (ctx: CanvasRenderingContext2D): void => {
-    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height)
+  const spawnEnemies = (): void => {
+    const interval = setInterval(() => {
+      const player = state.getPlayer() as Player
+      const enemy = new Enemy(ENEMY_TYPE.SMALL, ctx as CanvasRenderingContext2D, player)
+      state.addEnemy(enemy)
+    }, 750)
 
-    requestAnimationFrame(() => animate(ctx))
-
-    switch (gameState.state) {
-      case GameStateEnum.INITIAL:
-        drawInitial(gameState, ctx)
-        break
-      case GameStateEnum.PICK:
-        drawPick(gameState, ctx)
-        break
-      case GameStateEnum.PLAY:
-        drawPlay(gameState, ctx)
-        break
-      case GameStateEnum.END:
-        drawEnd(gameState, ctx)
-        break
-      default:
-        break
-    }
+    setEnemiesSpawnInterval(interval)
   }
 
-  const init = (ctx: CanvasRenderingContext2D): void => {
-    players.slice(0, 2).forEach((player) => {
-      gameState.addPlayer(new Player(player, ctx))
+  const createPopup = () => {
+    return showEndGamePopup ? <div className={style.score}>We end {score}</div> : <></>
+  }
+
+  const endGame = () => {
+    setShowEndGamePopup(true)
+    createPopup()
+
+    clearInterval(enemiesSpawnInterval as ReturnType<typeof setInterval>)
+    cancelAnimationFrame(animationFrameId.current)
+
+    state.endGame()
+  }
+
+  const animate = (): void => {
+    const { canvas } = ctx as CanvasRenderingContext2D
+    const player = state.getPlayer() as Player
+    const projectiles = state.getProjectiles()
+    const enemies = state.getEnemies()
+    const particles = state.getParticles()
+
+    animationFrameId.current = requestAnimationFrame(animate)
+
+    ctx!.fillStyle = 'white'
+    ctx!.fillRect(0, 0, canvas.width, canvas.height)
+
+    player.draw()
+
+    projectiles.forEach((projectile, i) => {
+      projectile.update()
+
+      if (
+        projectile.x + projectile.radius < 0 ||
+        projectile.x - projectile.radius > canvas.width ||
+        projectile.y + projectile.radius < 0 ||
+        projectile.y - projectile.radius > canvas.height
+      ) {
+        state.removeProjectile(i)
+      }
     })
 
-    animate(ctx)
+    enemies.forEach((enemy, enemyIndex) => {
+      enemy.update()
+
+      const enemyPlayerDistance = Math.hypot(enemy.x - player.x, enemy.y - player.y)
+
+      // end game
+      if (enemyPlayerDistance - player.radius - enemy.radius < 1) {
+        endGame()
+      }
+
+      projectiles.forEach((projectile, projectileIndex) => {
+        const enemyProjectileDistance = Math.hypot(enemy.x - projectile.x, enemy.y - projectile.y)
+
+        // projectile hit an enemy
+        if (enemyProjectileDistance - projectile.radius - enemy.radius < 1) {
+          for (let i = 0; i < enemy.radius * 0.5; i += 1) {
+            const particle = new Particle(
+              projectile.x,
+              projectile.y,
+              enemy.color,
+              enemy.radius,
+              ctx as CanvasRenderingContext2D
+            )
+            state.addParticle(particle)
+          }
+
+          const isDead = enemy.handleHit()
+
+          state.removeProjectile(projectileIndex)
+
+          if (isDead) {
+            state.addScore(100)
+            setScore(state.getScore())
+            // state.addCredits(5)
+
+            state.removeEnemy(enemyIndex)
+          }
+        }
+      })
+    })
+
+    particles.forEach((particle, i) => {
+      if (particle.alpha <= 0) {
+        state.removeParticle(i)
+      } else {
+        particle.update()
+      }
+    })
   }
 
-  const handleClick = (): void => {
-    // Just for quick test
-    gameState.endGame()
-    gameState.startGame()
-    gameState.startPick()
+  const init = (): void => {
+    const { canvas } = ctx as CanvasRenderingContext2D
+    const player = new Player(canvas.width / 2, canvas.height / 2, 10, 'black', ctx as CanvasRenderingContext2D)
+    state.registerPlayer(player)
+
+    animate()
+    spawnEnemies()
+  }
+
+  const handleClick = (evt: React.MouseEvent<HTMLCanvasElement>): void => {
+    const { canvas } = ctx as CanvasRenderingContext2D
+    const canvasRect = canvas.getBoundingClientRect()
+
+    const player = state.getPlayer() as Player
+    const clickPos = {
+      x: evt.clientX - canvasRect.x,
+      y: evt.clientY - canvasRect.y
+    }
+    const angle = Math.atan2(clickPos.y - player.y, clickPos.x - player.x)
+    const velocity = {
+      x: Math.cos(angle) * 10,
+      y: Math.sin(angle) * 10
+    }
+
+    fire(state, velocity, ctx as CanvasRenderingContext2D)
   }
 
   useEffect(() => {
@@ -55,23 +150,26 @@ export const Canvas = ({ players }: CanvasProps): ReactElement => {
       return
     }
 
-    const ctx = boardRef.current.getContext('2d')
+    setCtx(boardRef.current.getContext('2d'))
 
     if (ctx) {
-      const canvasParent: HTMLElement = boardRef.current.parentElement as HTMLElement
+      const canvasParent: HTMLElement = boardRef.current
+        .parentElement as HTMLElement
       const canvasParentRect: DOMRect = canvasParent.getBoundingClientRect()
       const canvasWidth = canvasParentRect.width
       const canvasHeight = canvasParentRect.height
       boardRef.current.width = canvasWidth
       boardRef.current.height = canvasHeight
 
-      init(ctx)
+      init()
     }
-  })
+  }, [ctx])
 
   return (
     <div className={style.canvasWrapper}>
-      <canvas id="board" ref={boardRef} onClick={handleClick} />
+      {createPopup()}
+      <div className={style.score}>Score: {score}</div>
+      <canvas id="board" ref={boardRef} onClick={handleClick} className={style.canvas} />
     </div>
   )
 }
