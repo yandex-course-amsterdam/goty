@@ -57,7 +57,7 @@ export const Main = (): ReactElement => {
         <PrivateRoute path={ROUTES.PROFILE}>
           <ProfileView />
         </PrivateRoute>
-        <PrivateRoute path={ROUTES.GAME}>
+        <PrivateRoute exact path={ROUTES.GAME}>
           <GameView />
         </PrivateRoute>
         <PrivateRoute path={ROUTES.SCORE}>

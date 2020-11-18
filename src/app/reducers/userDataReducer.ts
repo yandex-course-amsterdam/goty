@@ -16,7 +16,7 @@ type UserDataAction = {
   payload: UserDataState
 }
 
-const initialState = {
+export const initialState = {
   id: null,
   first_name: '',
   second_name: '',
@@ -33,6 +33,8 @@ export const userDataReducer = (
 ): UserDataState => {
   switch (action.type) {
     case ACTION_TYPES.SET_USER_DATA:
+      return { ...state, ...action.payload }
+    case ACTION_TYPES.FETCH_USER_DATA:
       return { ...state, ...action.payload }
     default:
       return state

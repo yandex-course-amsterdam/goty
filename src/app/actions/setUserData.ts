@@ -1,13 +1,14 @@
 import { ACTION_TYPES } from 'app/constants'
 
 type UserData = {
-  id: number
+  id: number | null
   first_name: string
   second_name: string
-  display_name: string
+  display_name: string | null
   login: string
   email: string
   phone: string
+  avatar: string
 }
 
 type UserDataAction = {

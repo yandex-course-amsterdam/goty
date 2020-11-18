@@ -7,10 +7,12 @@ import { UserDataState } from 'app/reducers/userDataReducer'
 
 type PrivateRouteProps = {
   path: string
+  exact?: boolean
   children: ReactNode
 }
 
 export const PrivateRoute = ({
+  exact,
   path,
   children
 }: PrivateRouteProps): ReactElement => {
@@ -19,7 +21,9 @@ export const PrivateRoute = ({
   )
 
   return userData.login ? (
-    <Route path={path}>{children}</Route>
+    <Route exact={exact} path={path}>
+      {children}
+    </Route>
   ) : (
     <Redirect to={ROUTES.SIGN_IN} />
   )
