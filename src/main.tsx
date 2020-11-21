@@ -16,9 +16,12 @@ import { authApi } from 'app/api'
 import { store } from 'app/store'
 import { setUserData } from 'app/actions'
 import { ROUTES } from 'app/constants'
+import { startServiceWorker } from 'app/utils'
 
 import 'normalize.css'
 import './fonts/fonts.css'
+
+startServiceWorker('/app/src/sw.js')
 
 export const Main = (): ReactElement => {
   const [isLoading, setIsLoading] = useState(true)

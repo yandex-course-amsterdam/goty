@@ -4,9 +4,11 @@ const packageList = require('./package.json')
 
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const { InjectManifest } = require('workbox-webpack-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 
-const isProduction = process.argv.indexOf('-p') >= 0 || process.env.NODE_ENV === 'production'
+const isProduction =
+  process.argv.indexOf('-p') >= 0 || process.env.NODE_ENV === 'production'
 const sourcePath = path.join(__dirname, './src')
 const outPath = path.join(__dirname, './build')
 
@@ -53,7 +55,9 @@ module.exports = {
               sourceMap: !isProduction,
               importLoaders: 1,
               modules: {
-                localIdentName: isProduction ? '[hash:base64:5]' : '[local]__[hash:base64:5]'
+                localIdentName: isProduction
+                  ? '[hash:base64:5]'
+                  : '[local]__[hash:base64:5]'
               }
             }
           },
@@ -97,21 +101,23 @@ module.exports = {
     ]
   },
   optimization: {
-    splitChunks: {
-      name: true,
-      cacheGroups: {
-        commons: {
-          chunks: 'initial',
-          minChunks: 2
-        },
-        vendors: {
-          test: /[\\/]node_modules[\\/]/,
-          chunks: 'all',
-          filename: isProduction ? 'vendor.[contenthash].js' : 'vendor.[hash].js',
-          priority: -10
-        }
-      }
-    },
+    // splitChunks: {
+    //   name: true,
+    //   cacheGroups: {
+    //     commons: {
+    //       chunks: 'initial',
+    //       minChunks: 2
+    //     },
+    //     vendors: {
+    //       test: /[\\/]node_modules[\\/]/,
+    //       chunks: 'all',
+    //       filename: isProduction
+    //         ? 'vendor.[contenthash].js'
+    //         : 'vendor.[hash].js',
+    //       priority: -10
+    //     }
+    //   }
+    // },
     runtimeChunk: true
   },
   plugins: [
@@ -140,12 +146,18 @@ module.exports = {
       meta: {
         title: packageList.name,
         description: packageList.description,
-        keywords: Array.isArray(packageList.keywords) ? packageList.keywords.join(',') : undefined
+        keywords: Array.isArray(packageList.keywords)
+          ? packageList.keywords.join(',')
+          : undefined
       }
+    }),
+    new InjectManifest({
+      swSrc: './sw.js',
+      maximumFileSizeToCacheInBytes: 8 * 1024 * 1024
     })
   ],
   devServer: {
-    contentBase: sourcePath,
+    contentBase: outPath,
     hot: true,
     inline: true,
     historyApiFallback: {
