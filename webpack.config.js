@@ -101,23 +101,23 @@ module.exports = {
     ]
   },
   optimization: {
-    // splitChunks: {
-    //   name: true,
-    //   cacheGroups: {
-    //     commons: {
-    //       chunks: 'initial',
-    //       minChunks: 2
-    //     },
-    //     vendors: {
-    //       test: /[\\/]node_modules[\\/]/,
-    //       chunks: 'all',
-    //       filename: isProduction
-    //         ? 'vendor.[contenthash].js'
-    //         : 'vendor.[hash].js',
-    //       priority: -10
-    //     }
-    //   }
-    // },
+    splitChunks: {
+      name: true,
+      cacheGroups: {
+        commons: {
+          chunks: 'initial',
+          minChunks: 2
+        },
+        vendors: {
+          test: /[\\/]node_modules[\\/]/,
+          chunks: 'all',
+          filename: isProduction
+            ? 'vendor.[contenthash].js'
+            : 'vendor.[hash].js',
+          priority: -10
+        }
+      }
+    },
     runtimeChunk: true
   },
   plugins: [

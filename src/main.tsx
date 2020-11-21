@@ -21,7 +21,7 @@ import { startServiceWorker } from 'app/utils'
 import 'normalize.css'
 import './fonts/fonts.css'
 
-startServiceWorker('/app/src/sw.js')
+startServiceWorker()
 
 export const Main = (): ReactElement => {
   const [isLoading, setIsLoading] = useState(true)

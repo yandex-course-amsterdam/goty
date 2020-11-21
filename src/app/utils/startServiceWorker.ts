@@ -1,7 +1,7 @@
-export const startServiceWorker = (path: string): void => {
+export const startServiceWorker = (): void => {
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
-      navigator.serviceWorker.register(path)
+      navigator.serviceWorker.register('/sw.js')
     })
   }
 }
