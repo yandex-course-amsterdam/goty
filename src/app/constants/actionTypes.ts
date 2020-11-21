@@ -1,4 +1,4 @@
-export const ACTION_TYPES = {
+export const ACTION_TYPE = {
   SET_USER_DATA: 'SET_USER_DATA',
   FETCH_USER_DATA: 'FETCH_USER_DATA'
 }

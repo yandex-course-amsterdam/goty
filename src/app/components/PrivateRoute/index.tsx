@@ -2,7 +2,7 @@ import React, { ReactElement, ReactNode } from 'react'
 import { Redirect, Route } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 
-import { ROUTES } from 'app/constants'
+import { ROUTE } from 'app/constants'
 import { UserDataState } from 'app/reducers/userDataReducer'
 
 type PrivateRouteProps = {
@@ -25,6 +25,6 @@ export const PrivateRoute = ({
       {children}
     </Route>
   ) : (
-    <Redirect to={ROUTES.SIGN_IN} />
+    <Redirect to={ROUTE.SIGN_IN} />
   )
 }

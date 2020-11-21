@@ -3,7 +3,7 @@ import { Redirect } from 'react-router-dom'
 import cn from 'classnames'
 
 import { authApi } from 'app/api'
-import { ROUTES } from 'app/constants'
+import { ROUTE } from 'app/constants'
 
 import style from './style.css'
 
@@ -39,6 +39,6 @@ export const ExitButton = ({
       {children}
     </button>
   ) : (
-    <Redirect to={ROUTES.SIGN_IN} />
+    <Redirect to={ROUTE.SIGN_IN} />
   )
 }

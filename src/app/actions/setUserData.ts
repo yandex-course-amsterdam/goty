@@ -1,4 +1,4 @@
-import { ACTION_TYPES } from 'app/constants'
+import { ACTION_TYPE } from 'app/constants'
 
 type UserData = {
   id: number | null
@@ -18,7 +18,7 @@ type UserDataAction = {
 
 export const setUserData = (userData: UserData): UserDataAction => {
   return {
-    type: ACTION_TYPES.SET_USER_DATA,
+    type: ACTION_TYPE.SET_USER_DATA,
     payload: userData
   }
 }
