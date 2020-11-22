@@ -1,6 +1,7 @@
 /* eslint-disable */
 
 const CACHE_VERSION = 'goty-v1'
+const ALLOW_LIST = ['https://ya-praktikum.tech/api/']
 
 self.addEventListener('install', (event) => {
   event.waitUntil(
@@ -11,20 +12,20 @@ self.addEventListener('install', (event) => {
 })
 
 self.addEventListener('fetch', (event) => {
-  event.respondWith(
-    caches.match(event.request).then(function (response) {
-      if (response !== undefined) {
-        return response
-      } else {
-        return fetch(event.request).then(function (response) {
-          let responseClone = response.clone()
-
-          caches.open(CACHE_VERSION).then(function (cache) {
-            cache.put(event.request, responseClone)
-          })
+  if (!ALLOW_LIST.some((url) => event.request.url.indexOf(url) !== -1)) {
+    event.respondWith(
+      caches.match(event.request).then(function (response) {
+        if (response !== undefined) {
           return response
-        })
-      }
-    })
-  )
+        } else {
+          return fetch(event.request).then(function (response) {
+            // caches.open(CACHE_VERSION).then(function (cache) {
+            //   cache.put(event.request, responseClone)
+            // })
+            return response
+          })
+        }
+      })
+    )
+  }
 })
