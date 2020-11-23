@@ -15,7 +15,7 @@ import {
 import { authApi } from 'app/api'
 import { store } from 'app/store'
 import { setUserData } from 'app/actions'
-import { ROUTES } from 'app/constants'
+import { ROUTE } from 'app/constants'
 
 import 'normalize.css'
 import './fonts/fonts.css'
@@ -48,19 +48,19 @@ export const Main = (): ReactElement => {
   ) : (
     <Router>
       <Switch>
-        <Route path={ROUTES.SIGN_UP}>
+        <Route path={ROUTE.SIGN_UP}>
           <SignUpView />
         </Route>
-        <Route path={ROUTES.SIGN_IN}>
+        <Route path={ROUTE.SIGN_IN}>
           <SignInView />
         </Route>
-        <PrivateRoute path={ROUTES.PROFILE}>
+        <PrivateRoute path={ROUTE.PROFILE}>
           <ProfileView />
         </PrivateRoute>
-        <PrivateRoute path={ROUTES.GAME}>
+        <PrivateRoute exact path={ROUTE.GAME}>
           <GameView />
         </PrivateRoute>
-        <PrivateRoute path={ROUTES.SCORE}>
+        <PrivateRoute path={ROUTE.SCORE}>
           <ScoreView />
         </PrivateRoute>
       </Switch>
