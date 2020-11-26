@@ -17,6 +17,7 @@ import {
 import { Link, useRouteMatch, Route, NavLink, Switch } from 'react-router-dom'
 
 import { ExitIcon, GameIcon, ScoreIcon, UserIcon } from 'icons'
+import { ROUTE } from 'app/constants'
 import { DATA } from './data'
 
 import style from './style.css'
@@ -31,7 +32,7 @@ export const Profile = (): ReactElement => {
         <Avatar className={style.avatar} />
         <Navigation title="Options">
           <List className={style.list}>
-            <Link className={style.link} to="/">
+            <Link className={style.link} to={ROUTE.GAME}>
               <Item text="Game">
                 <GameIcon />
               </Item>
@@ -39,7 +40,7 @@ export const Profile = (): ReactElement => {
             <Item text="Profile" active>
               <UserIcon />
             </Item>
-            <Link className={style.link} to="/score/leaderboard">
+            <Link className={style.link} to={ROUTE.LEADERBOARD}>
               <Item text="Score">
                 <ScoreIcon />
               </Item>
