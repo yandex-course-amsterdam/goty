@@ -1,6 +1,6 @@
 import React, { ReactElement, useState } from 'react'
 import { Button, Error, Input } from 'app/components'
-import { Formik, Form } from 'formik'
+import { Formik, Form, FormikValues } from 'formik'
 import * as Yup from 'yup'
 
 import { userApi } from 'app/api'
@@ -11,8 +11,11 @@ import style from './style.css'
 
 export const PasswordForm = (): ReactElement => {
   const [responseText, setResponseText] = useState('')
+
   const { password: oldPassword } = VALIDATION_SCHEMA
   const { password: newPassword } = VALIDATION_SCHEMA
+  const initialValues = { oldPassword: '', newPassword: '' }
+  const validationSchema = Yup.object({ oldPassword, newPassword })
 
   const updateUserPassword = async (data: string): Promise<void> => {
     try {
@@ -24,20 +27,19 @@ export const PasswordForm = (): ReactElement => {
     }
   }
 
+  const onSubmit = async (
+    values: FormikValues,
+    { setSubmitting }: FormikValues
+  ) => {
+    await updateUserPassword(JSON.stringify(values, null, 2))
+    setSubmitting(false)
+  }
+
   return (
     <Formik
-      initialValues={{
-        oldPassword: '',
-        newPassword: ''
-      }}
-      validationSchema={Yup.object({
-        oldPassword,
-        newPassword
-      })}
-      onSubmit={async (values, { setSubmitting }) => {
-        await updateUserPassword(JSON.stringify(values, null, 2))
-        setSubmitting(false)
-      }}
+      initialValues={initialValues}
+      validationSchema={validationSchema}
+      onSubmit={onSubmit}
     >
       <Form>
         <Input
