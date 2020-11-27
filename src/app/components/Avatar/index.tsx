@@ -17,16 +17,18 @@ export const Avatar = ({ className }: AvatarProps): ReactElement => {
     (state: { userData: UserDataState }) => state.userData.display_name
   )
 
-  const userAvatar = avatar
-    ? `https://ya-praktikum.tech/${avatar}`
-    : 'https://i.imgur.com/Cbyhdku.png'
-
-  const avatarName = name || 'Top game'
-
   return (
     <div className={cn(style.avatar, className)}>
-      <img className={style.image} src={userAvatar} alt={avatarName} />
-      <h1 className={style.title}>{avatarName}</h1>
+      <img
+        className={style.image}
+        src={
+          avatar
+            ? `https://ya-praktikum.tech/${avatar}`
+            : 'https://i.imgur.com/Cbyhdku.png'
+        }
+        alt={name || 'Top game'}
+      />
+      <h1 className={style.title}>{name || 'Top game'}</h1>
     </div>
   )
 }

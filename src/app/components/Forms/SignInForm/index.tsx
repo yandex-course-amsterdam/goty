@@ -2,7 +2,7 @@ import React, { ReactElement, useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { Redirect } from 'react-router-dom'
 import { Button, Error, Input } from 'app/components'
-import { Formik, Form, FormikValues } from 'formik'
+import { Formik, Form } from 'formik'
 import * as Yup from 'yup'
 
 import { authApi } from 'app/api'
@@ -16,10 +16,7 @@ export const SignInForm = (): ReactElement => {
   const [responseText, setResponseText] = useState('')
   const [isSignIn, setIsSignIn] = useState(false)
   const dispatch = useDispatch()
-
   const { login, password } = VALIDATION_SCHEMA
-  const initialValues = { login: '', password: '' }
-  const validationSchema = Yup.object({ login, password })
 
   const signInUser = async (data: string): Promise<void> => {
     try {
@@ -36,14 +33,6 @@ export const SignInForm = (): ReactElement => {
     }
   }
 
-  const handleSubmit = (
-    values: FormikValues,
-    { setSubmitting }: FormikValues
-  ) => {
-    signInUser(JSON.stringify(values, null, 2))
-    setSubmitting(false)
-  }
-
   useEffect(() => {
     dispatch(setUserData(userInitialState))
   }, [])
@@ -52,9 +41,18 @@ export const SignInForm = (): ReactElement => {
     <Redirect to={ROUTE.GAME} />
   ) : (
     <Formik
-      initialValues={initialValues}
-      validationSchema={validationSchema}
-      onSubmit={handleSubmit}
+      initialValues={{
+        login: '',
+        password: ''
+      }}
+      validationSchema={Yup.object({
+        login,
+        password
+      })}
+      onSubmit={(values, { setSubmitting }) => {
+        signInUser(JSON.stringify(values, null, 2))
+        setSubmitting(false)
+      }}
     >
       <Form>
         <Input

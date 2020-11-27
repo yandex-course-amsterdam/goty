@@ -1,7 +1,7 @@
 import React, { ReactElement, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Button, Error, Input } from 'app/components'
-import { Formik, Form, FormikValues } from 'formik'
+import { Formik, Form } from 'formik'
 import * as Yup from 'yup'
 
 import { userApi } from 'app/api'
@@ -32,15 +32,6 @@ export const DetailsForm = (): ReactElement => {
     phone
   } = VALIDATION_SCHEMA
 
-  const validationSchema = Yup.object({
-    first_name,
-    second_name,
-    display_name,
-    login,
-    email,
-    phone
-  })
-
   const updateUserProfile = async (data: string): Promise<void> => {
     try {
       const res = await userApi.updateProfile(data)
@@ -57,20 +48,22 @@ export const DetailsForm = (): ReactElement => {
     }
   }
 
-  const handleSubmit = (
-    values: FormikValues,
-    { setSubmitting }: FormikValues
-  ) => {
-    updateUserProfile(JSON.stringify(values))
-    setSubmitting(false)
-  }
-
   return (
     <Formik
       enableReinitialize
       initialValues={userData}
-      validationSchema={validationSchema}
-      onSubmit={handleSubmit}
+      validationSchema={Yup.object({
+        first_name,
+        second_name,
+        display_name,
+        login,
+        email,
+        phone
+      })}
+      onSubmit={(values, { setSubmitting }) => {
+        updateUserProfile(JSON.stringify(values))
+        setSubmitting(false)
+      }}
     >
       <Form>
         <Input
