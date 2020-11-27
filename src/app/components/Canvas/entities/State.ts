@@ -44,7 +44,9 @@ export class State {
   }
 
   removeProjectile(i: number): void {
-    this.projectiles = this.projectiles.slice(0, i).concat(this.projectiles.slice(i + 1))
+    this.projectiles = this.projectiles
+      .slice(0, i)
+      .concat(this.projectiles.slice(i + 1))
   }
 
   getEnemies(): Enemy[] {
@@ -68,7 +70,9 @@ export class State {
   }
 
   removeParticle(i: number): void {
-    this.particles = this.particles.slice(0, i).concat(this.particles.slice(i + 1))
+    this.particles = this.particles
+      .slice(0, i)
+      .concat(this.particles.slice(i + 1))
   }
 
   resetState(): void {
