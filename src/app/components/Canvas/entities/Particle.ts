@@ -1,17 +1,32 @@
-export class Particle {
+import { GameObjectInterface } from 'app/interfaces'
+
+interface ParticleInterface extends GameObjectInterface {
+  color: string
+  alpha: number
+  friction: number
+  radius: number
+}
+
+export class Particle implements ParticleInterface {
   x
   y
-  color
-  alpha
-  friction
   radius
+  color
+  context
   velocity = {
     x: (Math.random() - 0.5) * (Math.random() * 15),
     y: (Math.random() - 0.5) * (Math.random() * 15)
   }
-  context
+  alpha
+  friction
 
-  constructor(x: number, y: number, color: string, radius: number, context: CanvasRenderingContext2D) {
+  constructor(
+    x: number,
+    y: number,
+    color: string,
+    radius: number,
+    context: CanvasRenderingContext2D
+  ) {
     this.x = x
     this.y = y
     this.color = color
