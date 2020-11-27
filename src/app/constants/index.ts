@@ -1,4 +1,4 @@
+export { FORM_DATA } from './form-data'
+export { ERRORS } from './errors'
 export { VALIDATION_SCHEMA } from './validationSchema'
-export { ROUTES } from './routes'
-export { ACTION_TYPES } from './actionTypes'
 export * from './game'
