@@ -1,21 +1,16 @@
-import React, { ReactElement, useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
-import { Redirect } from 'react-router-dom'
+import React, { ReactElement, useState } from 'react'
 import { Button, Error, Input } from 'app/components'
 import { Formik, Form } from 'formik'
 import * as Yup from 'yup'
 
 import { authApi } from 'app/api'
-import { VALIDATION_SCHEMA, ROUTE } from 'app/constants'
-import { fetchUserData, setUserData } from 'app/actions'
-import { initialState as userInitialState } from 'app/reducers/userDataReducer'
+import { VALIDATION_SCHEMA } from 'app/constants'
+import { checkResponseStatus } from 'app/utils'
 
 import style from './style.css'
 
 export const SignUpForm = (): ReactElement => {
   const [responseText, setResponseText] = useState('')
-  const [isSignedUp, setIsSignedUp] = useState(false)
-  const dispatch = useDispatch()
 
   const {
     first_name,
@@ -30,24 +25,13 @@ export const SignUpForm = (): ReactElement => {
     try {
       const res = await authApi.signUp(data)
 
-      if (res.status === 200) {
-        await dispatch(fetchUserData())
-        setIsSignedUp(true)
-      } else {
-        setResponseText(JSON.parse(res.response).reason)
-      }
+      checkResponseStatus(res, setResponseText, 'Successfully sign up')
     } catch (error) {
       console.log(error)
     }
   }
 
-  useEffect(() => {
-    dispatch(setUserData(userInitialState))
-  }, [])
-
-  return isSignedUp ? (
-    <Redirect to={ROUTE.GAME} />
-  ) : (
+  return (
     <Formik
       initialValues={{
         first_name: '',
@@ -65,8 +49,8 @@ export const SignUpForm = (): ReactElement => {
         password,
         phone
       })}
-      onSubmit={(values, { setSubmitting }) => {
-        signUpUser(JSON.stringify(values))
+      onSubmit={async (values, { setSubmitting }) => {
+        await signUpUser(JSON.stringify(values))
         setSubmitting(false)
       }}
     >

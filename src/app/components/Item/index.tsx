@@ -10,12 +10,7 @@ type ItemProps = {
   children?: React.ReactNode
 }
 
-export const Item = ({
-  text,
-  active,
-  className,
-  children
-}: ItemProps): ReactElement => {
+export const Item = ({ text, active, className, children }: ItemProps): ReactElement => {
   return (
     <li className={cn(style.item, active && style.active, className)}>
       {children}

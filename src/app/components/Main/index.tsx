@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react'
 
-import { ErrorBoundary } from 'app/components'
+import { ErrorBoundary } from '../ErrorBoundary'
 
 import style from './style.css'
 

@@ -1,17 +1,15 @@
 import React, { ReactElement, useState } from 'react'
-import { useDispatch } from 'react-redux'
 import { Button, Error } from 'app/components'
 import { Formik, FormikValues } from 'formik'
 import * as Yup from 'yup'
 
 import { userApi } from 'app/api'
-import { fetchUserData } from 'app/actions'
+import { checkResponseStatus } from 'app/utils'
 
 import style from './style.css'
 
 export const AvatarForm = (): ReactElement => {
   const [responseText, setResponseText] = useState('')
-  const dispatch = useDispatch()
 
   const updateUserAvatar = async (values: FormikValues): Promise<void> => {
     const data = new FormData()
@@ -20,12 +18,7 @@ export const AvatarForm = (): ReactElement => {
     try {
       const res = await userApi.updateAvatar(data)
 
-      if (res.status === 200) {
-        dispatch(fetchUserData())
-        setResponseText('Successfully updated')
-      } else {
-        setResponseText(JSON.parse(res.response).reason)
-      }
+      checkResponseStatus(res, setResponseText)
     } catch (error) {
       console.log(error)
     }

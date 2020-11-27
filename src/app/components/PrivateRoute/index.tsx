@@ -2,17 +2,15 @@ import React, { ReactElement, ReactNode } from 'react'
 import { Redirect, Route } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 
-import { ROUTE } from 'app/constants'
+import { ROUTES } from 'app/constants'
 import { UserDataState } from 'app/reducers/userDataReducer'
 
 type PrivateRouteProps = {
   path: string
-  exact?: boolean
   children: ReactNode
 }
 
 export const PrivateRoute = ({
-  exact,
   path,
   children
 }: PrivateRouteProps): ReactElement => {
@@ -21,10 +19,8 @@ export const PrivateRoute = ({
   )
 
   return userData.login ? (
-    <Route exact={exact} path={path}>
-      {children}
-    </Route>
+    <Route path={path}>{children}</Route>
   ) : (
-    <Redirect to={ROUTE.SIGN_IN} />
+    <Redirect to={ROUTES.SIGN_IN} />
   )
 }

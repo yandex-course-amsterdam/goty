@@ -1,4 +1,4 @@
-import { ACTION_TYPE } from 'app/constants'
+import { ACTION_TYPES } from 'app/constants'
 
 export type UserDataState = {
   id: number | null
@@ -16,7 +16,7 @@ type UserDataAction = {
   payload: UserDataState
 }
 
-export const initialState = {
+const initialState = {
   id: null,
   first_name: '',
   second_name: '',
@@ -32,9 +32,7 @@ export const userDataReducer = (
   action: UserDataAction
 ): UserDataState => {
   switch (action.type) {
-    case ACTION_TYPE.SET_USER_DATA:
-      return { ...state, ...action.payload }
-    case ACTION_TYPE.FETCH_USER_DATA:
+    case ACTION_TYPES.SET_USER_DATA:
       return { ...state, ...action.payload }
     default:
       return state
