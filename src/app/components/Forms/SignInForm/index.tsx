@@ -7,8 +7,7 @@ import * as Yup from 'yup'
 
 import { authApi } from 'app/api'
 import { VALIDATION_SCHEMA, ROUTE } from 'app/constants'
-import { fetchUserData, setUserData } from 'app/actions'
-import { initialState as userInitialState } from 'app/reducers/userDataReducer'
+import { fetchUserInfo, setUserInfo, UserInfoInitial } from 'app/actions'
 
 import style from './style.css'
 
@@ -26,7 +25,7 @@ export const SignInForm = (): ReactElement => {
       const res = await authApi.signIn(data)
 
       if (res.status === 200) {
-        await dispatch(fetchUserData())
+        await dispatch(fetchUserInfo())
         setIsSignIn(true)
       } else {
         setResponseText(JSON.parse(res.response).reason)
@@ -45,7 +44,7 @@ export const SignInForm = (): ReactElement => {
   }
 
   useEffect(() => {
-    dispatch(setUserData(userInitialState))
+    dispatch(setUserInfo(UserInfoInitial))
   }, [])
 
   return isSignIn ? (

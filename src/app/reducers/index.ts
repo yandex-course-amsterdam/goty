@@ -1,7 +1,12 @@
 import { combineReducers } from 'redux'
 
-import { userDataReducer } from './userDataReducer'
+import { UserInfo } from 'app/actions'
+import { userInfoReducer } from './userInfoReducer'
 
-export const reducers = combineReducers({
-  userData: userDataReducer
+export interface StoreState {
+  userInfo: UserInfo
+}
+
+export const reducers = combineReducers<StoreState>({
+  userInfo: userInfoReducer
 })
