@@ -14,7 +14,7 @@ import {
 
 import { authApi } from 'app/api'
 import { store } from 'app/store'
-import { setUserData } from 'app/actions'
+import { setUserInfo } from 'app/actions'
 import { ROUTE } from 'app/constants'
 
 import 'normalize.css'
@@ -24,13 +24,13 @@ export const Main = (): ReactElement => {
   const [isLoading, setIsLoading] = useState(true)
   const dispatch = useDispatch()
 
-  const getUserData = async () => {
+  const getUserInfo = async () => {
     try {
       const res = await authApi.getUserInfo()
 
       if (res.status === 200) {
         const user = JSON.parse(res.response)
-        dispatch(setUserData(user))
+        dispatch(setUserInfo(user))
       }
 
       setIsLoading(false)
@@ -40,7 +40,7 @@ export const Main = (): ReactElement => {
   }
 
   useEffect(() => {
-    getUserData()
+    getUserInfo()
   }, [])
 
   return isLoading ? (

@@ -3,7 +3,7 @@ import { Redirect, Route } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 
 import { ROUTE } from 'app/constants'
-import { UserDataState } from 'app/reducers/userDataReducer'
+import { StoreState } from 'app/reducers'
 
 type PrivateRouteProps = {
   path: string
@@ -16,9 +16,7 @@ export const PrivateRoute = ({
   path,
   children
 }: PrivateRouteProps): ReactElement => {
-  const userData = useSelector(
-    (state: { userData: UserDataState }) => state.userData
-  )
+  const userData = useSelector((state: StoreState) => state.userInfo)
 
   return userData.login ? (
     <Route exact={exact} path={path}>

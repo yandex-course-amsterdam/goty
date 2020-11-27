@@ -2,7 +2,8 @@ import React, { ReactElement } from 'react'
 import { useSelector } from 'react-redux'
 import cn from 'classnames'
 
-import { UserDataState } from 'app/reducers/userDataReducer'
+import { UserInfo } from 'app/actions'
+
 import style from './style.css'
 
 type AvatarProps = {
@@ -11,10 +12,10 @@ type AvatarProps = {
 
 export const Avatar = ({ className }: AvatarProps): ReactElement => {
   const avatar = useSelector(
-    (state: { userData: UserDataState }) => state.userData.avatar
+    (state: { userInfo: UserInfo }) => state.userInfo.avatar
   )
   const name = useSelector(
-    (state: { userData: UserDataState }) => state.userData.display_name
+    (state: { userInfo: UserInfo }) => state.userInfo.display_name
   )
 
   const userAvatar = avatar
