@@ -15,6 +15,7 @@ import {
 } from 'app/components'
 
 import { ExitIcon, GameIcon, ScoreIcon, UserIcon } from 'icons'
+import { ROUTE } from 'app/constants'
 import { DATA } from './data'
 import { USER_SCORE_DATA } from './userScoreData'
 
@@ -40,12 +41,12 @@ export const Score = (): ReactElement => {
         <Avatar className={style.avatar} />
         <Navigation title="Options">
           <List className={style.list}>
-            <Link className={style.link} to="/">
+            <Link className={style.link} to={ROUTE.GAME}>
               <Item text="Game">
                 <GameIcon />
               </Item>
             </Link>
-            <Link className={style.link} to="/profile/details">
+            <Link className={style.link} to={ROUTE.PROFILE_DETAILS}>
               <Item text="Profile">
                 <UserIcon />
               </Item>
