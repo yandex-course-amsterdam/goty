@@ -1,11 +1,11 @@
-import React, { ReactElement } from 'react'
+import React, { FC } from 'react'
 
 import style from './style.css'
 
-type SidebarProps = {
+interface IProps {
   children?: React.ReactNode
 }
 
-export const Sidebar = ({ children }: SidebarProps): ReactElement => {
-  return <aside className={style.sidebar}>{children}</aside>
-}
+export const Sidebar: FC<IProps> = ({ children }): JSX.Element => (
+  <aside className={style.sidebar}>{children}</aside>
+)

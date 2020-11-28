@@ -1,4 +1,4 @@
-import React, { ReactElement, useEffect, useState } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import ReactDOM from 'react-dom'
 import { Provider, useDispatch } from 'react-redux'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
@@ -20,7 +20,7 @@ import { route } from 'app/enums'
 import 'normalize.css'
 import './fonts/fonts.css'
 
-export const Main = (): ReactElement => {
+export const Main: FC = (): JSX.Element => {
   const [isLoading, setIsLoading] = useState(true)
   const dispatch = useDispatch()
 

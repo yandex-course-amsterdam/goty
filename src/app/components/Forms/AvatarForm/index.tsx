@@ -1,4 +1,4 @@
-import React, { ChangeEvent, ReactElement, useState } from 'react'
+import React, { ChangeEvent, useState, FC } from 'react'
 import { useDispatch } from 'react-redux'
 import { Button, Error } from 'app/components'
 import { Formik, FormikValues } from 'formik'
@@ -9,7 +9,7 @@ import { fetchUserInfo } from 'app/actions'
 
 import style from './style.css'
 
-export const AvatarForm = (): ReactElement => {
+export const AvatarForm: FC = (): JSX.Element => {
   const [responseText, setResponseText] = useState('')
   const dispatch = useDispatch()
 

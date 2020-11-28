@@ -1,14 +1,14 @@
-import React, { ReactElement } from 'react'
+import React, { FC } from 'react'
 
 import { ErrorBoundary } from 'app/components'
 
 import style from './style.css'
 
-type MainProps = {
+interface IProps {
   children?: React.ReactNode
 }
 
-export const Main = ({ children }: MainProps): ReactElement => (
+export const Main: FC<IProps> = ({ children }): JSX.Element => (
   <ErrorBoundary>
     <main className={style.main}>{children}</main>
   </ErrorBoundary>

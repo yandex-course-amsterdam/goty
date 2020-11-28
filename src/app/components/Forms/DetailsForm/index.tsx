@@ -1,4 +1,4 @@
-import React, { ReactElement, useState } from 'react'
+import React, { useState, FC } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Button, Error, Input } from 'app/components'
 import { Formik, Form, FormikValues } from 'formik'
@@ -18,7 +18,7 @@ const selectUserData = (state: StoreState) => {
   return { first_name, second_name, login, email, phone, display_name }
 }
 
-export const DetailsForm = (): ReactElement => {
+export const DetailsForm: FC = (): JSX.Element => {
   const [responseText, setResponseText] = useState('')
   const userData = useSelector(selectUserData)
   const dispatch = useDispatch()

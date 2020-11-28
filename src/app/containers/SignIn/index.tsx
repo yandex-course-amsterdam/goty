@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react'
+import React, { FC } from 'react'
 import { Link } from 'react-router-dom'
 import {
   Avatar,
@@ -18,39 +18,37 @@ import { DATA } from './data'
 
 import style from './style.css'
 
-export const SignIn = (): ReactElement => {
-  const { mainTitle, mainDescriptionSubtitle, mainDescriptionTitle } = DATA
+const { mainTitle, mainDescriptionSubtitle, mainDescriptionTitle } = DATA
 
-  return (
-    <div className={style.signin}>
-      <Sidebar>
-        <Avatar className={style.avatar} />
-        <Navigation title="Options">
-          <List>
-            <Item text="Sign In" active>
-              <UserIcon />
+export const SignIn: FC = (): JSX.Element => (
+  <div className={style.signin}>
+    <Sidebar>
+      <Avatar className={style.avatar} />
+      <Navigation title="Options">
+        <List>
+          <Item text="Sign In" active>
+            <UserIcon />
+          </Item>
+          <Link className={style.link} to={route.signUp}>
+            <Item text="Sign Up">
+              <SettingsIcon />
             </Item>
-            <Link className={style.link} to={route.signUp}>
-              <Item text="Sign Up">
-                <SettingsIcon />
-              </Item>
-            </Link>
-          </List>
-        </Navigation>
-      </Sidebar>
-      <Main>
-        <div className={style.container}>
-          <Title className={style.title} title={mainTitle} />
-          <div className={style.overflow}>
-            <Description
-              className={style.description}
-              title={mainDescriptionTitle}
-              subtitle={mainDescriptionSubtitle}
-            />
-            <SignInForm />
-          </div>
+          </Link>
+        </List>
+      </Navigation>
+    </Sidebar>
+    <Main>
+      <div className={style.container}>
+        <Title className={style.title} title={mainTitle} />
+        <div className={style.overflow}>
+          <Description
+            className={style.description}
+            title={mainDescriptionTitle}
+            subtitle={mainDescriptionSubtitle}
+          />
+          <SignInForm />
         </div>
-      </Main>
-    </div>
-  )
-}
+      </div>
+    </Main>
+  </div>
+)

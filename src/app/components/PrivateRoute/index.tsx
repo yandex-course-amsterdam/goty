@@ -1,21 +1,21 @@
-import React, { ReactElement, ReactNode } from 'react'
+import React, { FC, ReactNode } from 'react'
 import { Redirect, Route } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 
 import { route } from 'app/enums'
 import { StoreState } from 'app/reducers'
 
-type PrivateRouteProps = {
+interface IProps {
   path: string
   exact?: boolean
   children: ReactNode
 }
 
-export const PrivateRoute = ({
+export const PrivateRoute: FC<IProps> = ({
   exact,
   path,
   children
-}: PrivateRouteProps): ReactElement => {
+}): JSX.Element => {
   const userData = useSelector((state: StoreState) => state.userInfo)
 
   return userData.login ? (

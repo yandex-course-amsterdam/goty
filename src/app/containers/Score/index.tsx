@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react'
+import React, { FC } from 'react'
 import { NavLink, useRouteMatch, Switch, Route, Link } from 'react-router-dom'
 import {
   Avatar,
@@ -21,19 +21,34 @@ import { USER_SCORE_DATA } from './userScoreData'
 
 import style from './style.css'
 
-type userScoreData = {
+interface userScoreData {
   name: string
   score: number
   id: number
 }
 
-const sortUserData = (data: userScoreData[]): userScoreData[] => {
-  return data.sort((a: userScoreData, b: userScoreData) => b.score - a.score)
-}
+const { mainTitle, mainDescriptionTitle, mainDescriptionSubtitle } = DATA
 
-export const Score = (): ReactElement => {
+const sortUserData = (data: userScoreData[]) =>
+  data.sort((a: userScoreData, b: userScoreData) => b.score - a.score)
+
+export const Score: FC = (): JSX.Element => {
   const { path, url } = useRouteMatch()
-  const { mainTitle, mainDescriptionTitle, mainDescriptionSubtitle } = DATA
+
+  const renderUserScore = () =>
+    sortUserData(USER_SCORE_DATA).map(
+      (
+        { id, score, name }: userScoreData,
+        index: number,
+        array: userScoreData[]
+      ) => {
+        const width = `${
+          index === 0 ? 100 : (array[index].score / array[0].score) * 100
+        }%`
+
+        return <UserScore key={id} score={score} name={name} width={width} />
+      }
+    )
 
   return (
     <div className={style.score}>
@@ -95,26 +110,7 @@ export const Score = (): ReactElement => {
                   <p className={style.header}>Name</p>
                   <p className={style.header}>Score</p>
                 </div>
-                <div className={style.overflow}>
-                  {sortUserData(USER_SCORE_DATA).map(
-                    ({ id, score, name }, index, array) => {
-                      const width = `${
-                        index === 0
-                          ? 100
-                          : (array[index].score / array[0].score) * 100
-                      }%`
-
-                      return (
-                        <UserScore
-                          key={id}
-                          score={score}
-                          name={name}
-                          width={width}
-                        />
-                      )
-                    }
-                  )}
-                </div>
+                <div className={style.overflow}>{renderUserScore()}</div>
               </div>
             </Route>
             <Route exact path={`${path}${route.personalStats}`}>

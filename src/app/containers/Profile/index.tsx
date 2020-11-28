@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react'
+import React, { FC } from 'react'
 import {
   Avatar,
   Description,
@@ -22,9 +22,10 @@ import { DATA } from './data'
 
 import style from './style.css'
 
-export const Profile = (): ReactElement => {
+const { mainTitle, mainDescriptionSubtitle, mainDescriptionTitle } = DATA
+
+export const Profile: FC = (): JSX.Element => {
   const { path, url } = useRouteMatch()
-  const { mainTitle, mainDescriptionSubtitle, mainDescriptionTitle } = DATA
 
   return (
     <div className={style.profile}>

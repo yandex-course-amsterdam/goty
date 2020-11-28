@@ -1,4 +1,4 @@
-import React, { ReactElement, useEffect, useState } from 'react'
+import React, { useEffect, useState, FC } from 'react'
 import { useDispatch } from 'react-redux'
 import { Redirect } from 'react-router-dom'
 import { Button, Error, Input } from 'app/components'
@@ -12,7 +12,7 @@ import { fetchUserInfo, setUserInfo, UserInfoInitial } from 'app/actions'
 
 import style from './style.css'
 
-export const SignInForm = (): ReactElement => {
+export const SignInForm: FC = (): JSX.Element => {
   const [responseText, setResponseText] = useState('')
   const [isSignIn, setIsSignIn] = useState(false)
   const dispatch = useDispatch()

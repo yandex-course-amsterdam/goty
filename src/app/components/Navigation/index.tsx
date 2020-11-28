@@ -1,20 +1,15 @@
-import React, { ReactElement } from 'react'
+import React, { FC } from 'react'
 
 import style from './style.css'
 
-type NavigationProps = {
+interface IProps {
   children?: React.ReactNode
   title?: string
 }
 
-export const Navigation = ({
-  children,
-  title
-}: NavigationProps): ReactElement => {
-  return (
-    <nav className={style.navigation}>
-      {title && <p className={style.title}>{title}</p>}
-      {children}
-    </nav>
-  )
-}
+export const Navigation: FC<IProps> = ({ children, title }): JSX.Element => (
+  <nav className={style.navigation}>
+    {title && <p className={style.title}>{title}</p>}
+    {children}
+  </nav>
+)

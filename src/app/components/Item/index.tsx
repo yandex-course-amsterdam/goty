@@ -1,25 +1,23 @@
-import React, { ReactElement } from 'react'
+import React, { FC } from 'react'
 import cn from 'classnames'
 
 import style from './style.css'
 
-type ItemProps = {
+interface IProps {
   text: string
   active?: boolean
   className?: string
   children?: React.ReactNode
 }
 
-export const Item = ({
+export const Item: FC<IProps> = ({
   text,
   active,
   className,
   children
-}: ItemProps): ReactElement => {
-  return (
-    <li className={cn(style.item, active && style.active, className)}>
-      {children}
-      <p className={style.text}>{text}</p>
-    </li>
-  )
-}
+}): JSX.Element => (
+  <li className={cn(style.item, active && style.active, className)}>
+    {children}
+    <p className={style.text}>{text}</p>
+  </li>
+)

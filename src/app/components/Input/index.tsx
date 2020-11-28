@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react'
+import React, { FC } from 'react'
 import cn from 'classnames'
 import { useField } from 'formik'
 
@@ -6,7 +6,7 @@ import { CorrectIcon, WrongIcon } from 'icons'
 
 import style from './style.css'
 
-type InputProps = {
+interface IProps {
   label?: string
   type?: string
   id?: string
@@ -14,7 +14,7 @@ type InputProps = {
   name: string
 }
 
-export const Input = ({ label, ...props }: InputProps): ReactElement => {
+export const Input: FC<IProps> = ({ label, ...props }): JSX.Element => {
   const [field, meta] = useField(props)
   const { id, name } = props
 
@@ -36,7 +36,7 @@ export const Input = ({ label, ...props }: InputProps): ReactElement => {
     return style.correctinput
   }
 
-  const setInputIcon = (): ReactElement | null => {
+  const setInputIcon = (): JSX.Element | null => {
     if (!meta.error && field.value.length !== 0) {
       return <CorrectIcon className={style.icon} />
     }

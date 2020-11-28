@@ -1,16 +1,13 @@
-import React, { ReactElement } from 'react'
+import React, { FC } from 'react'
 import cn from 'classnames'
 
 import style from './style.css'
 
-type FormInputErrorProps = {
+interface IProps {
   className?: string
   errorText?: string
 }
 
-export const Error = ({
-  className,
-  errorText
-}: FormInputErrorProps): ReactElement => {
-  return <p className={cn(style.error, className)}>{errorText}</p>
-}
+export const Error: FC<IProps> = ({ className, errorText }): JSX.Element => (
+  <p className={cn(style.error, className)}>{errorText}</p>
+)
