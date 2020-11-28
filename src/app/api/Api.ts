@@ -1,8 +1,10 @@
-import { PromiseInterface } from 'app/interfaces/promise'
-import { ApiInterface } from '../interfaces/api'
-import { OptionsInterface } from '../interfaces/options'
-
-import { METHOD } from './methods'
+import {
+  RequestMethod,
+  ApiInterface,
+  Options,
+  ApiResponse,
+  ContentType
+} from 'app/api'
 
 export class Api implements ApiInterface {
   url: string
@@ -11,7 +13,7 @@ export class Api implements ApiInterface {
     this.url = url
   }
 
-  request(options: OptionsInterface, timeout = 10000): Promise<PromiseInterface> {
+  request(options: Options, timeout = 10000): Promise<ApiResponse> {
     const { method, body, path, contentType } = options
 
     return new Promise((res, rej) => {
@@ -22,7 +24,7 @@ export class Api implements ApiInterface {
       xhr.withCredentials = true
 
       if (!contentType) {
-        xhr.setRequestHeader('Content-Type', 'application/json; charset=utf-8')
+        xhr.setRequestHeader('Content-Type', ContentType.json)
       }
 
       xhr.timeout = timeout
@@ -37,9 +39,9 @@ export class Api implements ApiInterface {
 
       xhr.ontimeout = rej
 
-      if (method === 'GET' || !body) {
+      if (method === RequestMethod.get || !body) {
         xhr.send()
-      } else if (contentType === 'multipart/form-data') {
+      } else if (contentType === ContentType.formData) {
         xhr.send(body)
       } else {
         xhr.send(body)
@@ -47,18 +49,18 @@ export class Api implements ApiInterface {
     })
   }
 
-  get(path: string): Promise<PromiseInterface> {
+  get(path: string): Promise<ApiResponse> {
     return this.request({
       path,
-      method: METHOD.GET
+      method: RequestMethod.get
     })
   }
 
-  post(path: string, body: string): Promise<PromiseInterface> {
+  post(path: string, body: string): Promise<ApiResponse> {
     return this.request({
       path,
       body,
-      method: METHOD.POST
+      method: RequestMethod.post
     })
   }
 
@@ -74,20 +76,24 @@ export class Api implements ApiInterface {
       | URLSearchParams
       | ReadableStream<Uint8Array>,
     contentType: string
-  ): Promise<PromiseInterface> {
+  ): Promise<ApiResponse> {
     return this.request({
       path,
       body,
-      method: METHOD.PUT,
+      method: RequestMethod.put,
       contentType
     })
   }
 
-  delete(path: string, body: string, contentType: string): Promise<PromiseInterface> {
+  delete(
+    path: string,
+    body: string,
+    contentType: string
+  ): Promise<ApiResponse> {
     return this.request({
       path,
       body,
-      method: METHOD.DELETE,
+      method: RequestMethod.delete,
       contentType
     })
   }
