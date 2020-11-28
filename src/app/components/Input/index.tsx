@@ -18,7 +18,7 @@ export const Input: FC<IProps> = ({ label, ...props }): JSX.Element => {
   const [field, meta] = useField(props)
   const { id, name } = props
 
-  const setInputBorder = (): string => {
+  const getInputBorderStyle = (): string => {
     if (!meta.error && field.value.length !== 0) {
       return style.correctinput
     }
@@ -62,7 +62,7 @@ export const Input: FC<IProps> = ({ label, ...props }): JSX.Element => {
       <div>
         <div>
           <input
-            className={cn(style.input, setInputBorder())}
+            className={cn(style.input, getInputBorderStyle())}
             {...field}
             {...props}
           />
