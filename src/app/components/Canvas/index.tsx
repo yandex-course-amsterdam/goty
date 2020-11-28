@@ -1,10 +1,4 @@
-import React, {
-  useState,
-  useRef,
-  useCallback,
-  useEffect,
-  ReactElement
-} from 'react'
+import React, { useState, useRef, useCallback, useEffect } from 'react'
 
 import { ENEMY_TYPE } from 'app/constants'
 
@@ -13,7 +7,7 @@ import { fire } from './helpers/firemodes'
 
 import style from './style.css'
 
-export const Canvas = (): ReactElement => {
+export const Canvas: React.FC = (): JSX.Element => {
   const [state] = useState<State>(new State())
   const [score, setScore] = useState(0)
   const [enemiesSpawnInterval, setEnemiesSpawnInterval] = useState<ReturnType<
