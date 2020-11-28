@@ -4,7 +4,7 @@ import {
   Avatar,
   Navigation,
   List,
-  Item,
+  ListItem,
   Main,
   Canvas
 } from 'app/components'
@@ -20,15 +20,15 @@ export const Game: FC = (): JSX.Element => (
       {/* TODO: пометь TODO, чтобы переделать навигацию, она уже в 3 местах повторяется по проекту. подобные контейнеры должны быть один раз описаны и переиспользуемы. имею ввиду List и Item компоненты нужно спрятать внутрь какого-то нового SidebarNavigation контейнера и его использовать везде */}
       <Navigation>
         <List>
-          <Item text="Sign In">
+          <ListItem text="Sign In">
             <UserIcon />
-          </Item>
-          <Item text="Sign Up">
+          </ListItem>
+          <ListItem text="Sign Up">
             <SettingsIcon />
-          </Item>
-          <Item text="Play" active>
+          </ListItem>
+          <ListItem text="Play" active>
             <CorrectIcon />
-          </Item>
+          </ListItem>
         </List>
       </Navigation>
     </Sidebar>

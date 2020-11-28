@@ -6,7 +6,7 @@ import {
   Description,
   Title,
   Navigation,
-  Item,
+  ListItem,
   List,
   Sidebar,
   SignUpForm
@@ -27,13 +27,13 @@ export const SignUp: FC = (): JSX.Element => (
       <Navigation title="Options">
         <List>
           <Link className={style.link} to={route.signIn}>
-            <Item text="Sign In">
+            <ListItem text="Sign In">
               <UserIcon />
-            </Item>
+            </ListItem>
           </Link>
-          <Item text="Sign Up" active>
+          <ListItem text="Sign Up" active>
             <SettingsIcon />
-          </Item>
+          </ListItem>
         </List>
       </Navigation>
     </Sidebar>

@@ -2,7 +2,7 @@ import React, { FC } from 'react'
 import {
   Avatar,
   Description,
-  Item,
+  ListItem,
   List,
   Main,
   Navigation,
@@ -34,22 +34,22 @@ export const Profile: FC = (): JSX.Element => {
         <Navigation title="Options">
           <List className={style.list}>
             <Link className={style.link} to={route.game}>
-              <Item text="Game">
+              <ListItem text="Game">
                 <GameIcon />
-              </Item>
+              </ListItem>
             </Link>
-            <Item text="Profile" active>
+            <ListItem text="Profile" active>
               <UserIcon />
-            </Item>
+            </ListItem>
             <Link className={style.link} to={route.scoreLeaderboard}>
-              <Item text="Score">
+              <ListItem text="Score">
                 <ScoreIcon />
-              </Item>
+              </ListItem>
             </Link>
             <ExitButton className={style.exit}>
-              <Item text="Exit">
+              <ListItem text="Exit">
                 <ExitIcon />
-              </Item>
+              </ListItem>
             </ExitButton>
           </List>
         </Navigation>

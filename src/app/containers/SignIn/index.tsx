@@ -6,7 +6,7 @@ import {
   Description,
   Title,
   Navigation,
-  Item,
+  ListItem,
   List,
   Sidebar,
   SignInForm
@@ -26,13 +26,13 @@ export const SignIn: FC = (): JSX.Element => (
       <Avatar className={style.avatar} />
       <Navigation title="Options">
         <List>
-          <Item text="Sign In" active>
+          <ListItem text="Sign In" active>
             <UserIcon />
-          </Item>
+          </ListItem>
           <Link className={style.link} to={route.signUp}>
-            <Item text="Sign Up">
+            <ListItem text="Sign Up">
               <SettingsIcon />
-            </Item>
+            </ListItem>
           </Link>
         </List>
       </Navigation>

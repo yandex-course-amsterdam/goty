@@ -2,7 +2,7 @@ import React, { FC } from 'react'
 import { NavLink, useRouteMatch, Switch, Route, Link } from 'react-router-dom'
 import {
   Avatar,
-  Item,
+  ListItem,
   List,
   Navigation,
   Sidebar,
@@ -57,22 +57,22 @@ export const Score: FC = (): JSX.Element => {
         <Navigation title="Options">
           <List className={style.list}>
             <Link className={style.link} to={route.game}>
-              <Item text="Game">
+              <ListItem text="Game">
                 <GameIcon />
-              </Item>
+              </ListItem>
             </Link>
             <Link className={style.link} to={route.profileDetails}>
-              <Item text="Profile">
+              <ListItem text="Profile">
                 <UserIcon />
-              </Item>
+              </ListItem>
             </Link>
-            <Item text="Score" active>
+            <ListItem text="Score" active>
               <ScoreIcon />
-            </Item>
+            </ListItem>
             <ExitButton className={style.exit}>
-              <Item text="Exit">
+              <ListItem text="Exit">
                 <ExitIcon />
-              </Item>
+              </ListItem>
             </ExitButton>
           </List>
         </Navigation>

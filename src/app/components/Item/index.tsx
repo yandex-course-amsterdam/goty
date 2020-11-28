@@ -10,7 +10,7 @@ interface IProps {
   children?: React.ReactNode
 }
 
-export const Item: FC<IProps> = ({
+export const ListItem: FC<IProps> = ({
   text,
   active,
   className,
