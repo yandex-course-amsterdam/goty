@@ -3,6 +3,9 @@ import { useSelector } from 'react-redux'
 import cn from 'classnames'
 
 import { StoreState } from 'app/reducers'
+
+import defaultAvatar from 'images/avatar.png'
+
 import style from './style.css'
 
 interface IProps {
@@ -14,7 +17,7 @@ export const Avatar: FC<IProps> = ({ className }): JSX.Element => {
 
   const userAvatar = userInfo.avatar
     ? `https://ya-praktikum.tech/${userInfo.avatar}`
-    : 'https://i.imgur.com/Cbyhdku.png'
+    : defaultAvatar
 
   const avatarName = userInfo.display_name || 'Top game'
 
