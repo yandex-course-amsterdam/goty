@@ -36,6 +36,7 @@ export const Canvas = (): ReactElement => {
       state.addEnemy(enemy)
     }, 750)
 
+    // TODO: подумать про вложенные таймауты. Плюсы — более точные промежутки, чем при интервалах. Минусы — надо придумать как очищать таймаут
     setEnemiesSpawnInterval(interval)
   }
 
@@ -93,7 +94,6 @@ export const Canvas = (): ReactElement => {
         enemy.y - player.y
       )
 
-      // end game
       if (enemyPlayerDistance - player.radius - enemy.radius < 1) {
         endGame()
       }
