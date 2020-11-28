@@ -15,7 +15,7 @@ import {
 } from 'app/components'
 
 import { ExitIcon, GameIcon, ScoreIcon, UserIcon } from 'icons'
-import { ROUTE } from 'app/constants'
+import { route } from 'app/enums'
 import { DATA } from './data'
 import { USER_SCORE_DATA } from './userScoreData'
 
@@ -41,12 +41,12 @@ export const Score = (): ReactElement => {
         <Avatar className={style.avatar} />
         <Navigation title="Options">
           <List className={style.list}>
-            <Link className={style.link} to={ROUTE.GAME}>
+            <Link className={style.link} to={route.game}>
               <Item text="Game">
                 <GameIcon />
               </Item>
             </Link>
-            <Link className={style.link} to={ROUTE.PROFILE_DETAILS}>
+            <Link className={style.link} to={route.profileDetails}>
               <Item text="Profile">
                 <UserIcon />
               </Item>
@@ -70,21 +70,21 @@ export const Score = (): ReactElement => {
               <NavLink
                 className={style.sublink}
                 activeClassName={style.active}
-                to={`${url}/leaderboard`}
+                to={`${url}${route.leaderboard}`}
               >
                 Leaderboard
               </NavLink>
               <NavLink
                 className={style.sublink}
                 activeClassName={style.active}
-                to={`${url}/personal-stats`}
+                to={`${url}${route.personalStats}`}
               >
                 Personal stats
               </NavLink>
             </SubNavigation>
           </div>
           <Switch>
-            <Route exact path={`${path}/leaderboard`}>
+            <Route exact path={`${path}${route.leaderboard}`}>
               <div className={style.group}>
                 <Description
                   className={style.description}
@@ -117,7 +117,7 @@ export const Score = (): ReactElement => {
                 </div>
               </div>
             </Route>
-            <Route exact path={`${path}/personal-stats`}>
+            <Route exact path={`${path}${route.personalStats}`}>
               <div className={style.overflow}>
                 <Description
                   className={style.description}

@@ -6,7 +6,8 @@ import { Formik, Form, FormikValues } from 'formik'
 import * as Yup from 'yup'
 
 import { authApi } from 'app/api'
-import { VALIDATION_SCHEMA, ROUTE } from 'app/constants'
+import { VALIDATION_SCHEMA } from 'app/constants'
+import { route } from 'app/enums'
 import { fetchUserInfo, setUserInfo, UserInfoInitial } from 'app/actions'
 
 import style from './style.css'
@@ -69,7 +70,7 @@ export const SignUpForm = (): ReactElement => {
   }, [])
 
   return isSignedUp ? (
-    <Redirect to={ROUTE.GAME} />
+    <Redirect to={route.game} />
   ) : (
     <Formik
       initialValues={initialValues}

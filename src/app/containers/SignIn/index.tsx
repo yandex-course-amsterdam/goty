@@ -13,6 +13,7 @@ import {
 } from 'app/components'
 
 import { SettingsIcon, UserIcon } from 'icons'
+import { route } from 'app/enums'
 import { DATA } from './data'
 
 import style from './style.css'
@@ -29,7 +30,7 @@ export const SignIn = (): ReactElement => {
             <Item text="Sign In" active>
               <UserIcon />
             </Item>
-            <Link className={style.link} to="/sign-up">
+            <Link className={style.link} to={route.signUp}>
               <Item text="Sign Up">
                 <SettingsIcon />
               </Item>

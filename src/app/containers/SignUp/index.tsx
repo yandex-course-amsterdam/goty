@@ -13,6 +13,7 @@ import {
 } from 'app/components'
 
 import { SettingsIcon, UserIcon } from 'icons'
+import { route } from 'app/enums'
 import { DATA } from './data'
 
 import style from './style.css'
@@ -26,7 +27,7 @@ export const SignUp = (): ReactElement => {
         <Avatar className={style.avatar} />
         <Navigation title="Options">
           <List>
-            <Link className={style.link} to="/sign-in">
+            <Link className={style.link} to={route.signIn}>
               <Item text="Sign In">
                 <UserIcon />
               </Item>
