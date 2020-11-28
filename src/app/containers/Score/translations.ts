@@ -1,4 +1,4 @@
-export const DATA = {
+export const TRANSLATIONS = {
   mainTitle: 'Score',
   mainDescriptionTitle: 'User score details',
   mainDescriptionSubtitle:

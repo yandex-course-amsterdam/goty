@@ -16,7 +16,7 @@ import {
 
 import { ExitIcon, GameIcon, ScoreIcon, UserIcon } from 'icons'
 import { route } from 'app/enums'
-import { DATA } from './data'
+import { TRANSLATIONS } from './translations'
 import { USER_SCORE_DATA } from './userScoreData'
 
 import style from './style.css'
@@ -27,7 +27,11 @@ interface userScoreData {
   id: number
 }
 
-const { mainTitle, mainDescriptionTitle, mainDescriptionSubtitle } = DATA
+const {
+  mainTitle,
+  mainDescriptionTitle,
+  mainDescriptionSubtitle
+} = TRANSLATIONS
 
 const sortUserData = (data: userScoreData[]) =>
   data.sort((a: userScoreData, b: userScoreData) => b.score - a.score)

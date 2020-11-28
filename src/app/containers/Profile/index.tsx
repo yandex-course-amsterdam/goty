@@ -18,11 +18,15 @@ import { Link, useRouteMatch, Route, NavLink, Switch } from 'react-router-dom'
 
 import { ExitIcon, GameIcon, ScoreIcon, UserIcon } from 'icons'
 import { route } from 'app/enums'
-import { DATA } from './data'
+import { TRANSLATIONS } from './translations'
 
 import style from './style.css'
 
-const { mainTitle, mainDescriptionSubtitle, mainDescriptionTitle } = DATA
+const {
+  mainTitle,
+  mainDescriptionSubtitle,
+  mainDescriptionTitle
+} = TRANSLATIONS
 
 export const Profile: FC = (): JSX.Element => {
   const { path, url } = useRouteMatch()

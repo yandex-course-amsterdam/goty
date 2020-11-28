@@ -14,11 +14,15 @@ import {
 
 import { SettingsIcon, UserIcon } from 'icons'
 import { route } from 'app/enums'
-import { DATA } from './data'
+import { TRANSLATIONS } from './translations'
 
 import style from './style.css'
 
-const { mainTitle, mainDescriptionSubtitle, mainDescriptionTitle } = DATA
+const {
+  mainTitle,
+  mainDescriptionSubtitle,
+  mainDescriptionTitle
+} = TRANSLATIONS
 
 export const SignUp: FC = (): JSX.Element => (
   <div className={style.signup}>
