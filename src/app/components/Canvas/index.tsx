@@ -39,13 +39,8 @@ export const Canvas = (): ReactElement => {
     setEnemiesSpawnInterval(interval)
   }
 
-  const createPopup = () => {
-    return showEndGamePopup ? (
-      <div className={style.score}>We end {score}</div>
-    ) : (
-      <></>
-    )
-  }
+  const createPopup = () =>
+    showEndGamePopup && <div className={style.score}>We end {score}</div>
 
   const endGame = () => {
     setShowEndGamePopup(true)
@@ -64,7 +59,7 @@ export const Canvas = (): ReactElement => {
     const enemies = state.getEnemies()
     const particles = state.getParticles()
 
-    const gamepad = navigator.getGamepads()[0]
+    const [gamepad] = navigator.getGamepads()
     if (gamepad?.buttons[7].pressed) {
       handleTriggerPush(gamepad)
       // TODO: сделать это красиво
