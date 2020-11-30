@@ -23,11 +23,7 @@ export const SignUp = (): ReactElement => {
   return (
     <div className={style.signup}>
       <Sidebar>
-        <Avatar
-          avatar="https://i.imgur.com/Cbyhdku.png"
-          name="Top game"
-          className={style.avatar}
-        />
+        <Avatar className={style.avatar} />
         <Navigation title="Options">
           <List>
             <Link className={style.link} to="/sign-in">

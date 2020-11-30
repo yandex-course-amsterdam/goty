@@ -10,10 +10,12 @@ import {
   Title,
   Main,
   Description,
-  UserScore
+  UserScore,
+  ExitButton
 } from 'app/components'
 
 import { ExitIcon, GameIcon, ScoreIcon, UserIcon } from 'icons'
+import { ROUTE } from 'app/constants'
 import { DATA } from './data'
 import { USER_SCORE_DATA } from './userScoreData'
 
@@ -36,19 +38,15 @@ export const Score = (): ReactElement => {
   return (
     <div className={style.score}>
       <Sidebar>
-        <Avatar
-          avatar="https://i.imgur.com/Cbyhdku.png"
-          name="Top game"
-          className={style.avatar}
-        />
+        <Avatar className={style.avatar} />
         <Navigation title="Options">
           <List className={style.list}>
-            <Link className={style.link} to="/game">
+            <Link className={style.link} to={ROUTE.GAME}>
               <Item text="Game">
                 <GameIcon />
               </Item>
             </Link>
-            <Link className={style.link} to="/profile/details">
+            <Link className={style.link} to={ROUTE.PROFILE_DETAILS}>
               <Item text="Profile">
                 <UserIcon />
               </Item>
@@ -56,9 +54,11 @@ export const Score = (): ReactElement => {
             <Item text="Score" active>
               <ScoreIcon />
             </Item>
-            <Item className={style.exit} text="Exit">
-              <ExitIcon />
-            </Item>
+            <ExitButton className={style.exit}>
+              <Item text="Exit">
+                <ExitIcon />
+              </Item>
+            </ExitButton>
           </List>
         </Navigation>
       </Sidebar>

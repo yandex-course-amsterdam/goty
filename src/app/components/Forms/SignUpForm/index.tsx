@@ -1,16 +1,21 @@
-import React, { ReactElement, useState } from 'react'
+import React, { ReactElement, useEffect, useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { Redirect } from 'react-router-dom'
 import { Button, Error, Input } from 'app/components'
-import { Formik, Form } from 'formik'
+import { Formik, Form, FormikValues } from 'formik'
 import * as Yup from 'yup'
 
 import { authApi } from 'app/api'
-import { VALIDATION_SCHEMA } from 'app/constants'
-import { checkResponseStatus } from 'app/utils'
+import { VALIDATION_SCHEMA, ROUTE } from 'app/constants'
+import { fetchUserData, setUserData } from 'app/actions'
+import { initialState as userInitialState } from 'app/reducers/userDataReducer'
 
 import style from './style.css'
 
 export const SignUpForm = (): ReactElement => {
   const [responseText, setResponseText] = useState('')
+  const [isSignedUp, setIsSignedUp] = useState(false)
+  const dispatch = useDispatch()
 
   const {
     first_name,
@@ -20,39 +25,57 @@ export const SignUpForm = (): ReactElement => {
     password,
     phone
   } = VALIDATION_SCHEMA
+  const initialValues = {
+    first_name: '',
+    second_name: '',
+    login: '',
+    email: '',
+    password: '',
+    phone: ''
+  }
+  const validationSchema = Yup.object({
+    first_name,
+    second_name,
+    login,
+    email,
+    password,
+    phone
+  })
 
   const signUpUser = async (data: string): Promise<void> => {
     try {
       const res = await authApi.signUp(data)
 
-      checkResponseStatus(res, setResponseText, 'Successfully sign up')
+      if (res.status === 200) {
+        await dispatch(fetchUserData())
+        setIsSignedUp(true)
+      } else {
+        setResponseText(JSON.parse(res.response).reason)
+      }
     } catch (error) {
       console.log(error)
     }
   }
 
-  return (
+  const handleSubmit = (
+    values: FormikValues,
+    { setSubmitting }: FormikValues
+  ) => {
+    signUpUser(JSON.stringify(values))
+    setSubmitting(false)
+  }
+
+  useEffect(() => {
+    dispatch(setUserData(userInitialState))
+  }, [])
+
+  return isSignedUp ? (
+    <Redirect to={ROUTE.GAME} />
+  ) : (
     <Formik
-      initialValues={{
-        first_name: '',
-        second_name: '',
-        login: '',
-        email: '',
-        password: '',
-        phone: ''
-      }}
-      validationSchema={Yup.object({
-        first_name,
-        second_name,
-        login,
-        email,
-        password,
-        phone
-      })}
-      onSubmit={async (values, { setSubmitting }) => {
-        await signUpUser(JSON.stringify(values))
-        setSubmitting(false)
-      }}
+      initialValues={initialValues}
+      validationSchema={validationSchema}
+      onSubmit={handleSubmit}
     >
       <Form>
         <Input

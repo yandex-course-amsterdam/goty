@@ -11,11 +11,13 @@ import {
   SubNavigation,
   DetailsForm,
   PasswordForm,
-  AvatarForm
+  AvatarForm,
+  ExitButton
 } from 'app/components'
 import { Link, useRouteMatch, Route, NavLink, Switch } from 'react-router-dom'
 
 import { ExitIcon, GameIcon, ScoreIcon, UserIcon } from 'icons'
+import { ROUTE } from 'app/constants'
 import { DATA } from './data'
 
 import style from './style.css'
@@ -27,14 +29,10 @@ export const Profile = (): ReactElement => {
   return (
     <div className={style.profile}>
       <Sidebar>
-        <Avatar
-          avatar="https://i.imgur.com/Cbyhdku.png"
-          name="Top game"
-          className={style.avatar}
-        />
+        <Avatar className={style.avatar} />
         <Navigation title="Options">
           <List className={style.list}>
-            <Link className={style.link} to="/game">
+            <Link className={style.link} to={ROUTE.GAME}>
               <Item text="Game">
                 <GameIcon />
               </Item>
@@ -42,14 +40,16 @@ export const Profile = (): ReactElement => {
             <Item text="Profile" active>
               <UserIcon />
             </Item>
-            <Link className={style.link} to="/score/leaderboard">
+            <Link className={style.link} to={ROUTE.LEADERBOARD}>
               <Item text="Score">
                 <ScoreIcon />
               </Item>
             </Link>
-            <Item className={style.exit} text="Exit">
-              <ExitIcon />
-            </Item>
+            <ExitButton className={style.exit}>
+              <Item text="Exit">
+                <ExitIcon />
+              </Item>
+            </ExitButton>
           </List>
         </Navigation>
       </Sidebar>
