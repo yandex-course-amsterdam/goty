@@ -3,7 +3,11 @@ import { BURST_LENGTH } from 'app/constants'
 import { State } from '../../entities'
 import { fire } from './fire'
 
-export const fireBurst = (state: State, angle: number, context: CanvasRenderingContext2D): void => {
+export const fireBurst = (
+  state: State,
+  angle: number,
+  context: CanvasRenderingContext2D
+): void => {
   const velocity = {
     x: Math.cos(angle) * 20,
     y: Math.sin(angle) * 20

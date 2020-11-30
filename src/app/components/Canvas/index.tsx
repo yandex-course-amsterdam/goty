@@ -3,7 +3,12 @@ import React, { useState, useRef, useCallback, useEffect } from 'react'
 import { ENEMY_TYPE } from 'app/constants'
 
 import { State, Player, Enemy, Particle } from './entities'
-import { fire } from './helpers/firemodes'
+import {
+  handleFire,
+  handleMoveStart,
+  handleMoveStop,
+  handleBoostChoice
+} from './helpers/listeners'
 
 import style from './style.css'
 
@@ -34,7 +39,6 @@ export const Canvas: React.FC = (): JSX.Element => {
     setEnemiesSpawnInterval(interval)
   }
 
-
   const createPopup = () =>
     showEndGamePopup && <div className={style.score}>We end {score}</div>
 
@@ -46,6 +50,19 @@ export const Canvas: React.FC = (): JSX.Element => {
     cancelAnimationFrame(animationFrameId.current)
 
     state.endGame()
+  }
+
+  const attachKeyboardListeners = (): void => {
+    window.addEventListener('keydown', (evt) => {
+      handleMoveStart(evt, state)
+    })
+    window.addEventListener('keyup', (evt) => {
+      handleMoveStop(evt, state)
+    })
+
+    window.addEventListener('keydown', (evt) => {
+      handleBoostChoice(evt, state, ctx as CanvasRenderingContext2D)
+    })
   }
 
   const animate = (): void => {
@@ -66,7 +83,7 @@ export const Canvas: React.FC = (): JSX.Element => {
     ctx!.fillStyle = 'white'
     ctx!.fillRect(0, 0, canvas.width, canvas.height)
 
-    player.draw()
+    player.update()
 
     projectiles.forEach((projectile, i) => {
       projectile.update()
@@ -147,6 +164,7 @@ export const Canvas: React.FC = (): JSX.Element => {
     )
     state.registerPlayer(player)
 
+    attachKeyboardListeners()
     animate()
     spawnEnemies()
   }
