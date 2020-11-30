@@ -16,9 +16,12 @@ import { authApi } from 'app/api'
 import { store } from 'app/store'
 import { setUserInfo } from 'app/actions'
 import { route } from 'app/enums'
+import { startServiceWorker } from 'app/utils'
 
 import 'normalize.css'
 import './fonts/fonts.css'
+
+startServiceWorker()
 
 export const Main: FC = (): JSX.Element => {
   const [isLoading, setIsLoading] = useState(true)

@@ -3,7 +3,11 @@ import { FRACTION_LENGTH } from 'app/constants'
 import { State } from '../../entities'
 import { fire } from './fire'
 
-export const fireFraction = (state: State, angle: number, context: CanvasRenderingContext2D): void => {
+export const fireFraction = (
+  state: State,
+  angle: number,
+  context: CanvasRenderingContext2D
+): void => {
   const deviations = [-20, -10, 0, 10, 20]
 
   for (let i = 0; i < FRACTION_LENGTH; i += 1) {
