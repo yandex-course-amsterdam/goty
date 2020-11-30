@@ -1,4 +1,12 @@
-export class Player {
+import { GameObjectInterface } from 'app/interfaces'
+
+interface PlayerInterface extends GameObjectInterface {
+  velocityMultiplier: number
+  boost: string | null
+  boostInterval: ReturnType<typeof setTimeout> | null
+}
+
+export class Player implements PlayerInterface {
   x
   y
   radius

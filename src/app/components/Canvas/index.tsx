@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, ReactElement } from 'react'
+import React, { useState, useRef, useCallback, useEffect } from 'react'
 
 import { ENEMY_TYPE } from 'app/constants'
 
@@ -12,7 +12,7 @@ import {
 
 import style from './style.css'
 
-export const Canvas = (): ReactElement => {
+export const Canvas: React.FC = (): JSX.Element => {
   const [state] = useState<State>(new State())
   const [score, setScore] = useState(0)
   const [enemiesSpawnInterval, setEnemiesSpawnInterval] = useState<ReturnType<
@@ -35,12 +35,12 @@ export const Canvas = (): ReactElement => {
       state.addEnemy(enemy)
     }, 750)
 
+    // TODO: подумать про вложенные таймауты. Плюсы — более точные промежутки, чем при интервалах. Минусы — надо придумать как очищать таймаут
     setEnemiesSpawnInterval(interval)
   }
 
-  const createPopup = () => {
-    return showEndGamePopup && <div className={style.score}>We end {score}</div>
-  }
+  const createPopup = () =>
+    showEndGamePopup && <div className={style.score}>We end {score}</div>
 
   const endGame = () => {
     setShowEndGamePopup(true)
@@ -72,6 +72,12 @@ export const Canvas = (): ReactElement => {
     const enemies = state.getEnemies()
     const particles = state.getParticles()
 
+    const [gamepad] = navigator.getGamepads()
+    if (gamepad?.buttons[7].pressed) {
+      handleTriggerPush(gamepad)
+      // TODO: сделать это красиво
+    }
+
     animationFrameId.current = requestAnimationFrame(animate)
 
     ctx!.fillStyle = 'white'
@@ -100,7 +106,6 @@ export const Canvas = (): ReactElement => {
         enemy.y - player.y
       )
 
-      // end game
       if (enemyPlayerDistance - player.radius - enemy.radius < 1) {
         endGame()
       }
@@ -164,6 +169,44 @@ export const Canvas = (): ReactElement => {
     spawnEnemies()
   }
 
+  const handleClick = useCallback(
+    (evt: React.MouseEvent<HTMLCanvasElement>): void => {
+      const { canvas } = ctx as CanvasRenderingContext2D
+      const canvasRect = canvas.getBoundingClientRect()
+
+      const player = state.getPlayer() as Player
+      const clickPos = {
+        x: evt.clientX - canvasRect.x,
+        y: evt.clientY - canvasRect.y
+      }
+      const angle = Math.atan2(clickPos.y - player.y, clickPos.x - player.x)
+      const velocity = {
+        x: Math.cos(angle) * 10,
+        y: Math.sin(angle) * 10
+      }
+
+      fire(state, velocity, ctx as CanvasRenderingContext2D)
+    },
+    [ctx, state]
+  )
+
+  const handleTriggerPush = useCallback(
+    (gamepad: Gamepad) => {
+      const { axes } = gamepad
+
+      const angle = Math.atan2(axes[3], axes[2])
+      const velocity = {
+        x: Math.cos(angle) * 10,
+        y: Math.sin(angle) * 10
+      }
+
+      // TODO: добавить ограничение на один выстрел в n миллисекунд
+
+      fire(state, velocity, ctx as CanvasRenderingContext2D)
+    },
+    [ctx, state]
+  )
+
   useEffect(() => {
     if (!boardRef.current) {
       return
@@ -191,9 +234,7 @@ export const Canvas = (): ReactElement => {
       <canvas
         id="board"
         ref={boardRef}
-        onClick={(evt) =>
-          handleFire(evt, state, ctx as CanvasRenderingContext2D)
-        }
+        onClick={handleClick}
         className={style.canvas}
       />
     </div>
