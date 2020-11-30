@@ -1,4 +1,4 @@
-import React, { useState, FC } from 'react'
+import React, { FC, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Button, Error, Input } from 'app/components'
 import { Formik, Form, FormikValues } from 'formik'
