@@ -30,16 +30,13 @@ export const Canvas: React.FC = (): JSX.Element => {
       state.addEnemy(enemy)
     }, 750)
 
+    // TODO: подумать про вложенные таймауты. Плюсы — более точные промежутки, чем при интервалах. Минусы — надо придумать как очищать таймаут
     setEnemiesSpawnInterval(interval)
   }
 
-  const createPopup = () => {
-    return showEndGamePopup ? (
-      <div className={style.score}>We end {score}</div>
-    ) : (
-      <></>
-    )
-  }
+
+  const createPopup = () =>
+    showEndGamePopup && <div className={style.score}>We end {score}</div>
 
   const endGame = () => {
     setShowEndGamePopup(true)
@@ -57,6 +54,12 @@ export const Canvas: React.FC = (): JSX.Element => {
     const projectiles = state.getProjectiles()
     const enemies = state.getEnemies()
     const particles = state.getParticles()
+
+    const [gamepad] = navigator.getGamepads()
+    if (gamepad?.buttons[7].pressed) {
+      handleTriggerPush(gamepad)
+      // TODO: сделать это красиво
+    }
 
     animationFrameId.current = requestAnimationFrame(animate)
 
@@ -86,7 +89,6 @@ export const Canvas: React.FC = (): JSX.Element => {
         enemy.y - player.y
       )
 
-      // end game
       if (enemyPlayerDistance - player.radius - enemy.radius < 1) {
         endGame()
       }
@@ -164,6 +166,23 @@ export const Canvas: React.FC = (): JSX.Element => {
         x: Math.cos(angle) * 10,
         y: Math.sin(angle) * 10
       }
+
+      fire(state, velocity, ctx as CanvasRenderingContext2D)
+    },
+    [ctx, state]
+  )
+
+  const handleTriggerPush = useCallback(
+    (gamepad: Gamepad) => {
+      const { axes } = gamepad
+
+      const angle = Math.atan2(axes[3], axes[2])
+      const velocity = {
+        x: Math.cos(angle) * 10,
+        y: Math.sin(angle) * 10
+      }
+
+      // TODO: добавить ограничение на один выстрел в n миллисекунд
 
       fire(state, velocity, ctx as CanvasRenderingContext2D)
     },
