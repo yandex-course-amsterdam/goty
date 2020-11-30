@@ -1,10 +1,4 @@
-import React, {
-  useState,
-  useRef,
-  useEffect,
-  ReactElement,
-  useCallback
-} from 'react'
+import React, { useState, useRef, useCallback, useEffect } from 'react'
 
 import { ENEMY_TYPE } from 'app/constants'
 
@@ -13,7 +7,7 @@ import { fire } from './helpers/firemodes'
 
 import style from './style.css'
 
-export const Canvas = (): ReactElement => {
+export const Canvas: React.FC = (): JSX.Element => {
   const [state] = useState<State>(new State())
   const [score, setScore] = useState(0)
   const [enemiesSpawnInterval, setEnemiesSpawnInterval] = useState<ReturnType<
@@ -39,6 +33,7 @@ export const Canvas = (): ReactElement => {
     // TODO: подумать про вложенные таймауты. Плюсы — более точные промежутки, чем при интервалах. Минусы — надо придумать как очищать таймаут
     setEnemiesSpawnInterval(interval)
   }
+
 
   const createPopup = () =>
     showEndGamePopup && <div className={style.score}>We end {score}</div>
@@ -156,23 +151,26 @@ export const Canvas = (): ReactElement => {
     spawnEnemies()
   }
 
-  const handleClick = (evt: React.MouseEvent<HTMLCanvasElement>): void => {
-    const { canvas } = ctx as CanvasRenderingContext2D
-    const canvasRect = canvas.getBoundingClientRect()
+  const handleClick = useCallback(
+    (evt: React.MouseEvent<HTMLCanvasElement>): void => {
+      const { canvas } = ctx as CanvasRenderingContext2D
+      const canvasRect = canvas.getBoundingClientRect()
 
-    const player = state.getPlayer() as Player
-    const clickPos = {
-      x: evt.clientX - canvasRect.x,
-      y: evt.clientY - canvasRect.y
-    }
-    const angle = Math.atan2(clickPos.y - player.y, clickPos.x - player.x)
-    const velocity = {
-      x: Math.cos(angle) * 10,
-      y: Math.sin(angle) * 10
-    }
+      const player = state.getPlayer() as Player
+      const clickPos = {
+        x: evt.clientX - canvasRect.x,
+        y: evt.clientY - canvasRect.y
+      }
+      const angle = Math.atan2(clickPos.y - player.y, clickPos.x - player.x)
+      const velocity = {
+        x: Math.cos(angle) * 10,
+        y: Math.sin(angle) * 10
+      }
 
-    fire(state, velocity, ctx as CanvasRenderingContext2D)
-  }
+      fire(state, velocity, ctx as CanvasRenderingContext2D)
+    },
+    [ctx, state]
+  )
 
   const handleTriggerPush = useCallback(
     (gamepad: Gamepad) => {
