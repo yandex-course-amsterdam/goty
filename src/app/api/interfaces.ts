@@ -1,4 +1,4 @@
-export interface Options {
+export interface IOptions {
   method: string
   body?:
     | string
@@ -13,15 +13,15 @@ export interface Options {
   contentType?: string
 }
 
-export interface ApiResponse {
+export interface IApiResponse {
   response: string
   status: number
 }
 
-export interface ApiInterface {
-  request(options: Options, timeout: number): Promise<ApiResponse>
-  get(path: string): Promise<ApiResponse>
-  post(path: string, body: string): Promise<ApiResponse>
+export interface IApi {
+  request(options: IOptions, timeout: number): Promise<IApiResponse>
+  get(path: string): Promise<IApiResponse>
+  post(path: string, body: string): Promise<IApiResponse>
   put(
     path: string,
     body:
@@ -34,12 +34,12 @@ export interface ApiInterface {
       | URLSearchParams
       | ReadableStream<Uint8Array>,
     contentType: string
-  ): Promise<ApiResponse>
-  delete(path: string, body: string, contentType: string): Promise<ApiResponse>
+  ): Promise<IApiResponse>
+  delete(path: string, body: string, contentType: string): Promise<IApiResponse>
 }
 
-export interface UsersApiInterface {
-  updateProfile(body: string): Promise<ApiResponse>
-  updatePass(body: string): Promise<ApiResponse>
-  updateAvatar(body: FormData): Promise<ApiResponse>
+export interface IUserApi {
+  updateProfile(body: string): Promise<IApiResponse>
+  updatePass(body: string): Promise<IApiResponse>
+  updateAvatar(body: FormData): Promise<IApiResponse>
 }

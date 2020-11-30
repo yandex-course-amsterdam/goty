@@ -1,4 +1,4 @@
-import { ApiResponse, RequestRoot } from 'app/api'
+import { IApiResponse, RequestRoot } from 'app/api'
 
 import { Api } from './Api'
 
@@ -7,19 +7,19 @@ export class AuthApi {
     this.api = api
   }
 
-  signUp(body: string): Promise<ApiResponse> {
+  signUp(body: string): Promise<IApiResponse> {
     return this.api.post(RequestRoot.signUp, body)
   }
 
-  signIn(body: string): Promise<ApiResponse> {
+  signIn(body: string): Promise<IApiResponse> {
     return this.api.post(RequestRoot.signIn, body)
   }
 
-  getUserInfo(): Promise<ApiResponse> {
+  getUserInfo(): Promise<IApiResponse> {
     return this.api.get(RequestRoot.userInfo)
   }
 
-  logout(): Promise<ApiResponse> {
+  logout(): Promise<IApiResponse> {
     return this.api.post(RequestRoot.logout, '')
   }
 }

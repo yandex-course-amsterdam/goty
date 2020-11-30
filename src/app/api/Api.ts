@@ -1,19 +1,19 @@
 import {
   RequestMethod,
-  ApiInterface,
-  Options,
-  ApiResponse,
+  IApi,
+  IOptions,
+  IApiResponse,
   ContentType
 } from 'app/api'
 
-export class Api implements ApiInterface {
+export class Api implements IApi {
   url: string
 
   constructor(url: string) {
     this.url = url
   }
 
-  request(options: Options, timeout = 10000): Promise<ApiResponse> {
+  request(options: IOptions, timeout = 10000): Promise<IApiResponse> {
     const { method, body, path, contentType } = options
 
     return new Promise((res, rej) => {
@@ -49,14 +49,14 @@ export class Api implements ApiInterface {
     })
   }
 
-  get(path: string): Promise<ApiResponse> {
+  get(path: string): Promise<IApiResponse> {
     return this.request({
       path,
       method: RequestMethod.get
     })
   }
 
-  post(path: string, body: string): Promise<ApiResponse> {
+  post(path: string, body: string): Promise<IApiResponse> {
     return this.request({
       path,
       body,
@@ -76,7 +76,7 @@ export class Api implements ApiInterface {
       | URLSearchParams
       | ReadableStream<Uint8Array>,
     contentType: string
-  ): Promise<ApiResponse> {
+  ): Promise<IApiResponse> {
     return this.request({
       path,
       body,
@@ -89,7 +89,7 @@ export class Api implements ApiInterface {
     path: string,
     body: string,
     contentType: string
-  ): Promise<ApiResponse> {
+  ): Promise<IApiResponse> {
     return this.request({
       path,
       body,
