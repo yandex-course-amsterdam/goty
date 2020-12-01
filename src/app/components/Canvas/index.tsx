@@ -171,23 +171,22 @@ export const Canvas: React.FC = (): JSX.Element => {
 
   const handleClick = useCallback(
     (evt: React.MouseEvent<HTMLCanvasElement>): void => {
+      const { clientX, clientY } = evt
+      const player = state.getPlayer() as Player
+
       const { canvas } = ctx as CanvasRenderingContext2D
       const canvasRect = canvas.getBoundingClientRect()
 
-      const player = state.getPlayer() as Player
-      const clickPos = {
-        x: evt.clientX - canvasRect.x,
-        y: evt.clientY - canvasRect.y
-      }
-      const angle = Math.atan2(clickPos.y - player.y, clickPos.x - player.x)
-      const velocity = {
-        x: Math.cos(angle) * 10,
-        y: Math.sin(angle) * 10
+      const pos = {
+        x: clientX - canvasRect.x,
+        y: clientY - canvasRect.y
       }
 
-      fire(state, velocity, ctx as CanvasRenderingContext2D)
+      const angle = Math.atan2(pos.y - player.y, pos.x - player.x)
+
+      handleFire(angle, state, ctx as CanvasRenderingContext2D)
     },
-    [ctx, state]
+    [state, ctx]
   )
 
   const handleTriggerPush = useCallback(
@@ -195,16 +194,12 @@ export const Canvas: React.FC = (): JSX.Element => {
       const { axes } = gamepad
 
       const angle = Math.atan2(axes[3], axes[2])
-      const velocity = {
-        x: Math.cos(angle) * 10,
-        y: Math.sin(angle) * 10
-      }
 
       // TODO: добавить ограничение на один выстрел в n миллисекунд
 
-      fire(state, velocity, ctx as CanvasRenderingContext2D)
+      handleFire(angle, state, ctx as CanvasRenderingContext2D)
     },
-    [ctx, state]
+    [state, ctx]
   )
 
   useEffect(() => {
