@@ -1,11 +1,17 @@
-import React, { ReactElement } from 'react'
+import React, { FC } from 'react'
 
-type GameIconProps = {
+interface IProps {
   className?: string
 }
 
-export const GameIcon = ({ className }: GameIconProps): ReactElement => (
-  <svg className={className} width="32" height="32" fill="none" xmlns="http://www.w3.org/2000/svg">
+export const GameIcon: FC<IProps> = ({ className }): JSX.Element => (
+  <svg
+    className={className}
+    width="32"
+    height="32"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
     <path
       d="M16 27.428c6.312 0 11.428-5.116 11.428-11.428C27.428 9.688 22.312 4.57 16 4.57 9.688 4.571 4.57 9.688 4.57 16S9.688 27.428 16 27.428z"
       stroke="#787885"

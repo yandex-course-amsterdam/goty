@@ -1,23 +1,21 @@
-import React, { ReactElement } from 'react'
+import React, { FC } from 'react'
 import cn from 'classnames'
 
 import style from './style.css'
 
-type DescriptionProps = {
+interface IProps {
   title: string
   subtitle: string
   className?: string
 }
 
-export const Description = ({
+export const Description: FC<IProps> = ({
   title,
   subtitle,
   className
-}: DescriptionProps): ReactElement => {
-  return (
-    <div className={cn(style.container, className)}>
-      <p className={style.title}>{title}</p>
-      <p className={style.subtitle}>{subtitle}</p>
-    </div>
-  )
-}
+}): JSX.Element => (
+  <div className={cn(style.container, className)}>
+    <p className={style.title}>{title}</p>
+    <p className={style.subtitle}>{subtitle}</p>
+  </div>
+)

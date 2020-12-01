@@ -1,22 +1,21 @@
-import { PromiseInterface } from 'app/interfaces/promise'
-import { UsersApiInterface } from 'app/interfaces/users-api'
+import { IUserApi, IApiResponse, RequestRoot, ContentType } from 'app/api'
 
 import { Api } from './Api'
 
-export class UsersApi implements UsersApiInterface {
+export class UserApi implements IUserApi {
   constructor(private readonly api: Api) {
     this.api = api
   }
 
-  updateProfile(body: string): Promise<PromiseInterface> {
-    return this.api.put('/user/profile', body, '')
+  updateProfile(body: string): Promise<IApiResponse> {
+    return this.api.put(RequestRoot.profile, body, ContentType.empty)
   }
 
-  updatePass(body: string): Promise<PromiseInterface> {
-    return this.api.put('/user/password', body, '')
+  updatePass(body: string): Promise<IApiResponse> {
+    return this.api.put(RequestRoot.password, body, ContentType.empty)
   }
 
-  updateAvatar(body: FormData): Promise<PromiseInterface> {
-    return this.api.put('/user/profile/avatar', body, 'multipart/form-data')
+  updateAvatar(body: FormData): Promise<IApiResponse> {
+    return this.api.put(RequestRoot.avatar, body, ContentType.formData)
   }
 }

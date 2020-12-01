@@ -1,7 +1,9 @@
-export const DATA = {
-  mainTitle: 'Sign Up',
+export const TRANSLATIONS = {
+  mainTitle: 'Profile',
   mainDescriptionTitle: 'User info details',
   mainDescriptionSubtitle:
     'Don’t worry, your information will be kept in safe and we will not share this info with anyone outside.',
-  formName: 'signUp'
+  detailsForm: 'updateDetails',
+  passwordForm: 'updatePassword',
+  pictureForm: 'updateAvatar'
 }

@@ -1,30 +1,28 @@
-import React, { ReactElement, ReactNode } from 'react'
+import React, { FC, ReactNode } from 'react'
 import { Redirect, Route } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 
-import { ROUTE } from 'app/constants'
-import { UserDataState } from 'app/reducers/userDataReducer'
+import { route } from 'app/enums'
+import { StoreState } from 'app/reducers'
 
-type PrivateRouteProps = {
+interface IProps {
   path: string
   exact?: boolean
   children: ReactNode
 }
 
-export const PrivateRoute = ({
+export const PrivateRoute: FC<IProps> = ({
   exact,
   path,
   children
-}: PrivateRouteProps): ReactElement => {
-  const userData = useSelector(
-    (state: { userData: UserDataState }) => state.userData
-  )
+}): JSX.Element => {
+  const userData = useSelector((state: StoreState) => state.userInfo)
 
   return userData.login ? (
     <Route exact={exact} path={path}>
       {children}
     </Route>
   ) : (
-    <Redirect to={ROUTE.SIGN_IN} />
+    <Redirect to={route.signIn} />
   )
 }

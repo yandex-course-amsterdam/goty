@@ -1,4 +1,4 @@
-import React, { ReactElement, useEffect, useState } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import ReactDOM from 'react-dom'
 import { Provider, useDispatch } from 'react-redux'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
@@ -14,16 +14,16 @@ import {
 
 import { authApi } from 'app/api'
 import { store } from 'app/store'
-import { setUserData } from 'app/actions'
+import { setUserInfo } from 'app/actions'
+import { route } from 'app/enums'
 import { startServiceWorker } from 'app/utils'
-import { ROUTE } from 'app/constants'
 
 import 'normalize.css'
 import './fonts/fonts.css'
 
 startServiceWorker()
 
-export const Main = (): ReactElement => {
+export const Main: FC = (): JSX.Element => {
   const [isLoading, setIsLoading] = useState(true)
   const dispatch = useDispatch()
 
@@ -33,7 +33,7 @@ export const Main = (): ReactElement => {
 
       if (res.status === 200) {
         const user = JSON.parse(res.response)
-        dispatch(setUserData(user))
+        dispatch(setUserInfo(user))
       }
 
       setIsLoading(false)
@@ -51,19 +51,19 @@ export const Main = (): ReactElement => {
   ) : (
     <Router>
       <Switch>
-        <Route path={ROUTE.SIGN_UP}>
+        <Route path={route.signUp}>
           <SignUpView />
         </Route>
-        <Route path={ROUTE.SIGN_IN}>
+        <Route path={route.signIn}>
           <SignInView />
         </Route>
-        <PrivateRoute path={ROUTE.PROFILE}>
+        <PrivateRoute path={route.profile}>
           <ProfileView />
         </PrivateRoute>
-        <PrivateRoute exact path={ROUTE.GAME}>
+        <PrivateRoute exact path={route.game}>
           <GameView />
         </PrivateRoute>
-        <PrivateRoute path={ROUTE.SCORE}>
+        <PrivateRoute path={route.score}>
           <ScoreView />
         </PrivateRoute>
       </Switch>

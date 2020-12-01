@@ -1,2 +1,2 @@
-export { setUserData } from './setUserData'
-export { fetchUserData } from './fetchUserData'
+export * from './types'
+export * from './userInfo'

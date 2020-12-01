@@ -1,21 +1,21 @@
-import React, { ReactElement, useState } from 'react'
+import React, { FC, useState } from 'react'
 import { Redirect } from 'react-router-dom'
 import cn from 'classnames'
 
 import { authApi } from 'app/api'
-import { ROUTE } from 'app/constants'
+import { route } from 'app/enums'
 
 import style from './style.css'
 
-type ExitButtonProps = {
+interface IProps {
   children: React.ReactNode
   className?: string
 }
 
-export const ExitButton = ({
+export const ExitButton: FC<IProps> = ({
   children,
   className
-}: ExitButtonProps): ReactElement => {
+}): JSX.Element => {
   const [isLoggedIn, setIsLoggedIn] = useState(true)
 
   const handleExit = async () => {
@@ -39,6 +39,6 @@ export const ExitButton = ({
       {children}
     </button>
   ) : (
-    <Redirect to={ROUTE.SIGN_IN} />
+    <Redirect to={route.signIn} />
   )
 }

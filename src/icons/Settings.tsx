@@ -1,11 +1,17 @@
-import React, { ReactElement } from 'react'
+import React, { FC } from 'react'
 
-type SettingsIconProps = {
+interface IProps {
   className?: string
 }
 
-export const SettingsIcon = ({ className }: SettingsIconProps): ReactElement => (
-  <svg className={className} width="32" height="32" fill="none" xmlns="http://www.w3.org/2000/svg">
+export const SettingsIcon: FC<IProps> = ({ className }): JSX.Element => (
+  <svg
+    className={className}
+    width="32"
+    height="32"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
     <path
       d="M16 19.428a3.429 3.429 0 100-6.857 3.429 3.429 0 000 6.857z"
       stroke="#787885"

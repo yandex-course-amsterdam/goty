@@ -5,7 +5,7 @@ export const checkResponseStatus = (
 ): void => {
   if (res.status === 200) {
     setState(text)
-  } else {
+  } else if (res.status !== 200 && res.response) {
     setState(JSON.parse(res.response).reason)
   }
 

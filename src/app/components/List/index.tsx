@@ -1,14 +1,14 @@
-import React, { ReactElement } from 'react'
+import React, { FC } from 'react'
 
 import cn from 'classnames'
 
 import style from './style.css'
 
-type ListProps = {
+interface IProps {
   children?: React.ReactNode
   className?: string
 }
 
-export const List = ({ children, className }: ListProps): ReactElement => {
-  return <ul className={cn(style.list, className)}>{children}</ul>
-}
+export const List: FC<IProps> = ({ children, className }): JSX.Element => (
+  <ul className={cn(style.list, className)}>{children}</ul>
+)

@@ -1,11 +1,17 @@
-import React, { ReactElement } from 'react'
+import React, { FC } from 'react'
 
-type WrongIconProps = {
+interface IProps {
   className?: string
 }
 
-export const WrongIcon = ({ className }: WrongIconProps): ReactElement => (
-  <svg className={className} width="32" height="32" fill="none" xmlns="http://www.w3.org/2000/svg">
+export const WrongIcon: FC<IProps> = ({ className }): JSX.Element => (
+  <svg
+    className={className}
+    width="32"
+    height="32"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
     <path
       d="M22.857 9.143L9.143 22.857M9.143 9.143l13.714 13.714"
       stroke="#EB5757"

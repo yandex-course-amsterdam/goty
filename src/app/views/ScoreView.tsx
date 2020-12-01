@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react'
+import React, { FC } from 'react'
 import { Score } from 'app/containers/Score'
 
-export const ScoreView = (): ReactElement => <Score />
+export const ScoreView: FC = (): JSX.Element => <Score />

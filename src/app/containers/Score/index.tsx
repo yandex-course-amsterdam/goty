@@ -1,8 +1,8 @@
-import React, { ReactElement } from 'react'
+import React, { FC } from 'react'
 import { NavLink, useRouteMatch, Switch, Route, Link } from 'react-router-dom'
 import {
   Avatar,
-  Item,
+  ListItem,
   List,
   Navigation,
   Sidebar,
@@ -15,25 +15,44 @@ import {
 } from 'app/components'
 
 import { ExitIcon, GameIcon, ScoreIcon, UserIcon } from 'icons'
-import { ROUTE } from 'app/constants'
-import { DATA } from './data'
+import { route } from 'app/enums'
+import { TRANSLATIONS } from './translations'
 import { USER_SCORE_DATA } from './userScoreData'
 
 import style from './style.css'
 
-type userScoreData = {
+interface userScoreData {
   name: string
   score: number
   id: number
 }
 
-const sortUserData = (data: userScoreData[]): userScoreData[] => {
-  return data.sort((a: userScoreData, b: userScoreData) => b.score - a.score)
-}
+const {
+  mainTitle,
+  mainDescriptionTitle,
+  mainDescriptionSubtitle
+} = TRANSLATIONS
 
-export const Score = (): ReactElement => {
+const sortUserData = (data: userScoreData[]) =>
+  data.sort((a: userScoreData, b: userScoreData) => b.score - a.score)
+
+export const Score: FC = (): JSX.Element => {
   const { path, url } = useRouteMatch()
-  const { mainTitle, mainDescriptionTitle, mainDescriptionSubtitle } = DATA
+
+  const renderUserScore = () =>
+    sortUserData(USER_SCORE_DATA).map(
+      (
+        { id, score, name }: userScoreData,
+        index: number,
+        array: userScoreData[]
+      ) => {
+        const width = `${
+          index === 0 ? 100 : (array[index].score / array[0].score) * 100
+        }%`
+
+        return <UserScore key={id} score={score} name={name} width={width} />
+      }
+    )
 
   return (
     <div className={style.score}>
@@ -41,23 +60,23 @@ export const Score = (): ReactElement => {
         <Avatar className={style.avatar} />
         <Navigation title="Options">
           <List className={style.list}>
-            <Link className={style.link} to={ROUTE.GAME}>
-              <Item text="Game">
+            <Link className={style.link} to={route.game}>
+              <ListItem text="Game">
                 <GameIcon />
-              </Item>
+              </ListItem>
             </Link>
-            <Link className={style.link} to={ROUTE.PROFILE_DETAILS}>
-              <Item text="Profile">
+            <Link className={style.link} to={route.profileDetails}>
+              <ListItem text="Profile">
                 <UserIcon />
-              </Item>
+              </ListItem>
             </Link>
-            <Item text="Score" active>
+            <ListItem text="Score" active>
               <ScoreIcon />
-            </Item>
+            </ListItem>
             <ExitButton className={style.exit}>
-              <Item text="Exit">
+              <ListItem text="Exit">
                 <ExitIcon />
-              </Item>
+              </ListItem>
             </ExitButton>
           </List>
         </Navigation>
@@ -70,21 +89,21 @@ export const Score = (): ReactElement => {
               <NavLink
                 className={style.sublink}
                 activeClassName={style.active}
-                to={`${url}/leaderboard`}
+                to={`${url}${route.leaderboard}`}
               >
                 Leaderboard
               </NavLink>
               <NavLink
                 className={style.sublink}
                 activeClassName={style.active}
-                to={`${url}/personal-stats`}
+                to={`${url}${route.personalStats}`}
               >
                 Personal stats
               </NavLink>
             </SubNavigation>
           </div>
           <Switch>
-            <Route exact path={`${path}/leaderboard`}>
+            <Route exact path={`${path}${route.leaderboard}`}>
               <div className={style.group}>
                 <Description
                   className={style.description}
@@ -95,29 +114,10 @@ export const Score = (): ReactElement => {
                   <p className={style.header}>Name</p>
                   <p className={style.header}>Score</p>
                 </div>
-                <div className={style.overflow}>
-                  {sortUserData(USER_SCORE_DATA).map(
-                    ({ id, score, name }, index, array) => {
-                      const width = `${
-                        index === 0
-                          ? 100
-                          : (array[index].score / array[0].score) * 100
-                      }%`
-
-                      return (
-                        <UserScore
-                          key={id}
-                          score={score}
-                          name={name}
-                          width={width}
-                        />
-                      )
-                    }
-                  )}
-                </div>
+                <div className={style.overflow}>{renderUserScore()}</div>
               </div>
             </Route>
-            <Route exact path={`${path}/personal-stats`}>
+            <Route exact path={`${path}${route.personalStats}`}>
               <div className={style.overflow}>
                 <Description
                   className={style.description}

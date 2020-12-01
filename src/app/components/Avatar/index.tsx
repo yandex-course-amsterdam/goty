@@ -1,27 +1,25 @@
-import React, { ReactElement } from 'react'
+import React, { FC } from 'react'
 import { useSelector } from 'react-redux'
 import cn from 'classnames'
 
-import { UserDataState } from 'app/reducers/userDataReducer'
+import { StoreState } from 'app/reducers'
+
+import defaultAvatar from 'images/avatar.png'
+
 import style from './style.css'
 
-type AvatarProps = {
+interface IProps {
   className?: string
 }
 
-export const Avatar = ({ className }: AvatarProps): ReactElement => {
-  const avatar = useSelector(
-    (state: { userData: UserDataState }) => state.userData.avatar
-  )
-  const name = useSelector(
-    (state: { userData: UserDataState }) => state.userData.display_name
-  )
+export const Avatar: FC<IProps> = ({ className }): JSX.Element => {
+  const userInfo = useSelector((state: StoreState) => state.userInfo)
 
-  const userAvatar = avatar
-    ? `https://ya-praktikum.tech/${avatar}`
-    : 'https://i.imgur.com/Cbyhdku.png'
+  const userAvatar = userInfo.avatar
+    ? `https://ya-praktikum.tech/${userInfo.avatar}`
+    : defaultAvatar
 
-  const avatarName = name || 'Top game'
+  const avatarName = userInfo.display_name || 'Top game'
 
   return (
     <div className={cn(style.avatar, className)}>

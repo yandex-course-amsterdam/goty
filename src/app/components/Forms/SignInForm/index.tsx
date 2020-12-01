@@ -1,4 +1,4 @@
-import React, { ReactElement, useEffect, useState } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { Redirect } from 'react-router-dom'
 import { Button, Error, Input } from 'app/components'
@@ -6,13 +6,13 @@ import { Formik, Form, FormikValues } from 'formik'
 import * as Yup from 'yup'
 
 import { authApi } from 'app/api'
-import { VALIDATION_SCHEMA, ROUTE } from 'app/constants'
-import { fetchUserData, setUserData } from 'app/actions'
-import { initialState as userInitialState } from 'app/reducers/userDataReducer'
+import { VALIDATION_SCHEMA } from 'app/constants'
+import { route } from 'app/enums'
+import { fetchUserInfo, setUserInfo, UserInfoInitial } from 'app/actions'
 
 import style from './style.css'
 
-export const SignInForm = (): ReactElement => {
+export const SignInForm: FC = (): JSX.Element => {
   const [responseText, setResponseText] = useState('')
   const [isSignIn, setIsSignIn] = useState(false)
   const dispatch = useDispatch()
@@ -26,7 +26,7 @@ export const SignInForm = (): ReactElement => {
       const res = await authApi.signIn(data)
 
       if (res.status === 200) {
-        await dispatch(fetchUserData())
+        await dispatch(fetchUserInfo())
         setIsSignIn(true)
       } else {
         setResponseText(JSON.parse(res.response).reason)
@@ -45,11 +45,11 @@ export const SignInForm = (): ReactElement => {
   }
 
   useEffect(() => {
-    dispatch(setUserData(userInitialState))
+    dispatch(setUserInfo(UserInfoInitial))
   }, [])
 
   return isSignIn ? (
-    <Redirect to={ROUTE.GAME} />
+    <Redirect to={route.game} />
   ) : (
     <Formik
       initialValues={initialValues}

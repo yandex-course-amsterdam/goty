@@ -1,5 +1,4 @@
-import React, { ReactElement } from 'react'
-
+import React, { FC } from 'react'
 import { SignIn } from 'app/containers/SignIn'
 
-export const SignInView = (): ReactElement => <SignIn />
+export const SignInView: FC = (): JSX.Element => <SignIn />

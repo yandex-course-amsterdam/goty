@@ -1,20 +1,15 @@
-import React, { ReactElement } from 'react'
+import React, { FC } from 'react'
 
 import style from './style.css'
 
-type SubNavigationProps = {
+interface IProps {
   children?: React.ReactNode
   title?: string
 }
 
-export const SubNavigation = ({
-  children,
-  title
-}: SubNavigationProps): ReactElement => {
-  return (
-    <>
-      {title && <p className={style.title}>{title}</p>}
-      <nav className={style.nav}>{children}</nav>
-    </>
-  )
-}
+export const SubNavigation: FC<IProps> = ({ children, title }): JSX.Element => (
+  <>
+    {title && <p className={style.title}>{title}</p>}
+    <nav className={style.nav}>{children}</nav>
+  </>
+)

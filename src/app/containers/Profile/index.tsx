@@ -1,8 +1,8 @@
-import React, { ReactElement } from 'react'
+import React, { FC } from 'react'
 import {
   Avatar,
   Description,
-  Item,
+  ListItem,
   List,
   Main,
   Navigation,
@@ -17,14 +17,19 @@ import {
 import { Link, useRouteMatch, Route, NavLink, Switch } from 'react-router-dom'
 
 import { ExitIcon, GameIcon, ScoreIcon, UserIcon } from 'icons'
-import { ROUTE } from 'app/constants'
-import { DATA } from './data'
+import { route } from 'app/enums'
+import { TRANSLATIONS } from './translations'
 
 import style from './style.css'
 
-export const Profile = (): ReactElement => {
+const {
+  mainTitle,
+  mainDescriptionSubtitle,
+  mainDescriptionTitle
+} = TRANSLATIONS
+
+export const Profile: FC = (): JSX.Element => {
   const { path, url } = useRouteMatch()
-  const { mainTitle, mainDescriptionSubtitle, mainDescriptionTitle } = DATA
 
   return (
     <div className={style.profile}>
@@ -32,23 +37,23 @@ export const Profile = (): ReactElement => {
         <Avatar className={style.avatar} />
         <Navigation title="Options">
           <List className={style.list}>
-            <Link className={style.link} to={ROUTE.GAME}>
-              <Item text="Game">
+            <Link className={style.link} to={route.game}>
+              <ListItem text="Game">
                 <GameIcon />
-              </Item>
+              </ListItem>
             </Link>
-            <Item text="Profile" active>
+            <ListItem text="Profile" active>
               <UserIcon />
-            </Item>
-            <Link className={style.link} to={ROUTE.LEADERBOARD}>
-              <Item text="Score">
+            </ListItem>
+            <Link className={style.link} to={route.scoreLeaderboard}>
+              <ListItem text="Score">
                 <ScoreIcon />
-              </Item>
+              </ListItem>
             </Link>
             <ExitButton className={style.exit}>
-              <Item text="Exit">
+              <ListItem text="Exit">
                 <ExitIcon />
-              </Item>
+              </ListItem>
             </ExitButton>
           </List>
         </Navigation>
@@ -61,28 +66,28 @@ export const Profile = (): ReactElement => {
               <NavLink
                 className={style.sublink}
                 activeClassName={style.active}
-                to={`${url}/details`}
+                to={`${url}${route.details}`}
               >
                 Details
               </NavLink>
               <NavLink
                 className={style.sublink}
                 activeClassName={style.active}
-                to={`${url}/picture`}
+                to={`${url}${route.picture}`}
               >
                 Picture
               </NavLink>
               <NavLink
                 className={style.sublink}
                 activeClassName={style.active}
-                to={`${url}/password`}
+                to={`${url}${route.password}`}
               >
                 Password
               </NavLink>
             </SubNavigation>
           </div>
           <Switch>
-            <Route exact path={`${path}/details`}>
+            <Route exact path={`${path}${route.details}`}>
               <div className={style.overflow}>
                 <Description
                   className={style.description}
@@ -92,7 +97,7 @@ export const Profile = (): ReactElement => {
                 <DetailsForm />
               </div>
             </Route>
-            <Route exact path={`${path}/picture`}>
+            <Route exact path={`${path}${route.picture}`}>
               <div className={style.overflow}>
                 <Description
                   className={style.description}
@@ -102,7 +107,7 @@ export const Profile = (): ReactElement => {
                 <AvatarForm />
               </div>
             </Route>
-            <Route exact path={`${path}/password`}>
+            <Route exact path={`${path}${route.password}`}>
               <div className={style.overflow}>
                 <Description
                   className={style.description}
