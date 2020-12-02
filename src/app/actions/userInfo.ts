@@ -1,7 +1,7 @@
 import { Dispatch } from 'redux'
 
 import { ActionTypes } from 'app/actions'
-import { authApi } from 'app/api'
+import { getUserInfo } from 'app/api/Api'
 
 export interface UserInfo {
   id: number | null
@@ -38,12 +38,11 @@ export interface SetUserInfoAction {
 export const fetchUserInfo = () => {
   return async (dispatch: Dispatch) => {
     try {
-      const response = await authApi.getUserInfo()
-      const userData = JSON.parse(response.response)
+      const { data } = await getUserInfo()
 
       dispatch<FetchUserInfoAction>({
         type: ActionTypes.fetchUserInfo,
-        payload: userData
+        payload: data
       })
     } catch (error) {
       console.log(error)

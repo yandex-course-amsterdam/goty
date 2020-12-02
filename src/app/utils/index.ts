@@ -1,3 +1,3 @@
 export { sanitize } from './sanitize'
-export { checkResponseStatus } from './checkResponseStatus'
+export { displayResponseText } from './displayResponseText'
 export { startServiceWorker } from './startServiceWorker'

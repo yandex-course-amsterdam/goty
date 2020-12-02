@@ -3,9 +3,9 @@ import { Button, Error, Input } from 'app/components'
 import { Formik, Form, FormikValues } from 'formik'
 import * as Yup from 'yup'
 
-import { userApi } from 'app/api'
+import { updatePassword } from 'app/api/Api'
 import { VALIDATION_SCHEMA } from 'app/constants'
-import { checkResponseStatus } from 'app/utils'
+import { displayResponseText } from 'app/utils'
 
 import style from './style.css'
 
@@ -17,13 +17,12 @@ export const PasswordForm: FC = (): JSX.Element => {
   const initialValues = { oldPassword: '', newPassword: '' }
   const validationSchema = Yup.object({ oldPassword, newPassword })
 
-  const updateUserPassword = async (data: string): Promise<void> => {
+  const updateUserPassword = async (data: FormikValues): Promise<void> => {
     try {
-      const res = await userApi.updatePass(data)
-
-      checkResponseStatus(res, setResponseText)
+      await updatePassword(data)
+      displayResponseText(setResponseText)
     } catch (error) {
-      console.log(error)
+      displayResponseText(setResponseText, error)
     }
   }
 
@@ -31,7 +30,7 @@ export const PasswordForm: FC = (): JSX.Element => {
     values: FormikValues,
     { setSubmitting }: FormikValues
   ) => {
-    await updateUserPassword(JSON.stringify(values, null, 2))
+    await updateUserPassword(values)
     setSubmitting(false)
   }
 

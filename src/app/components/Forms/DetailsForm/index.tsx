@@ -4,10 +4,11 @@ import { Button, Error, Input } from 'app/components'
 import { Formik, Form, FormikValues } from 'formik'
 import * as Yup from 'yup'
 
-import { userApi } from 'app/api'
+import { updateProfile } from 'app/api/Api'
 import { VALIDATION_SCHEMA } from 'app/constants'
 import { StoreState } from 'app/reducers'
-import { setUserInfo } from 'app/actions'
+import { fetchUserInfo } from 'app/actions'
+import { displayResponseText } from 'app/utils'
 
 import style from './style.css'
 
@@ -41,19 +42,13 @@ export const DetailsForm: FC = (): JSX.Element => {
     phone
   })
 
-  const updateUserProfile = async (data: string): Promise<void> => {
+  const updateUserProfile = async (data: FormikValues): Promise<void> => {
     try {
-      const res = await userApi.updateProfile(data)
-      const userResponseData = JSON.parse(res.response)
-
-      if (res.status === 200) {
-        dispatch(setUserInfo(userResponseData))
-        setResponseText('Successfully updated')
-      } else {
-        setResponseText(userResponseData.reason)
-      }
+      await updateProfile(data)
+      await dispatch(fetchUserInfo())
+      displayResponseText(setResponseText)
     } catch (error) {
-      console.log(error)
+      displayResponseText(setResponseText, error.response.data.reason)
     }
   }
 
@@ -61,7 +56,7 @@ export const DetailsForm: FC = (): JSX.Element => {
     values: FormikValues,
     { setSubmitting }: FormikValues
   ) => {
-    updateUserProfile(JSON.stringify(values))
+    updateUserProfile(values)
     setSubmitting(false)
   }
 

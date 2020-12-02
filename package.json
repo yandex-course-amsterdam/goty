@@ -65,6 +65,7 @@
     "workbox-webpack-plugin": "5.1.4"
   },
   "dependencies": {
+    "axios": "0.21.0",
     "classnames": "2.2.6",
     "express": "4.17.1",
     "formik": "2.2.4",

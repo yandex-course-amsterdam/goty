@@ -5,10 +5,11 @@ import { Button, Error, Input } from 'app/components'
 import { Formik, Form, FormikValues } from 'formik'
 import * as Yup from 'yup'
 
-import { authApi } from 'app/api'
+import { signUp } from 'app/api/Api'
 import { VALIDATION_SCHEMA } from 'app/constants'
 import { route } from 'app/enums'
 import { fetchUserInfo, setUserInfo, UserInfoInitial } from 'app/actions'
+import { displayResponseText } from 'app/utils'
 
 import style from './style.css'
 
@@ -42,18 +43,13 @@ export const SignUpForm: FC = (): JSX.Element => {
     phone
   })
 
-  const signUpUser = async (data: string): Promise<void> => {
+  const signUpUser = async (data: FormikValues): Promise<void> => {
     try {
-      const res = await authApi.signUp(data)
-
-      if (res.status === 200) {
-        await dispatch(fetchUserInfo())
-        setIsSignedUp(true)
-      } else {
-        setResponseText(JSON.parse(res.response).reason)
-      }
+      await signUp(data)
+      await dispatch(fetchUserInfo())
+      setIsSignedUp(true)
     } catch (error) {
-      console.log(error)
+      displayResponseText(setResponseText, error.response.data.reason)
     }
   }
 
@@ -61,7 +57,7 @@ export const SignUpForm: FC = (): JSX.Element => {
     values: FormikValues,
     { setSubmitting }: FormikValues
   ) => {
-    signUpUser(JSON.stringify(values))
+    signUpUser(values)
     setSubmitting(false)
   }
 

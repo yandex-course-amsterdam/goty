@@ -4,8 +4,9 @@ import { Button, Error } from 'app/components'
 import { Formik, FormikValues } from 'formik'
 import * as Yup from 'yup'
 
-import { userApi } from 'app/api'
+import { updateAvatar } from 'app/api/Api'
 import { fetchUserInfo } from 'app/actions'
+import { displayResponseText } from 'app/utils'
 
 import style from './style.css'
 
@@ -19,20 +20,14 @@ export const AvatarForm: FC = (): JSX.Element => {
   })
 
   const updateUserAvatar = async (values: FormikValues): Promise<void> => {
-    const data = new FormData()
-    data.append('avatar', values.avatar)
-
     try {
-      const res = await userApi.updateAvatar(data)
-
-      if (res.status === 200) {
-        dispatch(fetchUserInfo())
-        setResponseText('Successfully updated')
-      } else {
-        setResponseText(JSON.parse(res.response).reason)
-      }
+      const data = new FormData()
+      data.append('avatar', values.avatar)
+      await updateAvatar(data)
+      await dispatch(fetchUserInfo())
+      displayResponseText(setResponseText)
     } catch (error) {
-      console.log(error)
+      displayResponseText(error.response.data.reason)
     }
   }
 

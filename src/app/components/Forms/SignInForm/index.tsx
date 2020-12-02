@@ -5,10 +5,11 @@ import { Button, Error, Input } from 'app/components'
 import { Formik, Form, FormikValues } from 'formik'
 import * as Yup from 'yup'
 
-import { authApi } from 'app/api'
+import { signIn } from 'app/api/Api'
 import { VALIDATION_SCHEMA } from 'app/constants'
 import { route } from 'app/enums'
 import { fetchUserInfo, setUserInfo, UserInfoInitial } from 'app/actions'
+import { displayResponseText } from 'app/utils'
 
 import style from './style.css'
 
@@ -21,18 +22,13 @@ export const SignInForm: FC = (): JSX.Element => {
   const initialValues = { login: '', password: '' }
   const validationSchema = Yup.object({ login, password })
 
-  const signInUser = async (data: string): Promise<void> => {
+  const signInUser = async (data: FormikValues): Promise<void> => {
     try {
-      const res = await authApi.signIn(data)
-
-      if (res.status === 200) {
-        await dispatch(fetchUserInfo())
-        setIsSignIn(true)
-      } else {
-        setResponseText(JSON.parse(res.response).reason)
-      }
+      await signIn(data)
+      await dispatch(fetchUserInfo())
+      setIsSignIn(true)
     } catch (error) {
-      console.log(error)
+      displayResponseText(setResponseText, error.response.data.reason)
     }
   }
 
@@ -40,7 +36,7 @@ export const SignInForm: FC = (): JSX.Element => {
     values: FormikValues,
     { setSubmitting }: FormikValues
   ) => {
-    signInUser(JSON.stringify(values, null, 2))
+    signInUser(values)
     setSubmitting(false)
   }
 

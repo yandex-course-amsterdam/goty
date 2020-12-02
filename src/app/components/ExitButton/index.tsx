@@ -2,7 +2,7 @@ import React, { FC, useState } from 'react'
 import { Redirect } from 'react-router-dom'
 import cn from 'classnames'
 
-import { authApi } from 'app/api'
+import { logout } from 'app/api/Api'
 import { route } from 'app/enums'
 
 import style from './style.css'
@@ -20,11 +20,8 @@ export const ExitButton: FC<IProps> = ({
 
   const handleExit = async () => {
     try {
-      const res = await authApi.logout()
-
-      if (res.status === 200) {
-        setIsLoggedIn(false)
-      }
+      await logout()
+      setIsLoggedIn(false)
     } catch (error) {
       console.log(error)
     }
