@@ -68,11 +68,6 @@
   height: calc(100vh - 212px);
 }
 
-.exit {
-  margin-top: auto;
-  margin-bottom: 0;
-}
-
 .table {
   box-sizing: border-box;
 
@@ -87,20 +82,4 @@
   border-bottom: 1px solid #3c3844;
 
   margin-bottom: 30px;
-}
-
-.button {
-  background: none;
-  width: auto;
-
-  margin-top: auto;
-  margin-bottom: 0;
-
-  padding: 0;
-}
-
-@media (max-width: 1399px) {
-  .exit svg {
-    position: absolute;
-  }
 }

@@ -2,8 +2,6 @@ import React, { FC } from 'react'
 import {
   Avatar,
   Description,
-  ListItem,
-  List,
   Main,
   Navigation,
   Sidebar,
@@ -11,12 +9,10 @@ import {
   SubNavigation,
   DetailsForm,
   PasswordForm,
-  AvatarForm,
-  ExitButton
+  AvatarForm
 } from 'app/components'
-import { Link, useRouteMatch, Route, NavLink, Switch } from 'react-router-dom'
+import { useRouteMatch, Route, NavLink, Switch } from 'react-router-dom'
 
-import { ExitIcon, GameIcon, ScoreIcon, UserIcon } from 'icons'
 import { route } from 'app/enums'
 import { TRANSLATIONS } from './translations'
 
@@ -35,28 +31,7 @@ export const Profile: FC = (): JSX.Element => {
     <div className={style.profile}>
       <Sidebar>
         <Avatar className={style.avatar} />
-        <Navigation title="Options">
-          <List className={style.list}>
-            <Link className={style.link} to={route.game}>
-              <ListItem text="Game">
-                <GameIcon />
-              </ListItem>
-            </Link>
-            <ListItem text="Profile" active>
-              <UserIcon />
-            </ListItem>
-            <Link className={style.link} to={route.scoreLeaderboard}>
-              <ListItem text="Score">
-                <ScoreIcon />
-              </ListItem>
-            </Link>
-            <ExitButton className={style.exit}>
-              <ListItem text="Exit">
-                <ExitIcon />
-              </ListItem>
-            </ExitButton>
-          </List>
-        </Navigation>
+        <Navigation />
       </Sidebar>
       <Main>
         <div className={style.container}>
