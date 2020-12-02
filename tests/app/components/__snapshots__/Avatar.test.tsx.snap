@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Link changes the class when hovered 1`] = `
+<div
+  className=""
+>
+  <img
+    alt="Top game"
+    src="https://ya-praktikum.tech/https://static.insider.com/image/5d24d6b921a861093e71fef3.jpg"
+  />
+  <h1>
+    Top game
+  </h1>
+</div>
+`;
