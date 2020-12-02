@@ -9,7 +9,7 @@ let store
 
 test('Link changes the class when hovered', () => {
   const initialState = {
-    userData: {
+    userInfo: {
       avatar: 'https://static.insider.com/image/5d24d6b921a861093e71fef3.jpg'
     }
   }
