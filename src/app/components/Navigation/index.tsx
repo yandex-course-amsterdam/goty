@@ -7,7 +7,7 @@ import { ExitButton } from 'app/components'
 
 import style from './style.css'
 
-export const Navigation: FC = () => {
+export const Navigation: FC = (): JSX.Element => {
   const { path } = useRouteMatch()
 
   return (
