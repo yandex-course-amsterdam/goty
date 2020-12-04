@@ -35,29 +35,6 @@
   display: none;
 }
 
-.link {
-  text-decoration: none;
-}
-
-.sublink {
-  font: normal 700 14px/17px 'Inter Bold', sans-serif;
-  letter-spacing: 0.75px;
-  color: #eeecf1;
-  text-decoration: none;
-
-  margin-bottom: 16px;
-}
-
-.sublink:hover {
-  text-decoration: underline;
-  color: #9dc2ff;
-}
-
-.active {
-  color: #9dc2ff;
-  text-decoration: underline;
-}
-
 .description {
   margin-top: 120px;
   margin-bottom: 30px;

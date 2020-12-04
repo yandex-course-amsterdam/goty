@@ -1,5 +1,5 @@
 import React, { FC } from 'react'
-import { NavLink, useRouteMatch, Switch, Route } from 'react-router-dom'
+import { useRouteMatch, Switch, Route } from 'react-router-dom'
 import {
   Avatar,
   Navigation,
@@ -33,7 +33,7 @@ const sortUserData = (data: userScoreData[]) =>
   data.sort((a: userScoreData, b: userScoreData) => b.score - a.score)
 
 export const Score: FC = (): JSX.Element => {
-  const { path, url } = useRouteMatch()
+  const { path } = useRouteMatch()
 
   const renderUserScore = () =>
     sortUserData(USER_SCORE_DATA).map(
@@ -60,22 +60,7 @@ export const Score: FC = (): JSX.Element => {
         <div className={style.container}>
           <div>
             <Title className={style.title} title={mainTitle} />
-            <SubNavigation title="Score details">
-              <NavLink
-                className={style.sublink}
-                activeClassName={style.active}
-                to={`${url}${route.leaderboard}`}
-              >
-                Leaderboard
-              </NavLink>
-              <NavLink
-                className={style.sublink}
-                activeClassName={style.active}
-                to={`${url}${route.personalStats}`}
-              >
-                Personal stats
-              </NavLink>
-            </SubNavigation>
+            <SubNavigation title="Score details" />
           </div>
           <Switch>
             <Route exact path={`${path}${route.leaderboard}`}>
