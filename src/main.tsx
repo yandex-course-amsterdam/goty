@@ -12,9 +12,8 @@ import {
   LoaderView
 } from 'app/views'
 
-import { authApi } from 'app/api'
 import { store } from 'app/store'
-import { setUserInfo } from 'app/actions'
+import { fetchUserInfo } from 'app/actions'
 import { route } from 'app/enums'
 import { startServiceWorker } from 'app/utils'
 
@@ -29,16 +28,10 @@ export const Main: FC = (): JSX.Element => {
 
   const getUserData = async () => {
     try {
-      const res = await authApi.getUserInfo()
-
-      if (res.status === 200) {
-        const user = JSON.parse(res.response)
-        dispatch(setUserInfo(user))
-      }
-
+      await dispatch(fetchUserInfo())
       setIsLoading(false)
     } catch (error) {
-      throw new Error(error)
+      console.error(error)
     }
   }
 
