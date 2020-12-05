@@ -1,0 +1,38 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Avatar component Use className prop 1`] = `
+<button
+  className="someClass"
+  type="button"
+>
+  Oh hi
+</button>
+`;
+
+exports[`Avatar component Use default type "button" if no type is provided 1`] = `
+<button
+  className=""
+  type="button"
+>
+  Oh hi
+</button>
+`;
+
+exports[`Avatar component Use handleClick prop 1`] = `
+<button
+  className=""
+  onClick={[Function]}
+  type="button"
+>
+  Oh hi
+</button>
+`;
+
+exports[`Avatar component Use specified type when it is provided 1`] = `
+<button
+  className=""
+  type="submit"
+>
+  Oh hi
+</button>
+`;
