@@ -18,49 +18,47 @@ export const SubNavigation: FC<IProps> = ({ title }): JSX.Element => {
       {title && <p className={style.title}>{title}</p>}
       <nav className={style.nav}>
         {isPathProfile && (
-          <NavLink
-            className={style.sublink}
-            activeClassName={style.active}
-            to={`${url}${route.details}`}
-          >
-            Details
-          </NavLink>
-        )}
-        {isPathProfile && (
-          <NavLink
-            className={style.sublink}
-            activeClassName={style.active}
-            to={`${url}${route.picture}`}
-          >
-            Picture
-          </NavLink>
-        )}
-        {isPathProfile && (
-          <NavLink
-            className={style.sublink}
-            activeClassName={style.active}
-            to={`${url}${route.password}`}
-          >
-            Password
-          </NavLink>
+          <>
+            <NavLink
+              className={style.sublink}
+              activeClassName={style.active}
+              to={`${url}${route.details}`}
+            >
+              Details
+            </NavLink>
+            <NavLink
+              className={style.sublink}
+              activeClassName={style.active}
+              to={`${url}${route.picture}`}
+            >
+              Picture
+            </NavLink>
+            <NavLink
+              className={style.sublink}
+              activeClassName={style.active}
+              to={`${url}${route.password}`}
+            >
+              Password
+            </NavLink>
+          </>
         )}
         {isPathScore && (
-          <NavLink
-            className={style.sublink}
-            activeClassName={style.active}
-            to={`${url}${route.leaderboard}`}
-          >
-            Leaderboard
-          </NavLink>
-        )}
-        {isPathScore && (
-          <NavLink
-            className={style.sublink}
-            activeClassName={style.active}
-            to={`${url}${route.personalStats}`}
-          >
-            Personal stats
-          </NavLink>
+          <>
+            <NavLink
+              className={style.sublink}
+              activeClassName={style.active}
+              to={`${url}${route.leaderboard}`}
+            >
+              Leaderboard
+            </NavLink>
+            <NavLink
+              className={style.sublink}
+              activeClassName={style.active}
+              to={`${url}${route.personalStats}`}
+            >
+              Personal stats
+            </NavLink>
+          </>
         )}
       </nav>
     </>
