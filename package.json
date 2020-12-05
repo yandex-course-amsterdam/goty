@@ -8,7 +8,8 @@
     "build": "webpack -p --progress --colors",
     "lint": "eslint src/**/*.{ts,js} --quiet",
     "lint:fix": "eslint src/**/*.{ts,js} --quiet --fix",
-    "test": "jest --no-cache"
+    "test": "jest --no-cache",
+    "test:update": "jest --no-cache -u"
   },
   "repository": {
     "type": "git",
