@@ -1,9 +1,12 @@
 import React from 'react'
 import * as renderer from 'react-test-renderer'
-
-import { BrowserRouter as Router } from 'react-router-dom'
+import { createMemoryHistory } from 'history'
 
 import { ExitButton } from 'app/components/ExitButton'
+
+import { renderWithRouter } from '../../utils/index'
+
+const history = createMemoryHistory()
 
 // eslint-disable-next-line
 // @ts-ignore
@@ -12,13 +15,11 @@ jest.spyOn(React, 'useState').mockImplementationOnce(() => [false])
 describe('Exit button component', () => {
   test('Render redirect if user is not logged in', () => {
     const component = renderer
-      .create(
-        <Router>
-          <ExitButton>Oops</ExitButton>
-        </Router>
-      )
+      .create(renderWithRouter(<ExitButton>Oops</ExitButton>, history))
       .toJSON()
-    // Snapshot equals to null in this case ¯\_(ツ)_/¯
+    // Snapshot equals to null when there are no parent container for element rendered directly inside Router component
+    // Сompare to Navigation component snapshots for example
+    // ¯\_(ツ)_/¯
     expect(component).toMatchSnapshot()
   })
 

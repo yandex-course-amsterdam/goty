@@ -2,10 +2,13 @@ import React from 'react'
 import * as renderer from 'react-test-renderer'
 import { Provider } from 'react-redux'
 import configureStore, { MockStore } from 'redux-mock-store'
-
-import { BrowserRouter as Router } from 'react-router-dom'
+import { createMemoryHistory } from 'history'
 
 import { PrivateRoute } from 'app/components/PrivateRoute'
+
+import { renderWithRouter } from '../../utils/index'
+
+const history = createMemoryHistory()
 
 interface IUserInfo {
   login: string | null
@@ -24,12 +27,12 @@ describe('PrivateRoute component', () => {
     store = mockStore(initialState)
     const component = renderer.create(
       <Provider store={store}>
-        <Router>
-          <PrivateRoute path="/">1</PrivateRoute>
-        </Router>
+        {renderWithRouter(<PrivateRoute path="/">1</PrivateRoute>, history)}
       </Provider>
     )
-    // Snapshot equals to children in this case ¯\_(ツ)_/¯
+    // Snapshot equals to null when there are no parent container for element rendered directly inside Router component
+    // Сompare to Navigation component snapshots for example
+    // ¯\_(ツ)_/¯
     expect(component).toMatchSnapshot()
   })
 
@@ -39,15 +42,18 @@ describe('PrivateRoute component', () => {
     const component = renderer
       .create(
         <Provider store={store}>
-          <Router>
+          {renderWithRouter(
             <PrivateRoute path="/" exact>
               1
-            </PrivateRoute>
-          </Router>
+            </PrivateRoute>,
+            history
+          )}
         </Provider>
       )
       .toJSON()
-    // Snapshot equals to null in this case ¯\_(ツ)_/¯
+    // Snapshot equals to null when there are no parent container for element rendered directly inside Router component
+    // Сompare to Navigation component snapshots for example
+    // ¯\_(ツ)_/¯
     expect(component).toMatchSnapshot()
   })
 })

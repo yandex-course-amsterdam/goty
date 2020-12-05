@@ -1,10 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`SubNavigation component Render children correctly 1`] = `
-<nav>
-  1
-</nav>
-`;
+exports[`SubNavigation component Render children correctly 1`] = `<nav />`;
 
 exports[`SubNavigation component Render itself correctly 1`] = `<nav />`;
 
@@ -13,9 +9,7 @@ Array [
   <p>
     Oh hi
   </p>,
-  <nav>
-    1
-  </nav>,
+  <nav />,
 ]
 `;
 

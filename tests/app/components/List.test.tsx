@@ -1,7 +1,7 @@
 import React from 'react'
 import * as renderer from 'react-test-renderer'
 
-import { List } from 'app/components/List'
+import { List } from 'uikit/Navigation/List'
 
 describe('List component', () => {
   test('Render itself correctly', () => {
