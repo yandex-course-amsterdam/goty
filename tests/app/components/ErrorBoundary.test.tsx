@@ -5,7 +5,7 @@ import { ErrorBoundary } from 'app/components/'
 import { Button } from 'app/components/Button'
 import { Throwable } from './mockComponents/Throwable'
 
-describe('Error component', () => {
+describe('Error Boundary component', () => {
   test('Render children when there are no errors', () => {
     const component = renderer
       .create(

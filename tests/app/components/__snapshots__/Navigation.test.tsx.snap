@@ -1,0 +1,26 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Navigation component Render children correctly 1`] = `
+<nav>
+  1
+</nav>
+`;
+
+exports[`Navigation component Render itself correctly 1`] = `<nav />`;
+
+exports[`Navigation component Render title and children combined correctly 1`] = `
+<nav>
+  <p>
+    Oh hi
+  </p>
+  1
+</nav>
+`;
+
+exports[`Navigation component Render title correctly 1`] = `
+<nav>
+  <p>
+    Oh hi
+  </p>
+</nav>
+`;
