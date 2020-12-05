@@ -1,12 +1,40 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Link changes the class when hovered 1`] = `
+exports[`Avatar component Use avatar if provided 1`] = `
 <div
   className=""
 >
   <img
     alt="Top game"
-    src="https://ya-praktikum.tech/https://static.insider.com/image/5d24d6b921a861093e71fef3.jpg"
+    src="https://ya-praktikum.tech/boobies.png"
+  />
+  <h1>
+    Top game
+  </h1>
+</div>
+`;
+
+exports[`Avatar component Use className prop 1`] = `
+<div
+  className="someClass"
+>
+  <img
+    alt="Top game"
+    src="test-file-stub"
+  />
+  <h1>
+    Top game
+  </h1>
+</div>
+`;
+
+exports[`Avatar component Use default image if no avatar is provided 1`] = `
+<div
+  className=""
+>
+  <img
+    alt="Top game"
+    src="test-file-stub"
   />
   <h1>
     Top game

@@ -1,25 +1,57 @@
 import React from 'react'
 import * as renderer from 'react-test-renderer'
 import { Provider } from 'react-redux'
-import configureStore from 'redux-mock-store'
+import configureStore, { MockStore } from 'redux-mock-store'
 
 import { Avatar } from 'app/components/Avatar'
 
-let store
+interface IUserInfo {
+  avatar: string | null
+}
 
-test('Link changes the class when hovered', () => {
-  const initialState = {
-    userInfo: {
-      avatar: 'https://static.insider.com/image/5d24d6b921a861093e71fef3.jpg'
-    }
+const initialState: Record<string, IUserInfo> = {
+  userInfo: {
+    avatar: 'boobies.png'
   }
-  const mockStore = configureStore()
-  store = mockStore(initialState)
-  const component = renderer.create(
-    <Provider store={store}>
-      <Avatar />
-    </Provider>
-  )
-  const tree = component.toJSON()
-  expect(tree).toMatchSnapshot()
+}
+const mockStore = configureStore()
+let store: MockStore
+
+describe('Avatar component', () => {
+  test('Use avatar if provided', () => {
+    store = mockStore(initialState)
+    const component = renderer
+      .create(
+        <Provider store={store}>
+          <Avatar />
+        </Provider>
+      )
+      .toJSON()
+    expect(component).toMatchSnapshot()
+  })
+
+  test('Use default image if no avatar is provided', () => {
+    initialState.userInfo.avatar = null
+    store = mockStore(initialState)
+    const component = renderer
+      .create(
+        <Provider store={store}>
+          <Avatar />
+        </Provider>
+      )
+      .toJSON()
+    expect(component).toMatchSnapshot()
+  })
+
+  test('Use className prop', () => {
+    store = mockStore(initialState)
+    const component = renderer
+      .create(
+        <Provider store={store}>
+          <Avatar className="someClass" />
+        </Provider>
+      )
+      .toJSON()
+    expect(component).toMatchSnapshot()
+  })
 })
