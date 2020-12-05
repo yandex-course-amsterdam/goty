@@ -1,48 +1,51 @@
 import React from 'react'
 
-import { Main, Description, Title } from 'app/components'
+import { Description, Title } from 'app/components'
 
 import { DATA } from './data'
 
 import style from './style.css'
 
-type Props = {
+interface IState {
+  hasError: boolean
+}
+
+interface IProps {
   children: React.ReactNode
 }
 
 const { mainTitle, mainDescriptionSubtitle, mainDescriptionTitle } = DATA
 
-export class ErrorBoundary extends React.Component {
-  state = {
-    hasError: false
-  }
-
-  constructor(props: Props) {
+export class ErrorBoundary extends React.Component<IProps, IState> {
+  constructor(props: IProps) {
     super(props)
+    this.state = { hasError: false }
   }
 
-  componentDidCatch() {
+  componentDidCatch(): void {
     this.setState({ hasError: true })
   }
 
-  render() {
-    if (this.state.hasError) {
+  render(): React.ReactNode {
+    const {
+      state: { hasError },
+      props: { children }
+    } = this
+    if (hasError) {
       return (
-        <Main>
-          <div className={style.container}>
-            <Title className={style.title} title={mainTitle} />
-            <div className={style.overflow}>
-              <Description
-                className={style.description}
-                title={mainDescriptionTitle}
-                subtitle={mainDescriptionSubtitle}
-              />
-            </div>
+        <div className={style.container}>
+          <Title className={style.title} title={mainTitle} />
+          <div className={style.overflow}>
+            <Description
+              className={style.description}
+              title={mainDescriptionTitle}
+              subtitle={mainDescriptionSubtitle}
+            />
           </div>
-        </Main>
+        </div>
       )
     }
 
-    return this.props.children
+    return children
   }
 }

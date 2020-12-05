@@ -1,6 +1,15 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Avatar component Use className prop 1`] = `
+exports[`Button component Render buttonText correctly 1`] = `
+<button
+  className=""
+  type="button"
+>
+  ohHi
+</button>
+`;
+
+exports[`Button component Use className prop 1`] = `
 <button
   className="someClass"
   type="button"
@@ -9,7 +18,7 @@ exports[`Avatar component Use className prop 1`] = `
 </button>
 `;
 
-exports[`Avatar component Use default type "button" if no type is provided 1`] = `
+exports[`Button component Use default type "button" if no type is provided 1`] = `
 <button
   className=""
   type="button"
@@ -18,7 +27,7 @@ exports[`Avatar component Use default type "button" if no type is provided 1`] =
 </button>
 `;
 
-exports[`Avatar component Use handleClick prop 1`] = `
+exports[`Button component Use handleClick prop 1`] = `
 <button
   className=""
   onClick={[Function]}
@@ -28,7 +37,7 @@ exports[`Avatar component Use handleClick prop 1`] = `
 </button>
 `;
 
-exports[`Avatar component Use specified type when it is provided 1`] = `
+exports[`Button component Use specified type when it is provided 1`] = `
 <button
   className=""
   type="submit"

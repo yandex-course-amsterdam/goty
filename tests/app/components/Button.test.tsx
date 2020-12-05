@@ -3,7 +3,7 @@ import * as renderer from 'react-test-renderer'
 
 import { Button } from 'app/components/Button'
 
-describe('Avatar component', () => {
+describe('Button component', () => {
   test('Render buttonText correctly', () => {
     const buttonText = 'ohHi'
     const component = renderer
@@ -12,6 +12,7 @@ describe('Avatar component', () => {
     // eslint-disable-next-line
     // @ts-ignore
     expect(component.children[0]).toEqual(buttonText)
+    expect(component).toMatchSnapshot()
   })
 
   test('Use default type "button" if no type is provided', () => {

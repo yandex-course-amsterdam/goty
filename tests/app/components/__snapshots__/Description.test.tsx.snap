@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Description component Render itself correctly 1`] = `
+<div
+  className=""
+>
+  <p>
+    Oh hi
+  </p>
+  <p>
+    Mark
+  </p>
+</div>
+`;
+
+exports[`Description component Use className prop 1`] = `
+<div
+  className="someClass"
+>
+  <p>
+    Oh hi
+  </p>
+  <p>
+    Mark
+  </p>
+</div>
+`;
