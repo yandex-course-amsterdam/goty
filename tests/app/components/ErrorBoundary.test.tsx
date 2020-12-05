@@ -1,8 +1,9 @@
 import React from 'react'
 import * as renderer from 'react-test-renderer'
 
-import { ErrorBoundary } from 'app/components/ErrorBoundary'
+import { ErrorBoundary } from 'app/components/'
 import { Button } from 'app/components/Button'
+import { Throwable } from './mockComponents/Throwable'
 
 describe('Error component', () => {
   test('Render children when there are no errors', () => {
@@ -13,7 +14,17 @@ describe('Error component', () => {
         </ErrorBoundary>
       )
       .toJSON()
-    console.log(component)
+    expect(component).toMatchSnapshot()
+  })
+
+  test('Render fallback UI when there is an error', () => {
+    const component = renderer
+      .create(
+        <ErrorBoundary>
+          <Throwable />
+        </ErrorBoundary>
+      )
+      .toJSON()
     expect(component).toMatchSnapshot()
   })
 })
