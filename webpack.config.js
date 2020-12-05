@@ -30,7 +30,8 @@ module.exports = {
     alias: {
       app: path.resolve(__dirname, 'src/app/'),
       images: path.resolve(__dirname, 'src/images/'),
-      icons: path.resolve(__dirname, 'src/icons/')
+      icons: path.resolve(__dirname, 'src/icons/'),
+      uikit: path.resolve(__dirname, 'src/uikit/')
     }
   },
   module: {

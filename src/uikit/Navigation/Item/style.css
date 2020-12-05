@@ -9,6 +9,10 @@
   cursor: pointer;
 }
 
+.item:last-of-type {
+  justify-content: normal;
+}
+
 .text {
   font: normal 600 20px/32px 'Inter Medium', sans-serif;
   color: #9590a0;
