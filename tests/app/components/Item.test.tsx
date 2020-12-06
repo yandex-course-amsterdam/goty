@@ -4,7 +4,7 @@ import { createMemoryHistory } from 'history'
 
 import { ListItem } from 'uikit/Navigation/Item'
 
-import { renderWithRouter } from '../../utils/index'
+import { renderWithRouter } from '../../utils'
 
 const history = createMemoryHistory()
 

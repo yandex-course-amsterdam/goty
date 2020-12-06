@@ -4,7 +4,7 @@ import { createMemoryHistory } from 'history'
 
 import { SubNavigation } from 'app/components/SubNavigation'
 
-import { renderWithRouter } from '../../utils/index'
+import { renderWithRouter } from '../../utils'
 
 const history = createMemoryHistory()
 

@@ -4,7 +4,7 @@ import { createMemoryHistory } from 'history'
 
 import { ExitButton } from 'app/components/ExitButton'
 
-import { renderWithRouter } from '../../utils/index'
+import { renderWithRouter } from '../../utils'
 
 const history = createMemoryHistory()
 

@@ -6,7 +6,7 @@ import { createMemoryHistory } from 'history'
 
 import { PrivateRoute } from 'app/components/PrivateRoute'
 
-import { renderWithRouter } from '../../utils/index'
+import { renderWithRouter } from '../../utils'
 
 const history = createMemoryHistory()
 

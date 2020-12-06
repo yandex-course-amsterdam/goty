@@ -4,7 +4,7 @@ import { createMemoryHistory } from 'history'
 
 import { Navigation } from 'app/components/Navigation'
 
-import { renderWithRouter } from '../../utils/index'
+import { renderWithRouter } from '../../utils'
 
 describe('Navigation component', () => {
   test('Render itself correctly', () => {
