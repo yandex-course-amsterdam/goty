@@ -1,28 +1,146 @@
 import React, { useState, useRef, useCallback, useEffect } from 'react'
+import cn from 'classnames'
 
 import { ENEMY_TYPE } from 'app/constants'
 
 import { State, Player, Enemy, Particle } from './entities'
-import {
-  handleFire,
-  handleMoveStart,
-  handleMoveStop,
-  handleBoostChoice
-} from './helpers/listeners'
+import { handleFire, handleBoostChoice } from './helpers/listeners'
 
 import style from './style.css'
+
+enum GAME_STATE {
+  INITIAL = 'INITIAL',
+  PLAYING = 'PLAYING',
+  GAME_OVER = 'GAME_OVER'
+}
+
+enum MOVE_DIRECTION_HORIZONTAL {
+  RIGHT = 1,
+  LEFT = -1
+}
+
+enum MOVE_DIRECTION_VERTICAL {
+  TOP = -1,
+  BOTTOM = 1
+}
+
+enum SET_ACTION {
+  ADD = 'add',
+  DELETE = 'delete'
+}
 
 export const Canvas: React.FC = (): JSX.Element => {
   const [state] = useState<State>(new State())
   const [score, setScore] = useState(0)
+  const [credits, setCredits] = useState(0)
   const [enemiesSpawnInterval, setEnemiesSpawnInterval] = useState<ReturnType<
     typeof setInterval
   > | null>(null)
-  const [showEndGamePopup, setShowEndGamePopup] = useState(false)
+  const [gameState, setGameState] = useState<keyof typeof GAME_STATE>(
+    GAME_STATE.INITIAL
+  )
   const [ctx, setCtx] = useState<CanvasRenderingContext2D | null>(null)
 
-  const animationFrameId = React.useRef(0)
+  // Сеты выбраны для удобства, которое предлагают методы add() и delete()
+  const [verticalMoveDirection, setVerticalMoveDirection] = useState<
+    Set<number>
+  >(new Set())
+  const [horizontalMoveDirection, setHorizontalMoveDirection] = useState<
+    Set<number>
+  >(new Set())
+
+  const animationFrameId = useRef(0)
   const boardRef = useRef<HTMLCanvasElement>(null)
+
+  // Идея в том, чтобы проверять нажатую клавишу на каждый кадр анимации вместо того, чтобы мутировать state из внешних обработчиков
+  // Также это удобно для ситуаций с перекрёстными нажатиями — теперь любая из WASD клавиш будет корректно триггерить движение в нужную сторону
+  const handleMoveCallback = useCallback(
+    (code: string, action: 'add' | 'delete'): void => {
+      let tmp
+
+      switch (code) {
+        case 'KeyW':
+          tmp = verticalMoveDirection
+          tmp[action](MOVE_DIRECTION_VERTICAL.TOP)
+          setVerticalMoveDirection(tmp)
+          break
+        case 'KeyD':
+          tmp = horizontalMoveDirection
+          tmp[action](MOVE_DIRECTION_HORIZONTAL.RIGHT)
+          setHorizontalMoveDirection(tmp)
+          break
+        case 'KeyS':
+          tmp = verticalMoveDirection
+          tmp[action](MOVE_DIRECTION_VERTICAL.BOTTOM)
+          setVerticalMoveDirection(tmp)
+          break
+        case 'KeyA':
+          tmp = horizontalMoveDirection
+          tmp[action](MOVE_DIRECTION_HORIZONTAL.LEFT)
+          setHorizontalMoveDirection(tmp)
+          break
+        default:
+          break
+      }
+    },
+    [horizontalMoveDirection, verticalMoveDirection]
+  )
+
+  const handleMoveStartCallback = useCallback(
+    (evt: KeyboardEvent) => {
+      const { code } = evt
+      handleMoveCallback(code, SET_ACTION.ADD)
+    },
+    [handleMoveCallback]
+  )
+
+  const handleMoveStopCallback = useCallback(
+    (evt: KeyboardEvent) => {
+      const { code } = evt
+      handleMoveCallback(code, SET_ACTION.DELETE)
+    },
+    [handleMoveCallback]
+  )
+
+  const handleBoostChoiceCallback = useCallback(
+    (evt: KeyboardEvent) => {
+      handleBoostChoice(evt, state, ctx as CanvasRenderingContext2D)
+    },
+    [state, ctx]
+  )
+
+  const handleClick = useCallback(
+    (evt: React.MouseEvent<HTMLCanvasElement>): void => {
+      const { clientX, clientY } = evt
+      const player = state.getPlayer() as Player
+
+      const { canvas } = ctx as CanvasRenderingContext2D
+      const canvasRect = canvas.getBoundingClientRect()
+
+      const pos = {
+        x: clientX - canvasRect.x,
+        y: clientY - canvasRect.y
+      }
+
+      const angle = Math.atan2(pos.y - player.y, pos.x - player.x)
+
+      handleFire(angle, state, ctx as CanvasRenderingContext2D)
+    },
+    [state, ctx]
+  )
+
+  const handleTriggerPush = useCallback(
+    (gamepad: Gamepad) => {
+      const { axes } = gamepad
+
+      const angle = Math.atan2(axes[3], axes[2])
+
+      // TODO: добавить ограничение на один выстрел в n миллисекунд
+
+      handleFire(angle, state, ctx as CanvasRenderingContext2D)
+    },
+    [state, ctx]
+  )
 
   const spawnEnemies = (): void => {
     const interval = setInterval(() => {
@@ -39,30 +157,29 @@ export const Canvas: React.FC = (): JSX.Element => {
     setEnemiesSpawnInterval(interval)
   }
 
-  const createPopup = () =>
-    showEndGamePopup && <div className={style.score}>We end {score}</div>
+  const attachKeyboardListeners = (): void => {
+    window.addEventListener('keydown', handleMoveStartCallback)
+    window.addEventListener('keyup', handleMoveStopCallback)
+    window.addEventListener('keydown', handleBoostChoiceCallback)
+  }
+
+  const detachKeyboardListeners = (): void => {
+    window.removeEventListener('keydown', handleMoveStartCallback)
+    window.removeEventListener('keyup', handleMoveStopCallback)
+    window.removeEventListener('keydown', handleBoostChoiceCallback)
+  }
 
   const endGame = () => {
-    setShowEndGamePopup(true)
-    createPopup()
+    setGameState(GAME_STATE.GAME_OVER)
+
+    setHorizontalMoveDirection(new Set())
+    setVerticalMoveDirection(new Set())
 
     clearInterval(enemiesSpawnInterval as ReturnType<typeof setInterval>)
     cancelAnimationFrame(animationFrameId.current)
+    detachKeyboardListeners()
 
     state.endGame()
-  }
-
-  const attachKeyboardListeners = (): void => {
-    window.addEventListener('keydown', (evt) => {
-      handleMoveStart(evt, state)
-    })
-    window.addEventListener('keyup', (evt) => {
-      handleMoveStop(evt, state)
-    })
-
-    window.addEventListener('keydown', (evt) => {
-      handleBoostChoice(evt, state, ctx as CanvasRenderingContext2D)
-    })
   }
 
   const animate = (): void => {
@@ -72,6 +189,22 @@ export const Canvas: React.FC = (): JSX.Element => {
     const enemies = state.getEnemies()
     const particles = state.getParticles()
 
+    let playerHorizontalVelocity = 0
+    let playerVerticalVelocity = 0
+
+    if (horizontalMoveDirection?.size) {
+      playerHorizontalVelocity = Array.from(
+        horizontalMoveDirection
+      ).pop() as number
+    }
+
+    if (verticalMoveDirection?.size) {
+      playerVerticalVelocity = Array.from(verticalMoveDirection).pop() as number
+    }
+
+    player.setHorizontalVelocity(playerHorizontalVelocity)
+    player.setVerticalVelocity(playerVerticalVelocity)
+
     const [gamepad] = navigator.getGamepads()
     if (gamepad?.buttons[7].pressed) {
       handleTriggerPush(gamepad)
@@ -80,8 +213,10 @@ export const Canvas: React.FC = (): JSX.Element => {
 
     animationFrameId.current = requestAnimationFrame(animate)
 
-    ctx!.fillStyle = 'white'
-    ctx!.fillRect(0, 0, canvas.width, canvas.height)
+    if (ctx) {
+      ctx.fillStyle = 'white'
+      ctx.fillRect(0, 0, canvas.width, canvas.height)
+    }
 
     player.update()
 
@@ -133,10 +268,12 @@ export const Canvas: React.FC = (): JSX.Element => {
 
           state.removeProjectile(projectileIndex)
 
+          state.addScore(100)
+          setScore(state.getScore())
+
           if (isDead) {
-            state.addScore(100)
-            setScore(state.getScore())
-            // state.addCredits(5)
+            state.addCredits(1)
+            setCredits(state.getCredits())
 
             state.removeEnemy(enemyIndex)
           }
@@ -153,7 +290,12 @@ export const Canvas: React.FC = (): JSX.Element => {
     })
   }
 
-  const init = (): void => {
+  const startGame = (): void => {
+    state.resetState()
+
+    setScore(0)
+    setCredits(0)
+
     const { canvas } = ctx as CanvasRenderingContext2D
     const player = new Player(
       canvas.width / 2,
@@ -165,41 +307,44 @@ export const Canvas: React.FC = (): JSX.Element => {
     state.registerPlayer(player)
 
     attachKeyboardListeners()
+
+    setGameState(GAME_STATE.PLAYING)
+
     animate()
     spawnEnemies()
   }
 
-  const handleClick = useCallback(
-    (evt: React.MouseEvent<HTMLCanvasElement>): void => {
-      const { clientX, clientY } = evt
-      const player = state.getPlayer() as Player
-
-      const { canvas } = ctx as CanvasRenderingContext2D
-      const canvasRect = canvas.getBoundingClientRect()
-
-      const pos = {
-        x: clientX - canvasRect.x,
-        y: clientY - canvasRect.y
-      }
-
-      const angle = Math.atan2(pos.y - player.y, pos.x - player.x)
-
-      handleFire(angle, state, ctx as CanvasRenderingContext2D)
-    },
-    [state, ctx]
+  const createInitialPopup = (): JSX.Element => (
+    <div className={style.popup}>
+      I do not know what went wrong but they are here again
+      <br />
+      They will hunt you down
+      <br />
+      Fight for your life
+      <div className={style.popupText}>
+        <button onClick={startGame} type="button" className={style.popupButton}>
+          Try your best
+        </button>
+      </div>
+    </div>
   )
 
-  const handleTriggerPush = useCallback(
-    (gamepad: Gamepad) => {
-      const { axes } = gamepad
+  const createGameOverPopup = (): JSX.Element => (
+    <div className={cn(style.popup, style.gameOver)}>
+      They got you. You managed to save {score} tokens
+      <div>
+        <button onClick={startGame} type="button" className={style.popupButton}>
+          Try again
+        </button>
+      </div>
+    </div>
+  )
 
-      const angle = Math.atan2(axes[3], axes[2])
-
-      // TODO: добавить ограничение на один выстрел в n миллисекунд
-
-      handleFire(angle, state, ctx as CanvasRenderingContext2D)
-    },
-    [state, ctx]
+  const createScoreWidget = (): JSX.Element => (
+    <div className={style.score}>
+      <div>Tokens: {score}</div>
+      <div>Credits: {credits}</div>
+    </div>
   )
 
   useEffect(() => {
@@ -217,15 +362,16 @@ export const Canvas: React.FC = (): JSX.Element => {
       const canvasHeight = canvasParentRect.height
       boardRef.current.width = canvasWidth
       boardRef.current.height = canvasHeight
-
-      init()
+      ctx.fillStyle = 'white'
+      ctx.fillRect(0, 0, canvasWidth, canvasHeight)
     }
   }, [ctx])
 
   return (
     <div className={style.canvasWrapper}>
-      {createPopup()}
-      <div className={style.score}>Score: {score}</div>
+      {gameState === GAME_STATE.INITIAL && createInitialPopup()}
+      {gameState === GAME_STATE.GAME_OVER && createGameOverPopup()}
+      {gameState !== GAME_STATE.INITIAL && createScoreWidget()}
       <canvas
         id="board"
         ref={boardRef}
