@@ -182,6 +182,14 @@ export const Canvas: React.FC = (): JSX.Element => {
     state.endGame()
   }
 
+  const clearCanvas = (ctx: CanvasRenderingContext2D): void => {
+    const {
+      canvas: { width: canvasWidth, height: canvasHeight }
+    } = ctx
+    ctx.fillStyle = 'white'
+    ctx.fillRect(0, 0, canvasWidth, canvasHeight)
+  }
+
   const animate = (): void => {
     const { canvas } = ctx as CanvasRenderingContext2D
     const player = state.getPlayer() as Player
@@ -214,8 +222,7 @@ export const Canvas: React.FC = (): JSX.Element => {
     animationFrameId.current = requestAnimationFrame(animate)
 
     if (ctx) {
-      ctx.fillStyle = 'white'
-      ctx.fillRect(0, 0, canvas.width, canvas.height)
+      clearCanvas(ctx)
     }
 
     player.update()
@@ -362,8 +369,7 @@ export const Canvas: React.FC = (): JSX.Element => {
       const canvasHeight = canvasParentRect.height
       boardRef.current.width = canvasWidth
       boardRef.current.height = canvasHeight
-      ctx.fillStyle = 'white'
-      ctx.fillRect(0, 0, canvasWidth, canvasHeight)
+      clearCanvas(ctx)
     }
   }, [ctx])
 
