@@ -1,0 +1,21 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`List component Render children correctly 1`] = `
+<ul
+  className=""
+>
+  1
+</ul>
+`;
+
+exports[`List component Render itself correctly 1`] = `
+<ul
+  className=""
+/>
+`;
+
+exports[`List component Use className prop 1`] = `
+<ul
+  className="someClass"
+/>
+`;

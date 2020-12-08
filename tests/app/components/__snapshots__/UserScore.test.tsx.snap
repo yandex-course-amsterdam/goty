@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`UserScore component Render itself correctly 1`] = `
+<div>
+  <p>
+    Mark
+  </p>
+  <div
+    style={
+      Object {
+        "flexBasis": "21",
+      }
+    }
+  >
+    42
+  </div>
+</div>
+`;

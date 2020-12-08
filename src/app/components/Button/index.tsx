@@ -4,7 +4,7 @@ import cn from 'classnames'
 import style from './style.css'
 
 interface IProps {
-  type: 'button' | 'submit'
+  type?: 'button' | 'submit'
   buttonText: string
   className?: string
   handleClick?: () => void

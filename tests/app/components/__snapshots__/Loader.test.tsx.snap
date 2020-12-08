@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Loader component Render itself correctly 1`] = `
+<section>
+  <div />
+  <div />
+  <div />
+</section>
+`;

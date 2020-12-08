@@ -1,0 +1,21 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Error component Render itself correctly 1`] = `
+<p
+  className=""
+/>
+`;
+
+exports[`Error component Use className prop 1`] = `
+<p
+  className="someClass"
+/>
+`;
+
+exports[`Error component Use errorText correctly 1`] = `
+<p
+  className=""
+>
+  Oops...
+</p>
+`;

@@ -9,7 +9,7 @@ interface IProps {
 }
 
 export const Main: FC<IProps> = ({ children }): JSX.Element => (
-  <ErrorBoundary>
-    <main className={style.main}>{children}</main>
-  </ErrorBoundary>
+  <main className={style.main}>
+    <ErrorBoundary>{children}</ErrorBoundary>
+  </main>
 )

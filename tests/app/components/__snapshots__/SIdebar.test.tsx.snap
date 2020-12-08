@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Sidebar component Render children correctly 1`] = `
+<aside>
+  1
+</aside>
+`;
+
+exports[`Sidebar component Render itself correctly 1`] = `<aside />`;
