@@ -14,7 +14,9 @@ export enum RequestRoot {
   logout = '/auth/logout',
   profile = '/user/profile',
   password = '/user/password',
-  avatar = '/user/profile/avatar'
+  avatar = '/user/profile/avatar',
+  serviceId = '/oauth/yandex/service-id',
+  oauth = '/oauth/yandex'
 }
 
 export const getUserInfo = (): Promise<AxiosResponse> =>
@@ -36,3 +38,10 @@ export const updateAvatar = (body: FormData): Promise<AxiosResponse> =>
   api.put(RequestRoot.avatar, body)
 
 export const logout = (): Promise<AxiosResponse> => api.post(RequestRoot.logout)
+
+export const getServiceId = (): Promise<AxiosResponse> =>
+  api.get(RequestRoot.serviceId)
+
+export const authWithYandexOauth = (
+  codeString: string | null
+): Promise<AxiosResponse> => api.post(RequestRoot.oauth, { code: codeString })

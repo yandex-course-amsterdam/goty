@@ -2,7 +2,8 @@ import React, { FC, useEffect, useState } from 'react'
 import ReactDOM from 'react-dom'
 import { Provider, useDispatch } from 'react-redux'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
-import { PrivateRoute } from 'app/components'
+
+import { PrivateRoute, Authorization } from 'app/components'
 import {
   SignUpView,
   SignInView,
@@ -13,12 +14,13 @@ import {
 } from 'app/views'
 
 import { store } from 'app/store'
-import { fetchUserInfo } from 'app/actions'
 import { route } from 'app/enums'
+
 import { startServiceWorker } from 'app/utils'
 
 import 'normalize.css'
 import './fonts/fonts.css'
+import { fetchUserInfo } from 'app/actions'
 
 startServiceWorker()
 
@@ -29,9 +31,10 @@ export const Main: FC = (): JSX.Element => {
   const getUserData = async () => {
     try {
       await dispatch(fetchUserInfo())
-      setIsLoading(false)
+      setIsLoading(!isLoading)
     } catch (error) {
-      console.error(error)
+      console.log(error)
+      setIsLoading(!isLoading)
     }
   }
 
@@ -44,6 +47,9 @@ export const Main: FC = (): JSX.Element => {
   ) : (
     <Router>
       <Switch>
+        <Route exact path={route.auth}>
+          <Authorization />
+        </Route>
         <Route path={route.signUp}>
           <SignUpView />
         </Route>
@@ -53,7 +59,7 @@ export const Main: FC = (): JSX.Element => {
         <PrivateRoute path={route.profile}>
           <ProfileView />
         </PrivateRoute>
-        <PrivateRoute exact path={route.game}>
+        <PrivateRoute path={route.game}>
           <GameView />
         </PrivateRoute>
         <PrivateRoute path={route.score}>

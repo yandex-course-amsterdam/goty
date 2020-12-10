@@ -1,9 +1,10 @@
 export enum route {
+  auth = '/',
   signIn = '/sign-in',
   signUp = '/sign-up',
   score = '/score',
   profile = '/profile',
-  game = '/',
+  game = '/game',
   scoreLeaderboard = '/score/leaderboard',
   leaderboard = '/leaderboard',
   profileDetails = '/profile/details',

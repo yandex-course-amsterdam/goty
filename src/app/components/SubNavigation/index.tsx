@@ -1,6 +1,8 @@
 import React, { FC } from 'react'
+import { useSelector } from 'react-redux'
 import { NavLink, useRouteMatch } from 'react-router-dom'
 
+import { StoreState } from 'app/reducers'
 import { route } from 'app/enums'
 import style from './style.css'
 
@@ -10,6 +12,7 @@ interface IProps {
 
 export const SubNavigation: FC<IProps> = ({ title }): JSX.Element => {
   const { path, url } = useRouteMatch()
+  const oauthStatus = useSelector((state: StoreState) => state.oauthStatus)
   const isPathProfile = path === route.profile
   const isPathScore = path === route.score
 
@@ -33,13 +36,15 @@ export const SubNavigation: FC<IProps> = ({ title }): JSX.Element => {
             >
               Picture
             </NavLink>
-            <NavLink
-              className={style.sublink}
-              activeClassName={style.active}
-              to={`${url}${route.password}`}
-            >
-              Password
-            </NavLink>
+            {!oauthStatus && (
+              <NavLink
+                className={style.sublink}
+                activeClassName={style.active}
+                to={`${url}${route.password}`}
+              >
+                Password
+              </NavLink>
+            )}
           </>
         )}
         {isPathScore && (

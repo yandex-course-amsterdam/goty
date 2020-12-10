@@ -6,3 +6,11 @@
   margin-left: 178px;
   width: 337px;
 }
+
+.button {
+  margin-bottom: 20px;
+}
+
+.yandexButton {
+  background: #f6655a;
+}
