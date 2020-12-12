@@ -17,13 +17,13 @@ import {
 import { store } from 'app/store'
 import { route } from 'app/enums'
 
-// import { startServiceWorker } from 'app/utils'
+import { startServiceWorker } from 'app/utils'
 
 import 'normalize.css'
 import './fonts/fonts.css'
 import { fetchUserInfo } from 'app/actions'
 
-// startServiceWorker()
+startServiceWorker()
 
 export const Main: FC = (): JSX.Element => {
   const [isLoading, setIsLoading] = useState(true)
