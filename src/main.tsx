@@ -17,12 +17,12 @@ import { OfflineBar, PrivateRoute } from 'app/components'
 import { store } from 'app/store'
 import { fetchUserInfo } from 'app/actions'
 import { route } from 'app/enums'
-// import { startServiceWorker } from 'app/utils'
+import { startServiceWorker } from 'app/utils'
 
 import 'normalize.css'
 import './fonts/fonts.css'
 
-// startServiceWorker()
+startServiceWorker()
 
 export const Main: FC = (): JSX.Element => {
   const [isLoading, setIsLoading] = useState(true)
