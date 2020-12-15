@@ -3,12 +3,19 @@
 exports[`Canvas component Render endgame popup correctly 1`] = `
 <div>
   <div>
-    We end 
-    0
-  </div>
-  <div>
-    Score: 
-    0
+    I do not know what went wrong but they are here again
+    <br />
+    They will hunt you down
+    <br />
+    Fight for your life
+    <div>
+      <button
+        onClick={[Function]}
+        type="button"
+      >
+        Try your best
+      </button>
+    </div>
   </div>
   <canvas
     id="board"
@@ -20,8 +27,19 @@ exports[`Canvas component Render endgame popup correctly 1`] = `
 exports[`Canvas component Render itself correctly 1`] = `
 <div>
   <div>
-    Score: 
-    0
+    I do not know what went wrong but they are here again
+    <br />
+    They will hunt you down
+    <br />
+    Fight for your life
+    <div>
+      <button
+        onClick={[Function]}
+        type="button"
+      >
+        Try your best
+      </button>
+    </div>
   </div>
   <canvas
     id="board"
