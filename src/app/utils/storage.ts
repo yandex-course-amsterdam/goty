@@ -18,3 +18,7 @@ export const storeScore = (scoreNew: Record<string, any>): void => {
 
   localStorage.setItem(ITEM_NAME, JSON.stringify(scoreGreater))
 }
+
+export const removeScore = (): void => {
+  localStorage.removeItem(ITEM_NAME)
+}

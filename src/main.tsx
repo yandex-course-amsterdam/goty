@@ -4,6 +4,9 @@ import { Provider, useDispatch } from 'react-redux'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import { CSSTransition } from 'react-transition-group'
 
+import { getScore, removeScore } from 'app/utils'
+import { postResult } from 'app/api/Api'
+
 import {
   SignUpView,
   SignInView,
@@ -41,7 +44,16 @@ export const Main: FC = (): JSX.Element => {
   }
 
   const handleOfflineCallback = useCallback(() => setIsOffline(true), [])
-  const handleOnlineCallback = useCallback(() => setIsOffline(false), [])
+  const handleOnlineCallback = useCallback(() => {
+    setIsOffline(false)
+
+    const storedScore = getScore()
+
+    if (storedScore) {
+      postResult(storedScore)
+      removeScore()
+    }
+  }, [])
 
   window.addEventListener('offline', handleOfflineCallback)
   window.addEventListener('online', handleOnlineCallback)
