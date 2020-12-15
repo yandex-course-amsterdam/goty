@@ -188,6 +188,7 @@ export const Canvas: React.FC = (): JSX.Element => {
     }
 
     postResult(result).catch((err) => {
+      // TODO: Добавить обработку конкретной ошибки — ошибки соединения
       console.warn(
         `There is an network error so we store this result to send it later. Here is the error: ${err}`
       )
