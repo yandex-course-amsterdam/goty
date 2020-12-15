@@ -187,12 +187,13 @@ export const Canvas: React.FC = (): JSX.Element => {
       ratingFieldName: ITEM_NAME
     }
 
-    postResult(result).catch((err) => {
-      // TODO: Добавить обработку конкретной ошибки — ошибки соединения
-      console.warn(
-        `There is an network error so we store this result to send it later. Here is the error: ${err}`
-      )
-      storeScore(result)
+    postResult(result).catch((err: Error) => {
+      if (err.message === 'Network Error') {
+        console.warn(
+          `There is an network error so we store this result to send it later. Here is the error: ${err}`
+        )
+        storeScore(result)
+      }
     })
   }
 
