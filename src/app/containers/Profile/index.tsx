@@ -12,7 +12,9 @@ import {
   AvatarForm
 } from 'app/components'
 import { useRouteMatch, Route, Switch } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 
+import { StoreState } from 'app/reducers'
 import { route } from 'app/enums'
 import { TRANSLATIONS } from './translations'
 
@@ -26,6 +28,7 @@ const {
 
 export const Profile: FC = (): JSX.Element => {
   const { path } = useRouteMatch()
+  const oauthStatus = useSelector((state: StoreState) => state.oauthStatus)
 
   return (
     <div className={style.profile}>
@@ -60,16 +63,18 @@ export const Profile: FC = (): JSX.Element => {
                 <AvatarForm />
               </div>
             </Route>
-            <Route exact path={`${path}${route.password}`}>
-              <div className={style.overflow}>
-                <Description
-                  className={style.description}
-                  title={mainDescriptionTitle}
-                  subtitle={mainDescriptionSubtitle}
-                />
-                <PasswordForm />
-              </div>
-            </Route>
+            {!oauthStatus && (
+              <Route exact path={`${path}${route.password}`}>
+                <div className={style.overflow}>
+                  <Description
+                    className={style.description}
+                    title={mainDescriptionTitle}
+                    subtitle={mainDescriptionSubtitle}
+                  />
+                  <PasswordForm />
+                </div>
+              </Route>
+            )}
           </Switch>
         </div>
       </Main>

@@ -10,17 +10,19 @@ import {
   ProfileView,
   GameView,
   ScoreView,
-  LoaderView
+  LoaderView,
+  NotFoundView
 } from 'app/views'
-import { OfflineBar, PrivateRoute } from 'app/components'
+import { OfflineBar, PrivateRoute, Authorization } from 'app/components'
 
 import { store } from 'app/store'
-import { fetchUserInfo } from 'app/actions'
 import { route } from 'app/enums'
+
 import { startServiceWorker } from 'app/utils'
 
 import 'normalize.css'
 import './fonts/fonts.css'
+import { fetchUserInfo } from 'app/actions'
 
 startServiceWorker()
 
@@ -32,9 +34,10 @@ export const Main: FC = (): JSX.Element => {
   const getUserData = async () => {
     try {
       await dispatch(fetchUserInfo())
-      setIsLoading(false)
+      setIsLoading(!isLoading)
     } catch (error) {
-      console.error(error)
+      console.log(error)
+      setIsLoading(!isLoading)
     }
   }
 
@@ -59,6 +62,9 @@ export const Main: FC = (): JSX.Element => {
     <>
       <Router>
         <Switch>
+          <Route exact path={route.auth}>
+            <Authorization />
+          </Route>
           <Route path={route.signUp}>
             <SignUpView />
           </Route>
@@ -68,12 +74,15 @@ export const Main: FC = (): JSX.Element => {
           <PrivateRoute path={route.profile}>
             <ProfileView />
           </PrivateRoute>
-          <PrivateRoute exact path={route.game}>
+          <PrivateRoute path={route.game}>
             <GameView />
           </PrivateRoute>
           <PrivateRoute path={route.score}>
             <ScoreView />
           </PrivateRoute>
+          <Route path="*">
+            <NotFoundView />
+          </Route>
         </Switch>
       </Router>
 
