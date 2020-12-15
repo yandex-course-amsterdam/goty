@@ -4,9 +4,6 @@ import { Provider, useDispatch } from 'react-redux'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import { CSSTransition } from 'react-transition-group'
 
-import { getScore, removeScore } from 'app/utils'
-import { postResult } from 'app/api/Api'
-
 import {
   SignUpView,
   SignInView,
@@ -18,15 +15,16 @@ import {
 } from 'app/views'
 import { OfflineBar, PrivateRoute, Authorization } from 'app/components'
 
+import { postResult } from 'app/api/Api'
 import { store } from 'app/store'
 import { route } from 'app/enums'
-// import { startServiceWorker } from 'app/utils'
+import { startServiceWorker, getScore, removeScore } from 'app/utils'
 
 import 'normalize.css'
 import './fonts/fonts.css'
 import { fetchUserInfo } from 'app/actions'
 
-// startServiceWorker()
+startServiceWorker()
 
 export const Main: FC = (): JSX.Element => {
   const [isLoading, setIsLoading] = useState(true)
