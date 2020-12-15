@@ -4,7 +4,7 @@
   "description": "Top game",
   "main": "main.tsx",
   "scripts": {
-    "start": "webpack-dev-server --mode development --hot --progress --color --port 3000 --open",
+    "start": "webpack-dev-server --mode development --hot --progress --color --port 5000 --open",
     "build": "webpack -p --progress --colors",
     "lint": "eslint src/**/*.{ts,js} --quiet",
     "lint:fix": "eslint src/**/*.{ts,js} --quiet --fix",
