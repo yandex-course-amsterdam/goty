@@ -1,18 +1,19 @@
-import React, { ReactElement, useEffect, useState } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { Redirect } from 'react-router-dom'
 import { Button, Error, Input } from 'app/components'
 import { Formik, Form, FormikValues } from 'formik'
 import * as Yup from 'yup'
 
-import { authApi } from 'app/api'
-import { VALIDATION_SCHEMA, ROUTE } from 'app/constants'
-import { fetchUserData, setUserData } from 'app/actions'
-import { initialState as userInitialState } from 'app/reducers/userDataReducer'
+import { signIn } from 'app/api/Api'
+import { VALIDATION_SCHEMA } from 'app/constants'
+import { route } from 'app/enums'
+import { fetchUserInfo, setUserInfo, UserInfoInitial } from 'app/actions'
+import { displayResponseText } from 'app/utils'
 
 import style from './style.css'
 
-export const SignInForm = (): ReactElement => {
+export const SignInForm: FC = (): JSX.Element => {
   const [responseText, setResponseText] = useState('')
   const [isSignIn, setIsSignIn] = useState(false)
   const dispatch = useDispatch()
@@ -21,18 +22,13 @@ export const SignInForm = (): ReactElement => {
   const initialValues = { login: '', password: '' }
   const validationSchema = Yup.object({ login, password })
 
-  const signInUser = async (data: string): Promise<void> => {
+  const signInUser = async (data: FormikValues): Promise<void> => {
     try {
-      const res = await authApi.signIn(data)
-
-      if (res.status === 200) {
-        await dispatch(fetchUserData())
-        setIsSignIn(true)
-      } else {
-        setResponseText(JSON.parse(res.response).reason)
-      }
+      await signIn(data)
+      await dispatch(fetchUserInfo())
+      setIsSignIn(true)
     } catch (error) {
-      console.log(error)
+      displayResponseText(setResponseText, error.response.data.reason)
     }
   }
 
@@ -40,16 +36,16 @@ export const SignInForm = (): ReactElement => {
     values: FormikValues,
     { setSubmitting }: FormikValues
   ) => {
-    signInUser(JSON.stringify(values, null, 2))
+    signInUser(values)
     setSubmitting(false)
   }
 
   useEffect(() => {
-    dispatch(setUserData(userInitialState))
+    dispatch(setUserInfo(UserInfoInitial))
   }, [])
 
   return isSignIn ? (
-    <Redirect to={ROUTE.GAME} />
+    <Redirect to={route.game} />
   ) : (
     <Formik
       initialValues={initialValues}

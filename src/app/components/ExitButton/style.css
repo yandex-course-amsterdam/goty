@@ -3,9 +3,17 @@
   background: none;
   border: none;
 
+  height: 56px;
+
   padding: 0;
 }
 
 .button li {
   margin-bottom: 0;
+}
+
+@media (max-width: 1399px) {
+  .button {
+    margin-left: -5px;
+  }
 }

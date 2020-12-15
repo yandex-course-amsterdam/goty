@@ -1,15 +1,16 @@
-import React, { ChangeEvent, ReactElement, useState } from 'react'
+import React, { FC, ChangeEvent, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { Button, Error } from 'app/components'
 import { Formik, FormikValues } from 'formik'
 import * as Yup from 'yup'
 
-import { userApi } from 'app/api'
-import { fetchUserData } from 'app/actions'
+import { updateAvatar } from 'app/api/Api'
+import { fetchUserInfo } from 'app/actions'
+import { displayResponseText } from 'app/utils'
 
 import style from './style.css'
 
-export const AvatarForm = (): ReactElement => {
+export const AvatarForm: FC = (): JSX.Element => {
   const [responseText, setResponseText] = useState('')
   const dispatch = useDispatch()
 
@@ -19,20 +20,14 @@ export const AvatarForm = (): ReactElement => {
   })
 
   const updateUserAvatar = async (values: FormikValues): Promise<void> => {
-    const data = new FormData()
-    data.append('avatar', values.avatar)
-
     try {
-      const res = await userApi.updateAvatar(data)
-
-      if (res.status === 200) {
-        dispatch(fetchUserData())
-        setResponseText('Successfully updated')
-      } else {
-        setResponseText(JSON.parse(res.response).reason)
-      }
+      const data = new FormData()
+      data.append('avatar', values.avatar)
+      await updateAvatar(data)
+      await dispatch(fetchUserInfo())
+      displayResponseText(setResponseText)
     } catch (error) {
-      console.log(error)
+      displayResponseText(error.response.data.reason)
     }
   }
 

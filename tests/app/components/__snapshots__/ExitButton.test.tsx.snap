@@ -1,0 +1,23 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Exit button component Render default markup if user is logged in 1`] = `
+<button
+  className=""
+  onClick={[Function]}
+  type="button"
+>
+  Oops
+</button>
+`;
+
+exports[`Exit button component Render redirect if user is not logged in 1`] = `null`;
+
+exports[`Exit button component Use className prop 1`] = `
+<button
+  className="someClass"
+  onClick={[Function]}
+  type="button"
+>
+  Oops
+</button>
+`;

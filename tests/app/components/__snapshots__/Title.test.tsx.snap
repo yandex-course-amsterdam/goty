@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Title component Render itself correctly 1`] = `
+<h2
+  className=""
+>
+  Oh hi
+</h2>
+`;
+
+exports[`Title component Use className prop 1`] = `
+<h2
+  className="someClass"
+>
+  Oh hi
+</h2>
+`;

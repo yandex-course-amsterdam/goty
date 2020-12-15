@@ -4,9 +4,11 @@ const packageList = require('./package.json')
 
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const { InjectManifest } = require('workbox-webpack-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 
-const isProduction = process.argv.indexOf('-p') >= 0 || process.env.NODE_ENV === 'production'
+const isProduction =
+  process.argv.indexOf('-p') >= 0 || process.env.NODE_ENV === 'production'
 const sourcePath = path.join(__dirname, './src')
 const outPath = path.join(__dirname, './build')
 
@@ -28,7 +30,8 @@ module.exports = {
     alias: {
       app: path.resolve(__dirname, 'src/app/'),
       images: path.resolve(__dirname, 'src/images/'),
-      icons: path.resolve(__dirname, 'src/icons/')
+      icons: path.resolve(__dirname, 'src/icons/'),
+      uikit: path.resolve(__dirname, 'src/uikit/')
     }
   },
   module: {
@@ -53,7 +56,9 @@ module.exports = {
               sourceMap: !isProduction,
               importLoaders: 1,
               modules: {
-                localIdentName: isProduction ? '[hash:base64:5]' : '[local]__[hash:base64:5]'
+                localIdentName: isProduction
+                  ? '[hash:base64:5]'
+                  : '[local]__[hash:base64:5]'
               }
             }
           },
@@ -91,7 +96,7 @@ module.exports = {
         ]
       },
       {
-        test: /\.(jpe?g|gif|bmp|mp3|mp4|ogg|wav|eot|ttf|woff|woff2)$/,
+        test: /\.(jpe?g|png|gif|bmp|mp3|mp4|ogg|wav|eot|ttf|woff|woff2)$/,
         use: 'file-loader'
       }
     ]
@@ -107,7 +112,9 @@ module.exports = {
         vendors: {
           test: /[\\/]node_modules[\\/]/,
           chunks: 'all',
-          filename: isProduction ? 'vendor.[contenthash].js' : 'vendor.[hash].js',
+          filename: isProduction
+            ? 'vendor.[contenthash].js'
+            : 'vendor.[hash].js',
           priority: -10
         }
       }
@@ -140,12 +147,18 @@ module.exports = {
       meta: {
         title: packageList.name,
         description: packageList.description,
-        keywords: Array.isArray(packageList.keywords) ? packageList.keywords.join(',') : undefined
+        keywords: Array.isArray(packageList.keywords)
+          ? packageList.keywords.join(',')
+          : undefined
       }
+    }),
+    new InjectManifest({
+      swSrc: './sw.js',
+      maximumFileSizeToCacheInBytes: 8 * 1024 * 1024
     })
   ],
   devServer: {
-    contentBase: sourcePath,
+    contentBase: outPath,
     hot: true,
     inline: true,
     historyApiFallback: {

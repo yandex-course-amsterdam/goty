@@ -1,19 +1,12 @@
-interface ProjectileInterface {
-  x: number
-  y: number
-  radius: number
-  color: string
-  velocity: Record<'x' | 'y', number>
-  context: CanvasRenderingContext2D
-}
+import { GameObjectInterface } from 'app/interfaces'
 
-export class Projectile implements ProjectileInterface {
+export class Projectile implements GameObjectInterface {
   x
   y
   radius
   color
-  velocity
   context
+  velocity
 
   constructor(
     x: number,

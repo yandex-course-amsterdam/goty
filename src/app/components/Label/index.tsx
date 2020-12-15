@@ -1,22 +1,20 @@
-import React, { ReactElement } from 'react'
+import React, { FC } from 'react'
 import cn from 'classnames'
 
 import style from './style.css'
 
-type FormInputLabelProps = {
+interface IProps {
   id: string
   labelText: string
   className?: string
 }
 
-export const Label = ({
+export const Label: FC<IProps> = ({
   id,
   labelText,
   className
-}: FormInputLabelProps): ReactElement => {
-  return (
-    <label className={cn(style.label, className)} htmlFor={id}>
-      {labelText}
-    </label>
-  )
-}
+}): JSX.Element => (
+  <label className={cn(style.label, className)} htmlFor={id}>
+    {labelText}
+  </label>
+)

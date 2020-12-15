@@ -1,18 +1,19 @@
-import React, { ReactElement, useEffect, useState } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { Redirect } from 'react-router-dom'
 import { Button, Error, Input } from 'app/components'
 import { Formik, Form, FormikValues } from 'formik'
 import * as Yup from 'yup'
 
-import { authApi } from 'app/api'
-import { VALIDATION_SCHEMA, ROUTE } from 'app/constants'
-import { fetchUserData, setUserData } from 'app/actions'
-import { initialState as userInitialState } from 'app/reducers/userDataReducer'
+import { signUp } from 'app/api/Api'
+import { VALIDATION_SCHEMA } from 'app/constants'
+import { route } from 'app/enums'
+import { fetchUserInfo, setUserInfo, UserInfoInitial } from 'app/actions'
+import { displayResponseText } from 'app/utils'
 
 import style from './style.css'
 
-export const SignUpForm = (): ReactElement => {
+export const SignUpForm: FC = (): JSX.Element => {
   const [responseText, setResponseText] = useState('')
   const [isSignedUp, setIsSignedUp] = useState(false)
   const dispatch = useDispatch()
@@ -42,18 +43,13 @@ export const SignUpForm = (): ReactElement => {
     phone
   })
 
-  const signUpUser = async (data: string): Promise<void> => {
+  const signUpUser = async (data: FormikValues): Promise<void> => {
     try {
-      const res = await authApi.signUp(data)
-
-      if (res.status === 200) {
-        await dispatch(fetchUserData())
-        setIsSignedUp(true)
-      } else {
-        setResponseText(JSON.parse(res.response).reason)
-      }
+      await signUp(data)
+      await dispatch(fetchUserInfo())
+      setIsSignedUp(true)
     } catch (error) {
-      console.log(error)
+      displayResponseText(setResponseText, error.response.data.reason)
     }
   }
 
@@ -61,16 +57,16 @@ export const SignUpForm = (): ReactElement => {
     values: FormikValues,
     { setSubmitting }: FormikValues
   ) => {
-    signUpUser(JSON.stringify(values))
+    signUpUser(values)
     setSubmitting(false)
   }
 
   useEffect(() => {
-    dispatch(setUserData(userInitialState))
+    dispatch(setUserInfo(UserInfoInitial))
   }, [])
 
   return isSignedUp ? (
-    <Redirect to={ROUTE.GAME} />
+    <Redirect to={route.game} />
   ) : (
     <Formik
       initialValues={initialValues}

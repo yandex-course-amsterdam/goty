@@ -1,8 +1,6 @@
 export { Sidebar } from './Sidebar'
 export { Avatar } from './Avatar'
 export { Navigation } from './Navigation'
-export { List } from './List'
-export { Item } from './Item'
 export { Main } from './Main'
 export { Title } from './Title'
 export { Description } from './Description'

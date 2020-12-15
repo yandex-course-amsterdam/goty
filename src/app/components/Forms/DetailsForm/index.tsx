@@ -1,24 +1,25 @@
-import React, { ReactElement, useState } from 'react'
+import React, { FC, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Button, Error, Input } from 'app/components'
 import { Formik, Form, FormikValues } from 'formik'
 import * as Yup from 'yup'
 
-import { userApi } from 'app/api'
+import { updateProfile } from 'app/api/Api'
 import { VALIDATION_SCHEMA } from 'app/constants'
-import { UserDataState } from 'app/reducers/userDataReducer'
-import { setUserData } from 'app/actions'
+import { StoreState } from 'app/reducers'
+import { fetchUserInfo } from 'app/actions'
+import { displayResponseText } from 'app/utils'
 
 import style from './style.css'
 
-const selectUserData = (state: { userData: UserDataState }) => {
-  const { first_name, second_name, login, email, phone } = state.userData
-  const display_name = state.userData.display_name || ''
+const selectUserData = (state: StoreState) => {
+  const { first_name, second_name, login, email, phone } = state.userInfo
+  const display_name = state.userInfo.display_name || ''
 
   return { first_name, second_name, login, email, phone, display_name }
 }
 
-export const DetailsForm = (): ReactElement => {
+export const DetailsForm: FC = (): JSX.Element => {
   const [responseText, setResponseText] = useState('')
   const userData = useSelector(selectUserData)
   const dispatch = useDispatch()
@@ -41,19 +42,13 @@ export const DetailsForm = (): ReactElement => {
     phone
   })
 
-  const updateUserProfile = async (data: string): Promise<void> => {
+  const updateUserProfile = async (data: FormikValues): Promise<void> => {
     try {
-      const res = await userApi.updateProfile(data)
-      const userResponseData = JSON.parse(res.response)
-
-      if (res.status === 200) {
-        dispatch(setUserData(userResponseData))
-        setResponseText('Successfully updated')
-      } else {
-        setResponseText(userResponseData.reason)
-      }
+      await updateProfile(data)
+      await dispatch(fetchUserInfo())
+      displayResponseText(setResponseText)
     } catch (error) {
-      console.log(error)
+      displayResponseText(setResponseText, error.response.data.reason)
     }
   }
 
@@ -61,7 +56,7 @@ export const DetailsForm = (): ReactElement => {
     values: FormikValues,
     { setSubmitting }: FormikValues
   ) => {
-    updateUserProfile(JSON.stringify(values))
+    updateUserProfile(values)
     setSubmitting(false)
   }
 

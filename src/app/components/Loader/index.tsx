@@ -1,13 +1,11 @@
-import React, { ReactElement } from 'react'
+import React, { FC } from 'react'
 
 import style from './style.css'
 
-export const Loader = (): ReactElement => {
-  return (
-    <section className={style.loader}>
-      <div className={style.circle} />
-      <div className={style.circle} />
-      <div className={style.circle} />
-    </section>
-  )
-}
+export const Loader: FC = (): JSX.Element => (
+  <section className={style.loader}>
+    <div className={style.circle} />
+    <div className={style.circle} />
+    <div className={style.circle} />
+  </section>
+)

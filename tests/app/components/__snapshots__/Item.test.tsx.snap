@@ -1,0 +1,21 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`List item component Render itself correctly 1`] = `
+<li
+  className=""
+>
+  <p>
+    Oh hi
+  </p>
+</li>
+`;
+
+exports[`List item component Use className prop 1`] = `
+<li
+  className="someClass"
+>
+  <p>
+    Oh hi
+  </p>
+</li>
+`;

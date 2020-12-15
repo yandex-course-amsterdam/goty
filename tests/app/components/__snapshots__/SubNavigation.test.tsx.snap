@@ -1,0 +1,23 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SubNavigation component Render children correctly 1`] = `<nav />`;
+
+exports[`SubNavigation component Render itself correctly 1`] = `<nav />`;
+
+exports[`SubNavigation component Render title and children combined correctly 1`] = `
+Array [
+  <p>
+    Oh hi
+  </p>,
+  <nav />,
+]
+`;
+
+exports[`SubNavigation component Render title correctly 1`] = `
+Array [
+  <p>
+    Oh hi
+  </p>,
+  <nav />,
+]
+`;

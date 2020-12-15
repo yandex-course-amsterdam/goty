@@ -1,28 +1,26 @@
-import React, { ReactElement } from 'react'
+import React, { FC } from 'react'
 import cn from 'classnames'
 
 import style from './style.css'
 
-type ButtonProps = {
-  type: 'button' | 'submit'
+interface IProps {
+  type?: 'button' | 'submit'
   buttonText: string
   className?: string
   handleClick?: () => void
 }
 
-export const Button = ({
-  type,
+export const Button: FC<IProps> = ({
+  type = 'button',
   buttonText,
   className,
   handleClick
-}: ButtonProps): ReactElement => {
-  return (
-    <button
-      onClick={handleClick}
-      className={cn(style.button, className)}
-      type={type === 'submit' ? 'submit' : 'button'}
-    >
-      {buttonText}
-    </button>
-  )
-}
+}): JSX.Element => (
+  <button
+    onClick={handleClick}
+    className={cn(style.button, className)}
+    type={type}
+  >
+    {buttonText}
+  </button>
+)

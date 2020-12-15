@@ -1,0 +1,31 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Canvas component Render endgame popup correctly 1`] = `
+<div>
+  <div>
+    We end 
+    0
+  </div>
+  <div>
+    Score: 
+    0
+  </div>
+  <canvas
+    id="board"
+    onClick={[Function]}
+  />
+</div>
+`;
+
+exports[`Canvas component Render itself correctly 1`] = `
+<div>
+  <div>
+    Score: 
+    0
+  </div>
+  <canvas
+    id="board"
+    onClick={[Function]}
+  />
+</div>
+`;

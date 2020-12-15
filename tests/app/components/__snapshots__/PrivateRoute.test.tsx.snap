@@ -1,0 +1,5 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PrivateRoute component Render redirect 1`] = `null`;
+
+exports[`PrivateRoute component Render route 1`] = `"1"`;

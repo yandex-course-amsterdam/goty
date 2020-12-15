@@ -1,11 +1,17 @@
-import React, { ReactElement } from 'react'
+import React, { FC } from 'react'
 
-type ScoreIconProps = {
+interface IProps {
   className?: string
 }
 
-export const ScoreIcon = ({ className }: ScoreIconProps): ReactElement => (
-  <svg className={className} width="32" height="32" fill="none" xmlns="http://www.w3.org/2000/svg">
+export const ScoreIcon: FC<IProps> = ({ className }): JSX.Element => (
+  <svg
+    className={className}
+    width="32"
+    height="32"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
     <path
       d="M16 19.429a8 8 0 100-16 8 8 0 000 16z"
       stroke="#787885"

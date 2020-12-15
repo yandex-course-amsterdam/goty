@@ -1,94 +1,38 @@
-import { PromiseInterface } from 'app/interfaces/promise'
-import { ApiInterface } from '../interfaces/api'
-import { OptionsInterface } from '../interfaces/options'
+import axios, { AxiosResponse } from 'axios'
+import { FormikValues } from 'formik'
 
-import { METHOD } from './methods'
+const api = axios.create({
+  baseURL: 'https://ya-praktikum.tech/api/v2',
+  withCredentials: true,
+  timeout: 10000
+})
 
-export class Api implements ApiInterface {
-  url: string
-
-  constructor(url: string) {
-    this.url = url
-  }
-
-  request(options: OptionsInterface, timeout = 10000): Promise<PromiseInterface> {
-    const { method, body, path, contentType } = options
-
-    return new Promise((res, rej) => {
-      const xhr = new XMLHttpRequest()
-
-      xhr.open(method, this.url + path)
-
-      xhr.withCredentials = true
-
-      if (!contentType) {
-        xhr.setRequestHeader('Content-Type', 'application/json; charset=utf-8')
-      }
-
-      xhr.timeout = timeout
-
-      xhr.onload = function onload() {
-        res(xhr)
-      }
-
-      xhr.onabort = rej
-
-      xhr.onerror = rej
-
-      xhr.ontimeout = rej
-
-      if (method === 'GET' || !body) {
-        xhr.send()
-      } else if (contentType === 'multipart/form-data') {
-        xhr.send(body)
-      } else {
-        xhr.send(body)
-      }
-    })
-  }
-
-  get(path: string): Promise<PromiseInterface> {
-    return this.request({
-      path,
-      method: METHOD.GET
-    })
-  }
-
-  post(path: string, body: string): Promise<PromiseInterface> {
-    return this.request({
-      path,
-      body,
-      method: METHOD.POST
-    })
-  }
-
-  put(
-    path: string,
-    body:
-      | string
-      | FormData
-      | Document
-      | Blob
-      | ArrayBufferView
-      | ArrayBuffer
-      | URLSearchParams
-      | ReadableStream<Uint8Array>,
-    contentType: string
-  ): Promise<PromiseInterface> {
-    return this.request({
-      path,
-      body,
-      method: METHOD.PUT,
-      contentType
-    })
-  }
-
-  delete(path: string, body: string, contentType: string): Promise<PromiseInterface> {
-    return this.request({
-      path,
-      body,
-      method: METHOD.DELETE,
-      contentType
-    })
-  }
+export enum RequestRoot {
+  signUp = '/auth/signup',
+  signIn = '/auth/signin',
+  userInfo = '/auth/user',
+  logout = '/auth/logout',
+  profile = '/user/profile',
+  password = '/user/password',
+  avatar = '/user/profile/avatar'
 }
+
+export const getUserInfo = (): Promise<AxiosResponse> =>
+  api.get(RequestRoot.userInfo)
+
+export const signIn = (body: FormikValues): Promise<AxiosResponse> =>
+  api.post(RequestRoot.signIn, body)
+
+export const signUp = (body: FormikValues): Promise<AxiosResponse> =>
+  api.post(RequestRoot.signUp, body)
+
+export const updatePassword = (body: FormikValues): Promise<AxiosResponse> =>
+  api.put(RequestRoot.password, body)
+
+export const updateProfile = (body: FormikValues): Promise<AxiosResponse> =>
+  api.put(RequestRoot.profile, body)
+
+export const updateAvatar = (body: FormData): Promise<AxiosResponse> =>
+  api.put(RequestRoot.avatar, body)
+
+export const logout = (): Promise<AxiosResponse> => api.post(RequestRoot.logout)

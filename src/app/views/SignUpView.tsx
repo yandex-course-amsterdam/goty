@@ -1,7 +1,4 @@
-import React, { ReactElement } from 'react'
-
+import React, { FC } from 'react'
 import { SignUp } from 'app/containers/SignUp'
 
-export const SignUpView = (): ReactElement => {
-  return <SignUp />
-}
+export const SignUpView: FC = (): JSX.Element => <SignUp />

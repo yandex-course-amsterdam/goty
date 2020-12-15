@@ -1,4 +1,4 @@
-import React, { ReactElement, useEffect, useState } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import ReactDOM from 'react-dom'
 import { Provider, useDispatch } from 'react-redux'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
@@ -12,30 +12,26 @@ import {
   LoaderView
 } from 'app/views'
 
-import { authApi } from 'app/api'
 import { store } from 'app/store'
-import { setUserData } from 'app/actions'
-import { ROUTE } from 'app/constants'
+import { fetchUserInfo } from 'app/actions'
+import { route } from 'app/enums'
+import { startServiceWorker } from 'app/utils'
 
 import 'normalize.css'
 import './fonts/fonts.css'
 
-export const Main = (): ReactElement => {
+startServiceWorker()
+
+export const Main: FC = (): JSX.Element => {
   const [isLoading, setIsLoading] = useState(true)
   const dispatch = useDispatch()
 
   const getUserData = async () => {
     try {
-      const res = await authApi.getUserInfo()
-
-      if (res.status === 200) {
-        const user = JSON.parse(res.response)
-        dispatch(setUserData(user))
-      }
-
+      await dispatch(fetchUserInfo())
       setIsLoading(false)
     } catch (error) {
-      throw new Error(error)
+      console.error(error)
     }
   }
 
@@ -48,19 +44,19 @@ export const Main = (): ReactElement => {
   ) : (
     <Router>
       <Switch>
-        <Route path={ROUTE.SIGN_UP}>
+        <Route path={route.signUp}>
           <SignUpView />
         </Route>
-        <Route path={ROUTE.SIGN_IN}>
+        <Route path={route.signIn}>
           <SignInView />
         </Route>
-        <PrivateRoute path={ROUTE.PROFILE}>
+        <PrivateRoute path={route.profile}>
           <ProfileView />
         </PrivateRoute>
-        <PrivateRoute exact path={ROUTE.GAME}>
+        <PrivateRoute exact path={route.game}>
           <GameView />
         </PrivateRoute>
-        <PrivateRoute path={ROUTE.SCORE}>
+        <PrivateRoute path={route.score}>
           <ScoreView />
         </PrivateRoute>
       </Switch>

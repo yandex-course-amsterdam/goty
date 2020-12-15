@@ -3,17 +3,18 @@ import { BURST_LENGTH } from 'app/constants'
 import { State } from '../../entities'
 import { fire } from './fire'
 
-export const fireBurst = (state: State, angle: number, context: CanvasRenderingContext2D): void => {
-  const velocity = {
-    x: Math.cos(angle) * 20,
-    y: Math.sin(angle) * 20
-  }
+const burstVelocityMultiplier = 2
 
-  fire(state, velocity, context)
+export const fireBurst = (
+  angle: number,
+  state: State,
+  context: CanvasRenderingContext2D
+): void => {
+  fire(angle, state, context, burstVelocityMultiplier)
 
   let i = 1
   const burstInterval = setInterval(() => {
-    fire(state, velocity, context)
+    fire(angle, state, context, burstVelocityMultiplier)
     i += 1
     if (i === BURST_LENGTH) {
       clearInterval(burstInterval)

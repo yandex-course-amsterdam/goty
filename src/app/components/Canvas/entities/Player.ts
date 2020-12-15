@@ -1,4 +1,12 @@
-export class Player {
+import { GameObjectInterface } from 'app/interfaces'
+
+interface PlayerInterface extends GameObjectInterface {
+  velocityMultiplier: number
+  boost: string | null
+  boostInterval: ReturnType<typeof setTimeout> | null
+}
+
+export class Player implements PlayerInterface {
   x
   y
   radius
@@ -12,7 +20,13 @@ export class Player {
   boost: string | null = null
   boostInterval: ReturnType<typeof setTimeout> | null = null
 
-  constructor(x: number, y: number, radius: number, color: string, context: CanvasRenderingContext2D) {
+  constructor(
+    x: number,
+    y: number,
+    radius: number,
+    color: string,
+    context: CanvasRenderingContext2D
+  ) {
     this.x = x
     this.y = y
     this.radius = radius
