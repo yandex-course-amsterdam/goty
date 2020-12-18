@@ -32,8 +32,6 @@ const fetchHandler = (event) => {
         return cachedResponse
       }
 
-      console.log(request)
-
       isFromNetwork = true // prevent useless second request
 
       return fetch(request).then((response) => {
