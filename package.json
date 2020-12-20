@@ -5,6 +5,7 @@
   "main": "main.tsx",
   "scripts": {
     "start": "webpack-dev-server --mode development --hot --progress --color --port 5000 --open",
+    "server": "nodemon app.js",
     "build": "webpack -p --progress --colors",
     "lint": "eslint src/**/*.{ts,js} --quiet",
     "lint:fix": "eslint src/**/*.{ts,js} --quiet --fix",
@@ -53,6 +54,7 @@
     "html-webpack-plugin": "4.5.0",
     "jest": "26.6.3",
     "mini-css-extract-plugin": "0.9.0",
+    "nodemon": "2.0.6",
     "postcss": "7.0.35",
     "postcss-browser-reporter": "0.6.0",
     "postcss-import": "12.0.1",
