@@ -1,4 +1,4 @@
-const { app } = require('./build/app')
+const { app } = require('./build/server')
 
 const PORT = process.env.PORT || 5000
 

@@ -1,16 +1,14 @@
 const webpack = require('webpack')
 const path = require('path')
-const packageList = require('./package.json')
+const packageList = require('../package.json')
 
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const { InjectManifest } = require('workbox-webpack-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 
-const isProduction =
-  process.argv.indexOf('-p') >= 0 || process.env.NODE_ENV === 'production'
-const sourcePath = path.join(__dirname, './src')
-const outPath = path.join(__dirname, './build')
+const { isProduction, sourcePath, outPath } = require('./env')
+const { jsLoader, cssLoader, svgLoader, fileLoader } = require('./loaders')
 
 module.exports = {
   context: sourcePath,
@@ -28,77 +26,18 @@ module.exports = {
     extensions: ['.js', '.ts', '.tsx'],
     mainFields: ['module', 'browser', 'main'],
     alias: {
-      app: path.resolve(__dirname, 'src/app/'),
-      images: path.resolve(__dirname, 'src/images/'),
-      icons: path.resolve(__dirname, 'src/icons/'),
-      uikit: path.resolve(__dirname, 'src/uikit/')
+      app: path.resolve(__dirname, '../src/app/'),
+      images: path.resolve(__dirname, '../src/images/'),
+      icons: path.resolve(__dirname, '../src/icons/'),
+      uikit: path.resolve(__dirname, '../src/uikit/')
     }
   },
   module: {
     rules: [
-      {
-        test: /\.tsx?$/,
-        use: [
-          !isProduction && {
-            loader: 'babel-loader',
-            options: { plugins: ['react-hot-loader/babel'] }
-          },
-          'ts-loader'
-        ].filter(Boolean)
-      },
-      {
-        test: /\.css$/,
-        use: [
-          isProduction ? MiniCssExtractPlugin.loader : 'style-loader',
-          {
-            loader: 'css-loader',
-            query: {
-              sourceMap: !isProduction,
-              importLoaders: 1,
-              modules: {
-                localIdentName: isProduction
-                  ? '[hash:base64:5]'
-                  : '[local]__[hash:base64:5]'
-              }
-            }
-          },
-          {
-            loader: 'postcss-loader',
-            options: {
-              ident: 'postcss',
-              plugins: [
-                require('postcss-import')({ addDependencyTo: webpack }),
-                require('postcss-url')(),
-                require('postcss-preset-env')({
-                  stage: 2
-                }),
-                require('postcss-reporter')(),
-                require('postcss-browser-reporter')({
-                  disabled: isProduction
-                })
-              ]
-            }
-          }
-        ]
-      },
-      {
-        test: /\.svg$/,
-        use: [
-          {
-            loader: 'babel-loader'
-          },
-          {
-            loader: 'react-svg-loader',
-            options: {
-              jsx: true
-            }
-          }
-        ]
-      },
-      {
-        test: /\.(jpe?g|png|gif|bmp|mp3|mp4|ogg|wav|eot|ttf|woff|woff2)$/,
-        use: 'file-loader'
-      }
+      jsLoader.client,
+      cssLoader.client,
+      svgLoader.client,
+      fileLoader.client
     ]
   },
   optimization: {
@@ -126,7 +65,7 @@ module.exports = {
       NODE_ENV: 'development',
       DEBUG: false
     }),
-    new CleanWebpackPlugin(),
+    new CleanWebpackPlugin(), // перетирает server.js
     new MiniCssExtractPlugin({
       filename: '[hash].css',
       disable: !isProduction
