@@ -82,12 +82,4 @@ export class State {
     this.enemies = []
     this.particles = []
   }
-
-  storeResult(): void {
-    // storing here and possible API leaderport post
-  }
-
-  endGame(): void {
-    this.storeResult()
-  }
 }

@@ -15,10 +15,10 @@ import {
 } from 'app/views'
 import { OfflineBar, PrivateRoute, Authorization } from 'app/components'
 
+import { postResult } from 'app/api/Api'
 import { store } from 'app/store'
 import { route } from 'app/enums'
-
-import { startServiceWorker } from 'app/utils'
+import { startServiceWorker, getScore, removeScore } from 'app/utils'
 
 import 'normalize.css'
 import './fonts/fonts.css'
@@ -42,7 +42,16 @@ export const Main: FC = (): JSX.Element => {
   }
 
   const handleOfflineCallback = useCallback(() => setIsOffline(true), [])
-  const handleOnlineCallback = useCallback(() => setIsOffline(false), [])
+  const handleOnlineCallback = useCallback(() => {
+    setIsOffline(false)
+
+    const storedScore = getScore()
+
+    if (storedScore) {
+      postResult(storedScore)
+      removeScore()
+    }
+  }, [])
 
   window.addEventListener('offline', handleOfflineCallback)
   window.addEventListener('online', handleOnlineCallback)

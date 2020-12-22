@@ -9,7 +9,7 @@ exports[`Navigation component Render itself correctly 1`] = `
     className=""
   >
     <a
-      href="/"
+      href="/game"
       onClick={[Function]}
     >
       <li
