@@ -2,8 +2,6 @@ const webpack = require('webpack')
 const path = require('path')
 const nodeExternals = require('webpack-node-externals')
 
-const { CleanWebpackPlugin } = require('clean-webpack-plugin')
-
 const { isProduction, sourcePath, outPath } = require('./env')
 const { jsLoader, cssLoader, svgLoader, fileLoader } = require('./loaders')
 
@@ -17,7 +15,7 @@ module.exports = {
     libraryTarget: 'commonjs2'
   },
   target: 'node',
-  node: { __dirname: false },
+  node: { __dirname: false, fs: 'empty', net: 'empty' },
   resolve: {
     extensions: ['.js', '.ts', '.tsx'],
     alias: {
@@ -39,12 +37,7 @@ module.exports = {
     new webpack.EnvironmentPlugin({
       NODE_ENV: 'development',
       DEBUG: false
-    }),
-    new CleanWebpackPlugin()
+    })
   ],
-  node: {
-    fs: 'empty',
-    net: 'empty'
-  },
   externals: [nodeExternals({ allowlist: [/\.(?!(?:tsx?|json)$).{1,5}$/i] })]
 }

@@ -4,7 +4,7 @@
   "description": "Top game",
   "main": "main.tsx",
   "scripts": {
-    "start": "webpack-dev-server --mode development --hot --progress --color --port 5000 --open",
+    "start": "webpack --mode=development --watch",
     "server": "nodemon app.js",
     "build": "webpack -p --progress --colors",
     "lint": "eslint src/**/*.{ts,js} --quiet",

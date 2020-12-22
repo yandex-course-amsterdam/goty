@@ -22,6 +22,10 @@ module.exports = {
     chunkFilename: isProduction ? '[name].[contenthash].js' : '[name].[hash].js'
   },
   target: 'web',
+  node: {
+    fs: 'empty',
+    net: 'empty'
+  },
   resolve: {
     extensions: ['.js', '.ts', '.tsx'],
     mainFields: ['module', 'browser', 'main'],
@@ -65,7 +69,7 @@ module.exports = {
       NODE_ENV: 'development',
       DEBUG: false
     }),
-    new CleanWebpackPlugin(), // перетирает server.js
+    // new CleanWebpackPlugin(), // перетирает server.js
     new MiniCssExtractPlugin({
       filename: '[hash].css',
       disable: !isProduction
@@ -106,9 +110,5 @@ module.exports = {
     stats: 'minimal',
     clientLogLevel: 'warning'
   },
-  devtool: isProduction ? 'hidden-source-map' : 'cheap-module-eval-source-map',
-  node: {
-    fs: 'empty',
-    net: 'empty'
-  }
+  devtool: isProduction ? 'hidden-source-map' : 'cheap-module-eval-source-map'
 }
