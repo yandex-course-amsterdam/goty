@@ -28,7 +28,7 @@ startServiceWorker()
 
 export const Main: FC = (): JSX.Element => {
   const [isLoading, setIsLoading] = useState(true)
-  const [isOffline, setIsOffline] = useState(false)
+  const [isOffline, setIsOffline] = useState(!navigator.onLine)
   const dispatch = useDispatch()
 
   const getUserData = async () => {
@@ -95,7 +95,12 @@ export const Main: FC = (): JSX.Element => {
         </Switch>
       </Router>
 
-      <CSSTransition in={isOffline} timeout={0} classNames="bar">
+      <CSSTransition
+        in={isOffline}
+        appear={isOffline}
+        timeout={0}
+        classNames="bar"
+      >
         <OfflineBar />
       </CSSTransition>
     </>
@@ -106,5 +111,5 @@ ReactDOM.render(
   <Provider store={store}>
     <Main />
   </Provider>,
-  document.getElementById('root')
+  document.querySelector('#root')
 )
