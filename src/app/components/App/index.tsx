@@ -70,7 +70,7 @@ export const App: FC = (): JSX.Element => {
     }
   }, [])
 
-  return !isLoading ? (
+  return isLoading ? (
     <LoaderView />
   ) : (
     <>
@@ -87,9 +87,9 @@ export const App: FC = (): JSX.Element => {
         <PrivateRoute path={route.profile}>
           <ProfileView />
         </PrivateRoute>
-        <Route path={route.game}>
+        <PrivateRoute path={route.game}>
           <GameView />
-        </Route>
+        </PrivateRoute>
         <PrivateRoute path={route.score}>
           <ScoreView />
         </PrivateRoute>
