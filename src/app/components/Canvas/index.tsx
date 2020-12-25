@@ -383,6 +383,26 @@ export const Canvas: React.FC = (): JSX.Element => {
     </div>
   )
 
+  const handleVisibilityChange = useCallback(() => {
+    if (gameState !== GAME_STATE.PLAYING) {
+      return
+    }
+
+    if (document.visibilityState === 'hidden') {
+      clearInterval(enemiesSpawnInterval as ReturnType<typeof setInterval>)
+    } else {
+      spawnEnemies()
+    }
+  }, [enemiesSpawnInterval, gameState])
+
+  useEffect(() => {
+    window.addEventListener('visibilitychange', handleVisibilityChange)
+
+    return () => {
+      window.removeEventListener('visibilitychange', handleVisibilityChange)
+    }
+  })
+
   useEffect(() => {
     if (!boardRef.current) {
       return
