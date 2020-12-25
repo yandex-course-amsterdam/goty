@@ -1,11 +1,10 @@
-import path from 'path'
 import express from 'express'
 import compression from 'compression'
 import { serverRenderMiddleware } from './serverRenderMiddleware'
 
 const app = express()
 
-app.use(compression()).use('/', express.static(path.join(__dirname, 'build')))
+app.use(compression()).use('/', express.static(__dirname))
 
 app.get('*', serverRenderMiddleware)
 

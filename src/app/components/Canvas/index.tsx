@@ -9,6 +9,7 @@ import { postResult } from 'app/api/Api'
 
 import { State, Player, Enemy, Particle } from './entities'
 import { handleFire, handleBoostChoice } from './helpers/listeners'
+import { isServer } from 'app/utils'
 
 import style from './style.css'
 
@@ -242,10 +243,12 @@ export const Canvas: React.FC = (): JSX.Element => {
     player.setHorizontalVelocity(playerHorizontalVelocity)
     player.setVerticalVelocity(playerVerticalVelocity)
 
-    const [gamepad] = navigator.getGamepads()
-    if (gamepad?.buttons[7].pressed) {
-      handleTriggerPush(gamepad)
-      // TODO: сделать это красиво
+    if (!isServer) {
+      const [gamepad] = navigator.getGamepads()
+      if (gamepad?.buttons[7].pressed) {
+        handleTriggerPush(gamepad)
+        // TODO: сделать это красиво
+      }
     }
 
     animationFrameId.current = requestAnimationFrame(animate)
