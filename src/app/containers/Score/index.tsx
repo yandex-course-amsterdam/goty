@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import { useRouteMatch, Switch, Route } from 'react-router-dom'
 import {
   Avatar,
@@ -11,16 +11,20 @@ import {
   UserScore
 } from 'app/components'
 
+import { getLeaderboard } from 'app/api/Api'
 import { route } from 'app/enums'
 import { TRANSLATIONS } from './translations'
-import { USER_SCORE_DATA } from './userScoreData'
 
 import style from './style.css'
 
 interface userScoreData {
   name: string
-  score: number
+  amsterdamScore: number
   id: number
+}
+
+interface userScoreElement {
+  data: userScoreData
 }
 
 const {
@@ -30,25 +34,43 @@ const {
 } = TRANSLATIONS
 
 const sortUserData = (data: userScoreData[]) =>
-  data.sort((a: userScoreData, b: userScoreData) => b.score - a.score)
+  data.sort(
+    (a: userScoreData, b: userScoreData) => b.amsterdamScore - a.amsterdamScore
+  )
 
 export const Score: FC = (): JSX.Element => {
+  const [scoreData, setScoreData] = useState<userScoreData[]>([])
   const { path } = useRouteMatch()
 
-  const renderUserScore = () =>
-    sortUserData(USER_SCORE_DATA).map(
-      (
-        { id, score, name }: userScoreData,
-        index: number,
-        array: userScoreData[]
-      ) => {
-        const width = `${
-          index === 0 ? 100 : (array[index].score / array[0].score) * 100
-        }%`
+  useEffect(() => {
+    async function fetchScoreData() {
+      const res = await getLeaderboard()
+      const data = res.data.map((score: userScoreElement) => score.data)
 
-        return <UserScore key={id} score={score} name={name} width={width} />
-      }
-    )
+      setScoreData(data)
+    }
+
+    fetchScoreData()
+  }, [])
+
+  const renderUserScore = (): JSX.Element[] => {
+    const sortedData = sortUserData(scoreData)
+    const maxScore = sortedData.length ? sortedData[0].amsterdamScore : 0
+
+    return sortedData.map((el: userScoreData, index: number) => {
+      const { amsterdamScore, name } = el
+      const width = `${index === 0 ? 100 : (amsterdamScore / maxScore) * 100}%`
+
+      return (
+        <UserScore
+          key={name}
+          score={amsterdamScore}
+          name={name}
+          width={width}
+        />
+      )
+    })
+  }
 
   return (
     <div className={style.score}>

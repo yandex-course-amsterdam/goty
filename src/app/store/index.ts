@@ -1,4 +1,4 @@
-import { createStore, applyMiddleware, compose } from 'redux'
+import { createStore, applyMiddleware, compose, Store } from 'redux'
 
 import thunk from 'redux-thunk'
 
@@ -8,6 +8,7 @@ import { isServer } from 'app/utils'
 declare global {
   interface Window {
     __REDUX_DEVTOOLS_EXTENSION_COMPOSE__?: typeof compose
+    __INITIAL_STATE__: Record<string, any>
   }
 }
 
@@ -21,7 +22,12 @@ function getComposeEnhancers() {
 
 const composeEnhancers = getComposeEnhancers()
 
-export const store = createStore(
-  reducers,
-  composeEnhancers(applyMiddleware(thunk))
-)
+export const configureStore = (initialState = {}): Store => {
+  const store = createStore(
+    reducers,
+    initialState,
+    composeEnhancers(applyMiddleware(thunk))
+  )
+
+  return store
+}

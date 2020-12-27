@@ -5,7 +5,7 @@ import { Button, Error, Input } from 'app/components'
 import { Formik, Form, FormikValues } from 'formik'
 import * as Yup from 'yup'
 
-import { getServiceId, signIn } from 'app/api/Api'
+import { getServiceId, signIn, createToken } from 'app/api/Api'
 import { VALIDATION_SCHEMA } from 'app/constants'
 import { route } from 'app/enums'
 import { fetchUserInfo, setUserInfo, UserInfoInitial } from 'app/actions'
@@ -26,6 +26,9 @@ export const SignInForm: FC = (): JSX.Element => {
     try {
       await signIn(data)
       await dispatch(fetchUserInfo())
+      // TODO: написать функцию, которая вернёт сюда айдишник юзера для создания токена
+      await createToken(1)
+
       setIsSignIn(true)
     } catch (error) {
       displayResponseText(setResponseText, error.response.data.reason)

@@ -6,9 +6,11 @@ import { Provider as ReduxProvider } from 'react-redux'
 import { StaticRouterContext } from 'react-router'
 
 import { App } from 'app/components'
-import { store } from 'app/store'
+import { configureStore } from 'app/store'
+import { StoreState } from 'app/reducers'
+import { verifyToken } from './utils'
 
-const getResponse = (jsx: JSX.Element): string => {
+const getResponse = (jsx: JSX.Element, state: StoreState): string => {
   return `<!DOCTYPE html>
  <html lang="en">
    <head>
@@ -19,12 +21,30 @@ const getResponse = (jsx: JSX.Element): string => {
    </head>
    <body>
      <div id="root">${renderToString(jsx)}</div>
+     <script>
+       window.__INITIAL_STATE__ = ${JSON.stringify(state)}
+     </script>
      <script src="/app.js"></script>
    </body>
  </html>`
 }
 
 export const serverRenderMiddleware = (req: Request, res: Response): void => {
+  // TODO: решить проблему с css на сервере
+  // TODO: научиться экстрактить стили (critical CSS)
+  const tokenCookie = req.cookies.userToken
+  let isTokenVerified = false
+
+  try {
+    verifyToken(tokenCookie)
+    isTokenVerified = true
+  } catch (e) {
+    console.log(e)
+  }
+
+  const store = configureStore({ loginStatus: { status: isTokenVerified } })
+  const state = store.getState()
+
   const location = req.url
   const context: StaticRouterContext = {}
   const jsx = (
@@ -35,5 +55,5 @@ export const serverRenderMiddleware = (req: Request, res: Response): void => {
     </ReduxProvider>
   )
 
-  res.send(getResponse(jsx))
+  res.send(getResponse(jsx, state))
 }

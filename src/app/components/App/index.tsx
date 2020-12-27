@@ -1,6 +1,5 @@
 import React, { FC, useCallback, useEffect, useState } from 'react'
 
-import { useDispatch } from 'react-redux'
 import { Switch, Route } from 'react-router-dom'
 import { CSSTransition } from 'react-transition-group'
 
@@ -10,7 +9,6 @@ import {
   ProfileView,
   GameView,
   ScoreView,
-  LoaderView,
   NotFoundView
 } from 'app/views'
 import { OfflineBar, PrivateRoute, Authorization } from 'app/components'
@@ -22,25 +20,11 @@ import { getScore, removeScore, isServer } from 'app/utils'
 
 import 'normalize.css'
 import '../../../fonts/fonts.css'
-import { fetchUserInfo } from 'app/actions'
 
 // startServiceWorker()
 
 export const App: FC = (): JSX.Element => {
-  const [isLoading, setIsLoading] = useState(true)
   const [isOffline, setIsOffline] = useState(isServer || !navigator.onLine)
-
-  const dispatch = useDispatch()
-
-  const getUserData = async () => {
-    try {
-      await dispatch(fetchUserInfo())
-      setIsLoading(!isLoading)
-    } catch (error) {
-      console.log(error)
-      setIsLoading(!isLoading)
-    }
-  }
 
   const handleOfflineCallback = useCallback(() => setIsOffline(true), [])
   const handleOnlineCallback = useCallback(() => {
@@ -54,13 +38,11 @@ export const App: FC = (): JSX.Element => {
     }
   }, [])
 
-  if (!isServer) {
-    window.addEventListener('offline', handleOfflineCallback)
-    window.addEventListener('online', handleOnlineCallback)
-  }
-
   useEffect(() => {
-    getUserData()
+    if (!isServer) {
+      window.addEventListener('offline', handleOfflineCallback)
+      window.addEventListener('online', handleOnlineCallback)
+    }
 
     return () => {
       if (!isServer) {
@@ -70,9 +52,7 @@ export const App: FC = (): JSX.Element => {
     }
   }, [])
 
-  return isLoading ? (
-    <LoaderView />
-  ) : (
+  return (
     <>
       <Switch>
         <Route exact path={route.auth}>

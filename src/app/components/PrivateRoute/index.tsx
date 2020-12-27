@@ -16,9 +16,9 @@ export const PrivateRoute: FC<IProps> = ({
   path,
   children
 }): JSX.Element => {
-  const userData = useSelector((state: StoreState) => state.userInfo)
+  const loginStatus = useSelector((state: StoreState) => state.loginStatus)
 
-  return userData.login ? (
+  return loginStatus.status ? (
     <Route exact={exact} path={path}>
       {children}
     </Route>

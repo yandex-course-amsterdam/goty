@@ -8,11 +8,13 @@ interface IProps {
   width: string
 }
 
-export const UserScore: FC<IProps> = ({ score, name, width }): JSX.Element => (
-  <div className={style.user}>
-    <p className={style.name}>{name}</p>
-    <div className={style.points} style={{ flexBasis: width }}>
-      {score}
+export const UserScore: FC<IProps> = ({ score, name, width }): JSX.Element => {
+  return (
+    <div className={style.user}>
+      <p className={style.name}>{name}</p>
+      <div className={style.points} style={{ flexBasis: width }}>
+        {score}
+      </div>
     </div>
-  </div>
-)
+  )
+}
