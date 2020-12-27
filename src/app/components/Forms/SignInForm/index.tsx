@@ -8,7 +8,12 @@ import * as Yup from 'yup'
 import { getServiceId, signIn, createToken } from 'app/api/Api'
 import { VALIDATION_SCHEMA } from 'app/constants'
 import { route } from 'app/enums'
-import { fetchUserInfo, setUserInfo, UserInfoInitial } from 'app/actions'
+import {
+  fetchUserInfo,
+  setUserInfo,
+  UserInfoInitial,
+  setLoginStatus
+} from 'app/actions'
 import { displayResponseText } from 'app/utils'
 
 import style from './style.css'
@@ -27,7 +32,8 @@ export const SignInForm: FC = (): JSX.Element => {
       await signIn(data)
       await dispatch(fetchUserInfo())
       // TODO: написать функцию, которая вернёт сюда айдишник юзера для создания токена
-      await createToken(1)
+      await createToken(data.login)
+      dispatch(setLoginStatus(true))
 
       setIsSignIn(true)
     } catch (error) {
