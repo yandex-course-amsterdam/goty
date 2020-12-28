@@ -18,6 +18,7 @@ const getResponse = (jsx: JSX.Element, state: StoreState): string => {
      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
      <meta http-equiv="X-UA-Compatible" content="ie=edge" />
      <title>Goty</title>
+     <link rel="stylesheet" href="/css/app.min.css" />
    </head>
    <body>
      <div id="root">${renderToString(jsx)}</div>
@@ -30,22 +31,21 @@ const getResponse = (jsx: JSX.Element, state: StoreState): string => {
 }
 
 export const serverRenderMiddleware = (req: Request, res: Response): void => {
-  // TODO: решить проблему с css на сервере
-  // TODO: научиться экстрактить стили (critical CSS)
   const tokenCookie = req.cookies.userToken
   let isTokenVerified = false
 
   try {
     verifyToken(tokenCookie)
     isTokenVerified = true
-  } catch (e) {
-    console.log(e)
+  } catch (error) {
+    console.log(error)
   }
 
   const store = configureStore({ loginStatus: { status: isTokenVerified } })
   const state = store.getState()
 
-  const location = req.url
+  const location = isTokenVerified ? req.url : '/sign-in'
+
   const context: StaticRouterContext = {}
   const jsx = (
     <ReduxProvider store={store}>

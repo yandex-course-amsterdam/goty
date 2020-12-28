@@ -15,7 +15,7 @@ export const Avatar: FC<IProps> = ({ className }): JSX.Element => {
 
   const userAvatar = userInfo.avatar
     ? `https://ya-praktikum.tech/${userInfo.avatar}`
-    : 'images/avatar.png'
+    : '/images/avatar.png'
 
   const avatarName = userInfo.display_name || 'Top game'
 

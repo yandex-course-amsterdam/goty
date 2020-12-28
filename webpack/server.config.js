@@ -2,7 +2,9 @@ const webpack = require('webpack')
 const path = require('path')
 const nodeExternals = require('webpack-node-externals')
 
-const { isProduction, sourcePath, outPath } = require('./env')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+
+const { sourcePath, outPath } = require('./env')
 const { jsLoader, cssLoader, svgLoader, fileLoader } = require('./loaders')
 
 module.exports = {
@@ -37,6 +39,9 @@ module.exports = {
     new webpack.EnvironmentPlugin({
       NODE_ENV: 'development',
       DEBUG: false
+    }),
+    new MiniCssExtractPlugin({
+      filename: 'css/app.min.css'
     })
   ],
   externals: [nodeExternals({ allowlist: [/\.(?!(?:tsx?|json)$).{1,5}$/i] })]

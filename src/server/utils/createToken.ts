@@ -2,5 +2,5 @@ import jwt from 'jsonwebtoken'
 
 const SECRET_KEY = 'her'
 
-export const createToken = (userId: number): string =>
-  jwt.sign({ id: userId }, SECRET_KEY)
+export const createToken = (userLogin: string): string =>
+  jwt.sign({ login: userLogin }, SECRET_KEY)

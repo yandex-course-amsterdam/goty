@@ -36,7 +36,7 @@ export const SubNavigation: FC<IProps> = ({ title }): JSX.Element => {
             >
               Picture
             </NavLink>
-            {!oauthStatus && (
+            {!oauthStatus.status && (
               <NavLink
                 className={style.sublink}
                 activeClassName={style.active}

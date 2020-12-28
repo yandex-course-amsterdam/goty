@@ -29,10 +29,10 @@ export const SignInForm: FC = (): JSX.Element => {
 
   const signInUser = async (data: FormikValues): Promise<void> => {
     try {
+      console.log(data)
       await signIn(data)
       await dispatch(fetchUserInfo())
-      // TODO: мб айдишник вместо логина
-      await createToken(data.id)
+      await createToken(data.login)
       dispatch(setLoginStatus(true))
 
       setIsSignIn(true)

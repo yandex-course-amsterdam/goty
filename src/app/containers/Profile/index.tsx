@@ -1,4 +1,7 @@
-import React, { FC } from 'react'
+import React, { FC, useEffect } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import { useRouteMatch, Route, Switch } from 'react-router-dom'
+
 import {
   Avatar,
   Description,
@@ -11,11 +14,9 @@ import {
   PasswordForm,
   AvatarForm
 } from 'app/components'
-import { useRouteMatch, Route, Switch } from 'react-router-dom'
-import { useSelector } from 'react-redux'
-
 import { StoreState } from 'app/reducers'
 import { route } from 'app/enums'
+import { fetchUserInfo } from 'app/actions'
 import { TRANSLATIONS } from './translations'
 
 import style from './style.css'
@@ -29,6 +30,19 @@ const {
 export const Profile: FC = (): JSX.Element => {
   const { path } = useRouteMatch()
   const oauthStatus = useSelector((state: StoreState) => state.oauthStatus)
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        await dispatch(fetchUserInfo())
+      } catch (e) {
+        console.warn(e)
+      }
+    }
+
+    fetchUser()
+  }, [])
 
   return (
     <div className={style.profile}>
@@ -63,7 +77,7 @@ export const Profile: FC = (): JSX.Element => {
                 <AvatarForm />
               </div>
             </Route>
-            {!oauthStatus && (
+            {!oauthStatus.status && (
               <Route exact path={`${path}${route.password}`}>
                 <div className={style.overflow}>
                   <Description

@@ -44,13 +44,13 @@ export interface UserInfo {
 
 export const UserInfoInitial: UserInfo = {
   id: null,
-  first_name: null,
-  second_name: null,
-  display_name: null,
-  login: null,
-  email: null,
-  phone: null,
-  avatar: null
+  first_name: '',
+  second_name: '',
+  display_name: '',
+  login: '',
+  email: '',
+  phone: '',
+  avatar: ''
 }
 
 export interface OAuthStatus {
