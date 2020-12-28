@@ -1,3 +1,5 @@
+import path from 'path'
+
 import express from 'express'
 import compression from 'compression'
 import bodyParser from 'body-parser'
@@ -13,6 +15,16 @@ app
   .use(cookieParser())
   .use(compression())
   .use('/', express.static(__dirname))
+
+app.get('/images/:src', (req, res) => {
+  const { src } = req.params
+  const options = {
+    root: path.join(__dirname, '../')
+  }
+
+  // TODO: перенести статику в build/
+  res.sendFile(`/src/images/${src}`, options)
+})
 
 app.get('*', serverRenderMiddleware)
 
