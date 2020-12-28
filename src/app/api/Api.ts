@@ -7,12 +7,6 @@ const api = axios.create({
   timeout: 10000
 })
 
-// TODO: переписать axios
-const tokenApi = axios.create({
-  withCredentials: true,
-  timeout: 10000
-})
-
 export enum RequestRoot {
   signUp = '/auth/signup',
   signIn = '/auth/signin',
@@ -68,7 +62,7 @@ export const getLeaderboard = (limit = 10): Promise<AxiosResponse> => {
 }
 
 export const createToken = (userId: number): Promise<AxiosResponse> =>
-  tokenApi.post('/createToken', { userId })
+  api.post('/createToken', { userId }, { baseURL: '/' })
 
 export const invalidateToken = (): Promise<AxiosResponse> =>
-  tokenApi.post('/invalidateToken')
+  api.post('/invalidateToken', {}, { baseURL: '/' })

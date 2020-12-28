@@ -31,8 +31,8 @@ export const SignInForm: FC = (): JSX.Element => {
     try {
       await signIn(data)
       await dispatch(fetchUserInfo())
-      // TODO: написать функцию, которая вернёт сюда айдишник юзера для создания токена
-      await createToken(data.login)
+      // TODO: мб айдишник вместо логина
+      await createToken(data.id)
       dispatch(setLoginStatus(true))
 
       setIsSignIn(true)
