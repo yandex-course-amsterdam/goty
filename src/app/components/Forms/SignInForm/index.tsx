@@ -5,15 +5,10 @@ import { Button, Error, Input } from 'app/components'
 import { Formik, Form, FormikValues } from 'formik'
 import * as Yup from 'yup'
 
-import { getServiceId, signIn, createToken } from 'app/api/Api'
+import { getServiceId, signIn } from 'app/api/Api'
 import { VALIDATION_SCHEMA } from 'app/constants'
 import { route } from 'app/enums'
-import {
-  fetchUserInfo,
-  setUserInfo,
-  UserInfoInitial,
-  setLoginStatus
-} from 'app/actions'
+import { fetchUserInfo, setUserInfo, UserInfoInitial } from 'app/actions'
 import { displayResponseText } from 'app/utils'
 
 import style from './style.css'
@@ -29,11 +24,8 @@ export const SignInForm: FC = (): JSX.Element => {
 
   const signInUser = async (data: FormikValues): Promise<void> => {
     try {
-      console.log(data)
       await signIn(data)
-      await dispatch(fetchUserInfo())
-      await createToken(data.login)
-      dispatch(setLoginStatus(true))
+      await dispatch(fetchUserInfo(true))
 
       setIsSignIn(true)
     } catch (error) {

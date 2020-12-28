@@ -1,4 +1,5 @@
 import React, { FC, useCallback, useEffect, useState } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 
 import { Switch, Route } from 'react-router-dom'
 import { CSSTransition } from 'react-transition-group'
@@ -14,7 +15,9 @@ import {
 import { OfflineBar, PrivateRoute, Authorization } from 'app/components'
 
 import { postResult } from 'app/api/Api'
+import { fetchUserInfo } from 'app/actions'
 
+import { StoreState } from 'app/reducers'
 import { route } from 'app/enums'
 import { getScore, removeScore, isServer } from 'app/utils'
 
@@ -25,6 +28,12 @@ import '../../../fonts/fonts.css'
 
 export const App: FC = (): JSX.Element => {
   const [isOffline, setIsOffline] = useState(isServer || !navigator.onLine)
+
+  const dispatch = useDispatch()
+
+  const loginStatus = useSelector(
+    (state: StoreState) => state.loginStatus.status
+  )
 
   const handleOfflineCallback = useCallback(() => setIsOffline(true), [])
   const handleOnlineCallback = useCallback(() => {
@@ -39,6 +48,18 @@ export const App: FC = (): JSX.Element => {
   }, [])
 
   useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        await dispatch(fetchUserInfo())
+      } catch (e) {
+        console.warn(e)
+      }
+    }
+
+    if (loginStatus) {
+      fetchUser()
+    }
+
     if (!isServer) {
       window.addEventListener('offline', handleOfflineCallback)
       window.addEventListener('online', handleOnlineCallback)

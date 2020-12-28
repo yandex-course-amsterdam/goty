@@ -1,6 +1,6 @@
-import React, { FC, useState } from 'react'
+import React, { FC } from 'react'
 import { useDispatch } from 'react-redux'
-import { Redirect } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 import cn from 'classnames'
 
 import { logout, invalidateToken } from 'app/api/Api'
@@ -18,21 +18,21 @@ export const ExitButton: FC<IProps> = ({
   children,
   className
 }): JSX.Element => {
-  const [isLoggedIn, setIsLoggedIn] = useState(true)
   const dispatch = useDispatch()
+  const history = useHistory()
 
   const handleExit = async () => {
     try {
       await logout()
       await invalidateToken()
       dispatch(setLoginStatus(false))
-      setIsLoggedIn(false)
+      history.push(route.signIn)
     } catch (error) {
       console.log(error)
     }
   }
 
-  return isLoggedIn ? (
+  return (
     <button
       type="button"
       className={cn(style.button, className)}
@@ -40,7 +40,5 @@ export const ExitButton: FC<IProps> = ({
     >
       {children}
     </button>
-  ) : (
-    <Redirect to={route.signIn} />
   )
 }

@@ -4,11 +4,12 @@ import {
   ActionTypes,
   FetchUserInfoAction,
   UserInfo,
-  SetUserInfoAction
+  SetUserInfoAction,
+  setLoginStatus
 } from 'app/actions'
-import { getUserInfo } from 'app/api/Api'
+import { getUserInfo, createToken } from 'app/api/Api'
 
-export const fetchUserInfo = () => {
+export const fetchUserInfo = (isLogin = false) => {
   return async (dispatch: Dispatch) => {
     try {
       const { data } = await getUserInfo()
@@ -24,6 +25,12 @@ export const fetchUserInfo = () => {
         type: ActionTypes.fetchUserInfo,
         payload: data
       })
+
+      // хз красиво ли, в противном случае нужно будет создавать токен и диспатчить serLoginStatus в трёх местах
+      if (isLogin) {
+        createToken(data.login)
+        dispatch(setLoginStatus(true))
+      }
     } catch (error) {
       console.log(error)
     }

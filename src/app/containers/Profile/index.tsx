@@ -1,5 +1,5 @@
-import React, { FC, useEffect } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
+import React, { FC } from 'react'
+import { useSelector } from 'react-redux'
 import { useRouteMatch, Route, Switch } from 'react-router-dom'
 
 import {
@@ -16,7 +16,6 @@ import {
 } from 'app/components'
 import { StoreState } from 'app/reducers'
 import { route } from 'app/enums'
-import { fetchUserInfo } from 'app/actions'
 import { TRANSLATIONS } from './translations'
 
 import style from './style.css'
@@ -30,19 +29,6 @@ const {
 export const Profile: FC = (): JSX.Element => {
   const { path } = useRouteMatch()
   const oauthStatus = useSelector((state: StoreState) => state.oauthStatus)
-  const dispatch = useDispatch()
-
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        await dispatch(fetchUserInfo())
-      } catch (e) {
-        console.warn(e)
-      }
-    }
-
-    fetchUser()
-  }, [])
 
   return (
     <div className={style.profile}>
