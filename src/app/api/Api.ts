@@ -60,3 +60,9 @@ export const getLeaderboard = (limit = 10): Promise<AxiosResponse> => {
 
   return api.post(RequestRoot.getLeaderboard, body)
 }
+
+export const createToken = (userId: number): Promise<AxiosResponse> =>
+  api.post('/createToken', { userId }, { baseURL: '/' })
+
+export const invalidateToken = (): Promise<AxiosResponse> =>
+  api.post('/invalidateToken', {}, { baseURL: '/' })

@@ -1,7 +1,8 @@
 export enum ActionTypes {
   fetchUserInfo,
   setUserInfo,
-  setOAuthStatus
+  setOAuthStatus,
+  setLoginStatus
 }
 
 export interface FetchUserInfoAction {
@@ -19,10 +20,16 @@ export interface SetOAuthStatusAction {
   payload: boolean
 }
 
+export interface SetLoginStatusAction {
+  type: ActionTypes.setLoginStatus
+  payload: boolean
+}
+
 export type Action =
   | FetchUserInfoAction
   | SetUserInfoAction
   | SetOAuthStatusAction
+  | SetLoginStatusAction
 
 export interface UserInfo {
   id: number | null
@@ -37,13 +44,13 @@ export interface UserInfo {
 
 export const UserInfoInitial: UserInfo = {
   id: null,
-  first_name: null,
-  second_name: null,
-  display_name: null,
-  login: null,
-  email: null,
-  phone: null,
-  avatar: null
+  first_name: '',
+  second_name: '',
+  display_name: '',
+  login: '',
+  email: '',
+  phone: '',
+  avatar: ''
 }
 
 export interface OAuthStatus {
@@ -51,5 +58,13 @@ export interface OAuthStatus {
 }
 
 export const OAuthStatusInitial: OAuthStatus = {
+  status: false
+}
+
+export interface loginStatus {
+  status: boolean
+}
+
+export const loginStatusInitial: OAuthStatus = {
   status: false
 }

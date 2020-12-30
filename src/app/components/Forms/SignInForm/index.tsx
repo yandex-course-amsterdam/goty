@@ -25,7 +25,8 @@ export const SignInForm: FC = (): JSX.Element => {
   const signInUser = async (data: FormikValues): Promise<void> => {
     try {
       await signIn(data)
-      await dispatch(fetchUserInfo())
+      await dispatch(fetchUserInfo(true))
+
       setIsSignIn(true)
     } catch (error) {
       displayResponseText(setResponseText, error.response.data.reason)

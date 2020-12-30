@@ -30,6 +30,7 @@ module.exports = {
     'react/require-default-props': 'off',
     'react/button-has-type': 'warn',
     'lines-between-class-members': 'off',
+    "no-underscore-dangle": "off",
     '@typescript-eslint/no-var-requires': 'warn',
     camelcase: 'off'
   }

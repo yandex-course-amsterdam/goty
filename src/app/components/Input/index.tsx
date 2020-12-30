@@ -26,9 +26,11 @@ export const Input: FC<IProps> = ({ label, ...props }): JSX.Element => {
     if (meta.touched && field.value.length === 0) {
       return style.wronginput
     }
+
     if (meta.touched && meta.error) {
       return style.wronginput
     }
+
     if (!meta.touched) {
       return ''
     }

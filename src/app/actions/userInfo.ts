@@ -4,11 +4,12 @@ import {
   ActionTypes,
   FetchUserInfoAction,
   UserInfo,
-  SetUserInfoAction
+  SetUserInfoAction,
+  setLoginStatus
 } from 'app/actions'
-import { getUserInfo } from 'app/api/Api'
+import { getUserInfo, createToken } from 'app/api/Api'
 
-export const fetchUserInfo = () => {
+export const fetchUserInfo = (isLogin = false) => {
   return async (dispatch: Dispatch) => {
     try {
       const { data } = await getUserInfo()
@@ -24,6 +25,13 @@ export const fetchUserInfo = () => {
         type: ActionTypes.fetchUserInfo,
         payload: data
       })
+
+      // TODO: вынести создание токена и установку статуса в функции, отвечающие за логин
+      // Для этого потребуется вынести туда же метод getUserInfo, так как при OAuth-авторизации данных на том уровне нет
+      if (isLogin) {
+        createToken(data.login)
+        dispatch(setLoginStatus(true))
+      }
     } catch (error) {
       console.log(error)
     }

@@ -46,8 +46,7 @@ module.exports = {
       DEBUG: false
     }),
     new MiniCssExtractPlugin({
-      filename: '[name].css',
-      disable: !isProduction
+      filename: 'css/app.min.css'
     }),
     new InjectManifest({
       swSrc: './sw.js',

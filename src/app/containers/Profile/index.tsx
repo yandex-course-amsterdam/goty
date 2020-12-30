@@ -1,4 +1,7 @@
 import React, { FC } from 'react'
+import { useSelector } from 'react-redux'
+import { useRouteMatch, Route, Switch } from 'react-router-dom'
+
 import {
   Avatar,
   Description,
@@ -11,9 +14,6 @@ import {
   PasswordForm,
   AvatarForm
 } from 'app/components'
-import { useRouteMatch, Route, Switch } from 'react-router-dom'
-import { useSelector } from 'react-redux'
-
 import { StoreState } from 'app/reducers'
 import { route } from 'app/enums'
 import { TRANSLATIONS } from './translations'
@@ -63,7 +63,7 @@ export const Profile: FC = (): JSX.Element => {
                 <AvatarForm />
               </div>
             </Route>
-            {!oauthStatus && (
+            {!oauthStatus.status && (
               <Route exact path={`${path}${route.password}`}>
                 <div className={style.overflow}>
                   <Description
