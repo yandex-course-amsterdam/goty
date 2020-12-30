@@ -26,7 +26,8 @@ export const fetchUserInfo = (isLogin = false) => {
         payload: data
       })
 
-      // хз красиво ли, в противном случае нужно будет создавать токен и диспатчить serLoginStatus в трёх местах
+      // TODO: вынести создание токена и установку статуса в функции, отвечающие за логин
+      // Для этого потребуется вынести туда же метод getUserInfo, так как при OAuth-авторизации данных на том уровне нет
       if (isLogin) {
         createToken(data.login)
         dispatch(setLoginStatus(true))

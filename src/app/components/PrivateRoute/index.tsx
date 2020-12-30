@@ -18,6 +18,7 @@ export const PrivateRoute: FC<IProps> = ({
 }): JSX.Element => {
   const loginStatus = useSelector((state: StoreState) => state.loginStatus)
 
+  // TODO: возможно, здесь тоже стоит использовать useHistory вместо редиректа
   return loginStatus.status ? (
     <Route exact={exact} path={path}>
       {children}

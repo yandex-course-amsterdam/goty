@@ -44,8 +44,7 @@ export const serverRenderMiddleware = (req: Request, res: Response): void => {
   const store = configureStore({ loginStatus: { status: isTokenVerified } })
   const state = store.getState()
 
-  // const location = isTokenVerified ? req.url : '/sign-in'
-  const location = req.url
+  const location = isTokenVerified ? req.url : '/sign-in'
 
   const context: StaticRouterContext = {}
   const jsx = (
