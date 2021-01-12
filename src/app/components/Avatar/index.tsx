@@ -4,8 +4,6 @@ import cn from 'classnames'
 
 import { StoreState } from 'app/reducers'
 
-import defaultAvatar from 'images/avatar.png'
-
 import style from './style.css'
 
 interface IProps {
@@ -17,7 +15,7 @@ export const Avatar: FC<IProps> = ({ className }): JSX.Element => {
 
   const userAvatar = userInfo.avatar
     ? `https://ya-praktikum.tech/${userInfo.avatar}`
-    : defaultAvatar
+    : '/images/avatar.png'
 
   const avatarName = userInfo.display_name || 'Top game'
 

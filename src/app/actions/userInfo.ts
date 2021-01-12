@@ -1,49 +1,37 @@
 import { Dispatch } from 'redux'
 
-import { ActionTypes } from 'app/actions'
-import { getUserInfo } from 'app/api/Api'
+import {
+  ActionTypes,
+  FetchUserInfoAction,
+  UserInfo,
+  SetUserInfoAction,
+  setLoginStatus
+} from 'app/actions'
+import { getUserInfo, createToken } from 'app/api/Api'
 
-export interface UserInfo {
-  id: number | null
-  first_name: string | null
-  second_name: string | null
-  display_name: string | null
-  login: string | null
-  email: string | null
-  phone: string | null
-  avatar: string | null
-}
-
-export const UserInfoInitial: UserInfo = {
-  id: null,
-  first_name: null,
-  second_name: null,
-  display_name: null,
-  login: null,
-  email: null,
-  phone: null,
-  avatar: null
-}
-
-export interface FetchUserInfoAction {
-  type: ActionTypes.fetchUserInfo
-  payload: UserInfo
-}
-
-export interface SetUserInfoAction {
-  type: ActionTypes.setUserInfo
-  payload: UserInfo
-}
-
-export const fetchUserInfo = () => {
+export const fetchUserInfo = (isLogin = false) => {
   return async (dispatch: Dispatch) => {
     try {
       const { data } = await getUserInfo()
+
+      // eslint-disable-next-line no-restricted-syntax
+      for (const item in data) {
+        if (data[item] === null) {
+          data[item] = ''
+        }
+      }
 
       dispatch<FetchUserInfoAction>({
         type: ActionTypes.fetchUserInfo,
         payload: data
       })
+
+      // TODO: вынести создание токена и установку статуса в функции, отвечающие за логин
+      // Для этого потребуется вынести туда же метод getUserInfo, так как при OAuth-авторизации данных на том уровне нет
+      if (isLogin) {
+        createToken(data.login)
+        dispatch(setLoginStatus(true))
+      }
     } catch (error) {
       console.log(error)
     }

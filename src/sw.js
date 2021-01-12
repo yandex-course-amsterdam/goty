@@ -14,14 +14,25 @@ const installHandler = (event) => {
   )
 }
 
+const update = (request) => {
+  return caches
+    .open(CACHE_VERSION)
+    .then((cache) =>
+      fetch(request).then((response) => cache.put(request, response))
+    )
+}
+
 const fetchHandler = (event) => {
   const { request } = event
+  let isFromNetwork = false
 
   event.respondWith(
     caches.match(request).then((cachedResponse) => {
       if (cachedResponse !== undefined) {
         return cachedResponse
       }
+
+      isFromNetwork = true // prevent useless second request
 
       return fetch(request).then((response) => {
         if (!checkResponse(response) || request.method !== 'GET') {
@@ -37,6 +48,10 @@ const fetchHandler = (event) => {
       })
     })
   )
+
+  if (!isFromNetwork) {
+    event.waitUntil(update(event.request))
+  }
 }
 
 self.addEventListener('install', installHandler)

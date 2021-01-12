@@ -5,7 +5,7 @@ import { Button, Error, Input } from 'app/components'
 import { Formik, Form, FormikValues } from 'formik'
 import * as Yup from 'yup'
 
-import { signIn } from 'app/api/Api'
+import { getServiceId, signIn } from 'app/api/Api'
 import { VALIDATION_SCHEMA } from 'app/constants'
 import { route } from 'app/enums'
 import { fetchUserInfo, setUserInfo, UserInfoInitial } from 'app/actions'
@@ -25,7 +25,8 @@ export const SignInForm: FC = (): JSX.Element => {
   const signInUser = async (data: FormikValues): Promise<void> => {
     try {
       await signIn(data)
-      await dispatch(fetchUserInfo())
+      await dispatch(fetchUserInfo(true))
+
       setIsSignIn(true)
     } catch (error) {
       displayResponseText(setResponseText, error.response.data.reason)
@@ -38,6 +39,15 @@ export const SignInForm: FC = (): JSX.Element => {
   ) => {
     signInUser(values)
     setSubmitting(false)
+  }
+
+  const redirectToYandexOAuth = async () => {
+    try {
+      const res = await getServiceId()
+      document.location.href = `https://oauth.yandex.ru/authorize?response_type=code&client_id=${res.data.service_id}`
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   useEffect(() => {
@@ -68,6 +78,11 @@ export const SignInForm: FC = (): JSX.Element => {
         <div className={style.wrapper}>
           <Error className={style.error} errorText={responseText} />
           <Button className={style.button} type="submit" buttonText="Sign In" />
+          <Button
+            handleClick={redirectToYandexOAuth}
+            className={style.yandexButton}
+            buttonText="Sign In With Yandex"
+          />
         </div>
       </Form>
     </Formik>

@@ -1,10 +1,15 @@
 import React, { useState, useRef, useCallback, useEffect } from 'react'
+import { useSelector } from 'react-redux'
 import cn from 'classnames'
 
 import { ENEMY_TYPE } from 'app/constants'
+import { ITEM_NAME, storeScore } from 'app/utils'
+import { StoreState } from 'app/reducers'
+import { postResult } from 'app/api/Api'
 
 import { State, Player, Enemy, Particle } from './entities'
 import { handleFire, handleBoostChoice } from './helpers/listeners'
+import { isServer } from 'app/utils'
 
 import style from './style.css'
 
@@ -29,6 +34,9 @@ enum SET_ACTION {
   DELETE = 'delete'
 }
 
+const selectUserName = (state: StoreState) =>
+  state.userInfo.display_name || state.userInfo.first_name
+
 export const Canvas: React.FC = (): JSX.Element => {
   const [state] = useState<State>(new State())
   const [score, setScore] = useState(0)
@@ -51,6 +59,8 @@ export const Canvas: React.FC = (): JSX.Element => {
 
   const animationFrameId = useRef(0)
   const boardRef = useRef<HTMLCanvasElement>(null)
+
+  const userName = useSelector(selectUserName)
 
   // Идея в том, чтобы проверять нажатую клавишу на каждый кадр анимации вместо того, чтобы мутировать state из внешних обработчиков
   // Также это удобно для ситуаций с перекрёстными нажатиями — теперь любая из WASD клавиш будет корректно триггерить движение в нужную сторону
@@ -169,7 +179,26 @@ export const Canvas: React.FC = (): JSX.Element => {
     window.removeEventListener('keydown', handleBoostChoiceCallback)
   }
 
-  const endGame = () => {
+  const storeResult = (): void => {
+    const result = {
+      data: {
+        name: userName,
+        [ITEM_NAME]: state.getScore()
+      },
+      ratingFieldName: ITEM_NAME
+    }
+
+    postResult(result).catch((err: Error) => {
+      if (err.message === 'Network Error') {
+        console.warn(
+          `There is an network error so we store this result to send it later. Here is the error: ${err}`
+        )
+        storeScore(result)
+      }
+    })
+  }
+
+  const endGame = (): void => {
     setGameState(GAME_STATE.GAME_OVER)
 
     setHorizontalMoveDirection(new Set())
@@ -177,9 +206,10 @@ export const Canvas: React.FC = (): JSX.Element => {
 
     clearInterval(enemiesSpawnInterval as ReturnType<typeof setInterval>)
     cancelAnimationFrame(animationFrameId.current)
+
     detachKeyboardListeners()
 
-    state.endGame()
+    storeResult()
   }
 
   const clearCanvas = (ctx: CanvasRenderingContext2D): void => {
@@ -213,10 +243,12 @@ export const Canvas: React.FC = (): JSX.Element => {
     player.setHorizontalVelocity(playerHorizontalVelocity)
     player.setVerticalVelocity(playerVerticalVelocity)
 
-    const [gamepad] = navigator.getGamepads()
-    if (gamepad?.buttons[7].pressed) {
-      handleTriggerPush(gamepad)
-      // TODO: сделать это красиво
+    if (!isServer) {
+      const [gamepad] = navigator.getGamepads()
+      if (gamepad?.buttons[7].pressed) {
+        handleTriggerPush(gamepad)
+        // TODO: сделать это красиво
+      }
     }
 
     animationFrameId.current = requestAnimationFrame(animate)
@@ -353,6 +385,26 @@ export const Canvas: React.FC = (): JSX.Element => {
       <div>Credits: {credits}</div>
     </div>
   )
+
+  const handleVisibilityChange = useCallback(() => {
+    if (gameState !== GAME_STATE.PLAYING) {
+      return
+    }
+
+    if (document.visibilityState === 'hidden') {
+      clearInterval(enemiesSpawnInterval as ReturnType<typeof setInterval>)
+    } else {
+      spawnEnemies()
+    }
+  }, [enemiesSpawnInterval, gameState])
+
+  useEffect(() => {
+    window.addEventListener('visibilitychange', handleVisibilityChange)
+
+    return () => {
+      window.removeEventListener('visibilitychange', handleVisibilityChange)
+    }
+  })
 
   useEffect(() => {
     if (!boardRef.current) {
