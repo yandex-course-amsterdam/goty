@@ -1,7 +1,7 @@
 import React, { FC, useState, useCallback, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 
-import { IThemeFormatted } from 'shared'
+import { ThemeFormatted } from 'shared'
 
 import { setTheme, getAllThemes } from 'app/api/Api'
 
@@ -15,7 +15,7 @@ import style from './style.css'
 
 export const Theme: FC = () => {
   const [currentThemeId, setCurrentThemeId] = useState<number | null>(null)
-  const [themes, setThemes] = useState<IThemeFormatted[]>([])
+  const [themes, setThemes] = useState<ThemeFormatted[]>([])
 
   const userInfo = useSelector((state: StoreState) => state.userInfo)
 
@@ -29,8 +29,8 @@ export const Theme: FC = () => {
       }
 
       setThemes(res.data)
-    } catch (e) {
-      console.error(e)
+    } catch (error) {
+      console.error(error)
     }
   }, [])
 

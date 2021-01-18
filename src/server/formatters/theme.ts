@@ -1,4 +1,4 @@
-import { IThemeFormatted } from 'shared'
+import { ThemeFormattedShallow, ThemeFormatted } from 'shared'
 
 import { Theme } from 'server/models'
 
@@ -12,7 +12,7 @@ const themeProps = [
 ]
 
 const format = (theme: Record<string, any>) => {
-  const themeFormatted: IThemeFormatted = { attributes: {} }
+  const themeFormatted: ThemeFormattedShallow = { attributes: {} }
 
   Object.keys(theme.dataValues).forEach((key) => {
     if (themeProps.includes(key)) {
@@ -22,12 +22,12 @@ const format = (theme: Record<string, any>) => {
     }
   })
 
-  return themeFormatted
+  return themeFormatted as ThemeFormatted
 }
 
 export const formatter = (
   data: Theme[] | Theme
-): IThemeFormatted[] | IThemeFormatted => {
+): ThemeFormatted[] | ThemeFormatted => {
   if (Array.isArray(data)) {
     return data.map(format)
   }

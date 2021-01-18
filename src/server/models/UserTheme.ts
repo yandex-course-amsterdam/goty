@@ -6,7 +6,7 @@ export class UserTheme extends Model {}
 
 UserTheme.init(
   {
-    userId: { primaryKey: true, type: DataType.INTEGER.UNSIGNED }
+    userId: { primaryKey: true, type: DataType.INTEGER }
   },
   { sequelize, tableName: 'users-themes' }
 )

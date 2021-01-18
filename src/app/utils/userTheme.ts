@@ -1,13 +1,13 @@
-import { IThemeFormatted } from 'shared'
+import { ThemeFormatted } from 'shared'
 
 import { camelToCssVar } from './camelToCssVar'
 
-const parseUserTheme = (): IThemeFormatted | null => {
+const parseUserTheme = (): ThemeFormatted | null => {
   const userThemeStringified = localStorage.getItem('userTheme')
   return userThemeStringified ? JSON.parse(userThemeStringified) : null
 }
 
-export const getUserTheme = (): IThemeFormatted | null => parseUserTheme()
+export const getUserTheme = (): ThemeFormatted | null => parseUserTheme()
 
 export const setUserTheme = (theme = parseUserTheme()): void => {
   if (theme) {
@@ -19,7 +19,7 @@ export const setUserTheme = (theme = parseUserTheme()): void => {
   }
 }
 
-export const storeUserTheme = (theme: IThemeFormatted): void => {
+export const storeUserTheme = (theme: ThemeFormatted): void => {
   const { id, attributes } = theme
   localStorage.setItem('userTheme', JSON.stringify({ id, attributes }))
 }

@@ -1,6 +1,9 @@
 import express, { Router } from 'express'
+
+import { config } from '../config'
+
 import { format } from '../formatters'
-import { Theme, UserTheme } from '../models'
+import { UserTheme } from '../models'
 
 const users = Router()
 
@@ -11,20 +14,23 @@ users.get(
     res: express.Response
   ): Promise<express.Response> => {
     try {
+      const {
+        models: { aliases }
+      } = config
       const userThemeWithTheme = await UserTheme.findOne({
         where: { userId: req.query.userId },
-        include: [Theme]
+        include: [aliases.UserTheme]
       })
 
       // Ожидаю, что findOne с подобным запросом вернёт тайпинг, в котором будет фигурировать Theme
       // Не лучшее решение ставить ts-ignore, но я уже слишком много времени убил на темизацию
       // Жопа горит, убийца плачет
       // @ts-ignore
-      const theme = format.theme(userThemeWithTheme!.Theme)
+      const theme = format.theme(userThemeWithTheme![aliases.UserTheme])
 
       return res.status(200).send(theme)
-    } catch (e) {
-      console.log(e)
+    } catch (error) {
+      console.log(error)
       return res.sendStatus(400).send('There is a problem getting theme')
     }
   }
@@ -47,8 +53,8 @@ users.post(
 
       await UserTheme.create(req.body)
       return res.status(201).send('Theme is set for user successfully')
-    } catch (e) {
-      console.log(e)
+    } catch (error) {
+      console.log(error)
       return res
         .sendStatus(400)
         .send('There is a problem setting theme for user')

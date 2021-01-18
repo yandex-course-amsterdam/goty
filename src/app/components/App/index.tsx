@@ -64,8 +64,8 @@ export const App: FC = (): JSX.Element => {
         const { data: theme } = await getUserTheme(data.id)
         setUserTheme(theme)
         storeUserTheme(theme)
-      } catch (e) {
-        console.warn(e)
+      } catch (error) {
+        console.warn(error)
       }
     }
 
