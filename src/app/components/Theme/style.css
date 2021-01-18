@@ -1,0 +1,27 @@
+.themeWrapper {
+  display: flex;
+}
+
+.themeButton {
+  width: auto;
+  height: auto;
+
+  font: normal 400 16px/24px 'Inter Regular', sans-serif;
+  color: var(--second-color);
+
+  background: white;
+  border: 2px solid var(--second-color);
+  border-radius: 10px;
+  padding: 10px 15px;
+}
+
+.themeButton:not(:last-child) {
+  margin-right: 20px;
+}
+
+.themeButtonSelected {
+  color: white;
+
+  background: var(--accent-color);
+  border-color: var(--accent-color);
+}

@@ -3,7 +3,7 @@
 
   font: normal normal 16px/24px 'Inter Regular', sans-serif;
   letter-spacing: 0.12px;
-  color: #7a7585;
+  color: var(--sub-text-color);
 
   box-sizing: border-box;
   margin: 5px 0;

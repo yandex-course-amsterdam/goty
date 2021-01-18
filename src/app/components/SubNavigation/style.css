@@ -6,13 +6,13 @@
 .title {
   font: normal 500 14px/22px 'Inter Medium', sans-serif;
   letter-spacing: 0.22px;
-  color: #7a7585;
+  color: var(--sub-text-color);
 }
 
 .sublink {
   font: normal 700 14px/17px 'Inter Bold', sans-serif;
   letter-spacing: 0.75px;
-  color: #eeecf1;
+  color: var(--text-color);
   text-decoration: none;
 
   margin-bottom: 16px;

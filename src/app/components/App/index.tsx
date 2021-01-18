@@ -14,14 +14,21 @@ import {
 } from 'app/views'
 import { OfflineBar, PrivateRoute, Authorization } from 'app/components'
 
-import { postResult } from 'app/api/Api'
+import { postResult, getUserTheme } from 'app/api/Api'
 import { fetchUserInfo } from 'app/actions'
 
 import { StoreState } from 'app/reducers'
 import { route } from 'app/enums'
-import { getScore, removeScore, isServer } from 'app/utils'
+import {
+  getScore,
+  removeScore,
+  isServer,
+  setUserTheme,
+  storeUserTheme
+} from 'app/utils'
 
 import 'normalize.css'
+import 'assets/main.css'
 import '../../../fonts/fonts.css'
 
 // startServiceWorker()
@@ -50,7 +57,13 @@ export const App: FC = (): JSX.Element => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        await dispatch(fetchUserInfo())
+        const data = await dispatch(fetchUserInfo())
+        // Очередной странный тайпинг, учитывая возвращаемое по факту значение
+        // Сейчас уже нет времени разбираться, буду потом сильнее вникать в ts
+        // @ts-ignore
+        const { data: theme } = await getUserTheme(data.id)
+        setUserTheme(theme)
+        storeUserTheme(theme)
       } catch (e) {
         console.warn(e)
       }

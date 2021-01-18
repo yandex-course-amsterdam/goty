@@ -11,5 +11,6 @@ export enum route {
   details = '/details',
   picture = '/picture',
   password = '/password',
+  theme = '/theme',
   personalStats = '/personal-stats'
 }

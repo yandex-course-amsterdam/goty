@@ -7,7 +7,9 @@ import {
   SetUserInfoAction,
   setLoginStatus
 } from 'app/actions'
-import { getUserInfo, createToken } from 'app/api/Api'
+import { getUserInfo, createToken, getUserTheme } from 'app/api/Api'
+
+import { setUserTheme, storeUserTheme } from 'app/utils'
 
 export const fetchUserInfo = (isLogin = false) => {
   return async (dispatch: Dispatch) => {
@@ -26,12 +28,17 @@ export const fetchUserInfo = (isLogin = false) => {
         payload: data
       })
 
-      // TODO: вынести создание токена и установку статуса в функции, отвечающие за логин
-      // Для этого потребуется вынести туда же метод getUserInfo, так как при OAuth-авторизации данных на том уровне нет
       if (isLogin) {
         createToken(data.login)
         dispatch(setLoginStatus(true))
+
+        // Установка темы юзера
+        const { data: theme } = await getUserTheme(data.id)
+        setUserTheme(theme)
+        storeUserTheme(theme)
       }
+
+      return data
     } catch (error) {
       console.log(error)
     }

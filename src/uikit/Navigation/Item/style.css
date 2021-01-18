@@ -22,7 +22,7 @@
 .item:hover .text {
   font-size: 24px;
   line-height: 36px;
-  color: #eeecf1;
+  color: var(--text-color);
 }
 
 .item:hover svg path {
@@ -37,7 +37,7 @@
 .active .text {
   font-size: 24px;
   line-height: 36px;
-  color: #eeecf1;
+  color: var(--text-color);
 }
 
 .active svg path {

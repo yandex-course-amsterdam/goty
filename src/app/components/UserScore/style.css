@@ -9,7 +9,7 @@
 }
 
 .user:hover .name {
-  color: #eeecf1;
+  color: var(--text-color);
 }
 
 .user:hover .points {
@@ -40,5 +40,5 @@
   text-align: right;
 
   border-radius: 10px 0 0 10px;
-  background-color: #1b4ea3;
+  background-color: var(--accent-color);
 }
