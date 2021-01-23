@@ -67,6 +67,17 @@ export const createToken = (userLogin: string): Promise<AxiosResponse> =>
 export const invalidateToken = (): Promise<AxiosResponse> =>
   api.post('/invalidateToken', {}, { baseURL: '/auth' })
 
+// TODO: разнести по модулям
+/**
+ * Mongo-ручки
+ */
+
+export const sendFeedback = (body: FormikValues): Promise<AxiosResponse> =>
+  api.post('/feedback', body, { baseURL: '/' })
+
+/**
+ * PostgreSQL-ручки
+ */
 export const getUserTheme = (userId: number): Promise<AxiosResponse> =>
   api.get('/getTheme', { params: { userId }, baseURL: '/users' })
 
