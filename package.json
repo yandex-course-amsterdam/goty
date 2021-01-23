@@ -8,6 +8,8 @@
     "start:server": "nodemon index.js --watch build/server.js",
     "start": "NODE_ENV=development npm-run-all --print-label --parallel start:*",
     "build": "webpack -p --progress --colors",
+    "compose:build": "docker-compose --env-file config-prod.env up --build",
+    "compose": "docker-compose --env-file config-prod.env up ",
     "lint": "eslint src/**/*.{ts,js} --quiet",
     "lint:fix": "eslint src/**/*.{ts,js} --quiet --fix",
     "test": "jest --no-cache",
