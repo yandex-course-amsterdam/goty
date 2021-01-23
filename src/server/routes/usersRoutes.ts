@@ -5,9 +5,9 @@ import { config } from '../config'
 import { format } from '../formatters'
 import { UserTheme } from '../models'
 
-const users = Router()
+const usersRouter = Router()
 
-users.get(
+usersRouter.get(
   '/getTheme',
   async (
     req: express.Request,
@@ -36,7 +36,7 @@ users.get(
   }
 )
 
-users.post(
+usersRouter.post(
   '/setTheme',
   async (
     req: express.Request,
@@ -62,4 +62,4 @@ users.post(
   }
 )
 
-export { users }
+export { usersRouter }

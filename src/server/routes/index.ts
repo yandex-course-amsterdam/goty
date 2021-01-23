@@ -1,3 +1,4 @@
-export { auth } from './auth'
-export { users } from './users'
-export { themes } from './themes'
+export { authRouter } from './authRoutes'
+export { usersRouter } from './usersRoutes'
+export { themesRouter } from './themesRoutes'
+export { feedbackRouter } from './feedbackRoutes'

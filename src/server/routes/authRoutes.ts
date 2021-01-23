@@ -2,9 +2,9 @@ import express, { Router } from 'express'
 
 import { createToken } from '../utils'
 
-const auth = Router()
+const authRouter = Router()
 
-auth.post(
+authRouter.post(
   '/createToken',
   (req: express.Request, res: express.Response): void => {
     const { userLogin } = req.body
@@ -26,7 +26,7 @@ auth.post(
   }
 )
 
-auth.post(
+authRouter.post(
   '/invalidateToken',
   (req: express.Request, res: express.Response): void => {
     res.cookie('userToken', '', {
@@ -39,4 +39,4 @@ auth.post(
   }
 )
 
-export { auth }
+export { authRouter }

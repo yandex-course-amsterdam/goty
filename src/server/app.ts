@@ -4,7 +4,7 @@ import express from 'express'
 import compression from 'compression'
 import cookieParser from 'cookie-parser'
 
-import { auth, users, themes } from './routes'
+import { authRouter, usersRouter, themesRouter, feedbackRouter } from './routes'
 
 import { serverRenderMiddleware } from './serverRenderMiddleware'
 
@@ -15,9 +15,10 @@ app
   .use(cookieParser())
   .use(compression())
   .use('/', express.static(__dirname))
-  .use('/auth', auth)
-  .use('/users', users)
-  .use('/themes', themes)
+  .use('/auth', authRouter)
+  .use('/users', usersRouter)
+  .use('/themes', themesRouter)
+  .use('/feedback', feedbackRouter)
 
 app.get('/images/:src', (req, res) => {
   const { src } = req.params

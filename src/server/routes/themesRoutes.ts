@@ -2,9 +2,9 @@ import express, { Router } from 'express'
 import { Theme, UserTheme } from '../models'
 import { format } from '../formatters'
 
-const themes = Router()
+const themesRouter = Router()
 
-themes.get(
+themesRouter.get(
   '/all',
   async (
     req: express.Request,
@@ -21,7 +21,7 @@ themes.get(
   }
 )
 
-themes.post(
+themesRouter.post(
   '/',
   async (
     req: express.Request,
@@ -37,7 +37,7 @@ themes.post(
   }
 )
 
-themes.get(
+themesRouter.get(
   '/',
   async (
     req: express.Request,
@@ -57,7 +57,7 @@ themes.get(
   }
 )
 
-themes.put(
+themesRouter.put(
   '/',
   async (
     req: express.Request,
@@ -78,7 +78,7 @@ themes.put(
   }
 )
 
-themes.delete(
+themesRouter.delete(
   '/',
   async (
     req: express.Request,
@@ -99,4 +99,4 @@ themes.delete(
   }
 )
 
-export { themes }
+export { themesRouter }
