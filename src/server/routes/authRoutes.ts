@@ -1,42 +1,11 @@
-import express, { Router } from 'express'
+import { Router } from 'express'
 
-import { createToken } from '../utils'
+import { authController } from '../controllers'
 
 const authRouter = Router()
 
-authRouter.post(
-  '/createToken',
-  (req: express.Request, res: express.Response): void => {
-    const { userLogin } = req.body
+authRouter.post('/createToken', authController.createJWTToken)
 
-    if (!userLogin) {
-      res.status(401).send()
-      return
-    }
-
-    const token = createToken(userLogin)
-
-    res.cookie('userToken', token, {
-      maxAge: 1000 * 60 * 60 * 24,
-      httpOnly: true,
-      secure: true
-    })
-
-    res.status(200).send()
-  }
-)
-
-authRouter.post(
-  '/invalidateToken',
-  (req: express.Request, res: express.Response): void => {
-    res.cookie('userToken', '', {
-      expires: new Date('1970'),
-      httpOnly: true,
-      secure: true
-    })
-
-    res.status(200).send()
-  }
-)
+authRouter.post('/invalidateToken', authController.invalidateToken)
 
 export { authRouter }
