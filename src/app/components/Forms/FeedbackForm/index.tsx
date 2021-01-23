@@ -37,7 +37,10 @@ export const FeedbackForm: FC = (): JSX.Element => {
 
   return isFeedbackSent ? (
     <div className={style.feedbackSuccess}>
-      👌 We have received your feedback and will get back to you shortly.
+      <span role="img" aria-label="ok">
+        👌
+      </span>
+      We have received your feedback and will get back to you shortly.
       <br />
       Have a nice day!
     </div>
