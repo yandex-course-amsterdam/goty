@@ -23,7 +23,7 @@ export const getUserTheme = async (
     if (!userThemeWithTheme) {
       // Выставляем дефолтную тему, если юзер не найден
       await UserTheme.create({ userId: req.query.userId, themeId: 1 })
-      theme = await Theme.findOne({ where: { id: 1 } })
+      theme = format.theme((await Theme.findOne({ where: { id: 1 } })) as Theme)
     } else {
       // @ts-ignore
       theme = format.theme(userThemeWithTheme[aliases.UserTheme])

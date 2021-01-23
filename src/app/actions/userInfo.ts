@@ -34,6 +34,7 @@ export const fetchUserInfo = (isLogin = false) => {
 
         // Установка темы юзера
         const { data: theme } = await getUserTheme(data.id)
+        console.log(theme)
         setUserTheme(theme)
         storeUserTheme(theme)
       }
