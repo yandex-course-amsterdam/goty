@@ -10,3 +10,8 @@
 .button {
   margin-bottom: 20px;
 }
+
+.feedbackSuccess {
+  font: normal 400 20px/32px 'Inter Regular', sans-serif;
+  color: var(--text-color);
+}

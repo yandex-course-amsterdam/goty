@@ -1,8 +1,10 @@
+import mongoose from 'mongoose'
+
 import { app } from './app'
 import { sequelize } from './sequelize'
 import { Theme } from './models'
 
-const syncDB = async () => {
+const connectPostgres = async () => {
   await sequelize.sync({ force: true }).then(() => {
     Theme.bulkCreate([
       {
@@ -29,8 +31,21 @@ const syncDB = async () => {
   })
 }
 
+const connectMongo = async () => {
+  await mongoose.connect(
+    process.env.MONGO_DB || 'MONGO_DB=mongodb://localhost:27017/gotydb',
+    {
+      useNewUrlParser: true,
+      useCreateIndex: true,
+      useFindAndModify: true,
+      useUnifiedTopology: true
+    }
+  )
+}
+
 const startServer = async () => {
-  await syncDB()
+  await connectPostgres()
+  await connectMongo()
 
   const PORT = process.env.PORT || 5000
 
