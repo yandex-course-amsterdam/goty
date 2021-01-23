@@ -2,7 +2,6 @@ import path from 'path'
 
 import express from 'express'
 import compression from 'compression'
-import bodyParser from 'body-parser'
 import cookieParser from 'cookie-parser'
 
 import { auth, users, themes } from './routes'
@@ -12,7 +11,7 @@ import { serverRenderMiddleware } from './serverRenderMiddleware'
 const app = express()
 
 app
-  .use(bodyParser())
+  .use(express.json())
   .use(cookieParser())
   .use(compression())
   .use('/', express.static(__dirname))

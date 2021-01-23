@@ -1,7 +1,8 @@
 import { app } from './app'
 import { sequelize } from './sequelize'
 import { Theme } from './models'
-;(async () => {
+
+const syncDB = async () => {
   await sequelize.sync({ force: true }).then(() => {
     Theme.bulkCreate([
       {
@@ -26,8 +27,14 @@ import { Theme } from './models'
       }
     ])
   })
+}
+
+const startServer = async () => {
+  await syncDB()
 
   const PORT = process.env.PORT || 5000
 
   app.listen(process.env.PORT || PORT)
-})()
+}
+
+startServer()
