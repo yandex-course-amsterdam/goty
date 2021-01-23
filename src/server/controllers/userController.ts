@@ -3,7 +3,7 @@ import express from 'express'
 import { config } from '../config'
 
 import { format } from '../formatters'
-import { UserTheme } from '../models'
+import { Theme, UserTheme } from '../models'
 
 export const getUserTheme = async (
   req: express.Request,
@@ -18,12 +18,16 @@ export const getUserTheme = async (
       include: [aliases.UserTheme]
     })
 
-    // TODO: проверка на null
-    // Ожидаю, что findOne с подобным запросом вернёт тайпинг, в котором будет фигурировать Theme
-    // Не лучшее решение ставить ts-ignore, но я уже слишком много времени убил на темизацию
-    // Жопа горит, убийца плачет
-    // @ts-ignore
-    const theme = format.theme(userThemeWithTheme![aliases.UserTheme])
+    let theme
+
+    if (!userThemeWithTheme) {
+      // Выставляем дефолтную тему, если юзер не найден
+      await UserTheme.create({ userId: req.query.userId, themeId: 1 })
+      theme = await Theme.findOne({ where: { id: 1 } })
+    } else {
+      // @ts-ignore
+      theme = format.theme(userThemeWithTheme[aliases.UserTheme])
+    }
 
     return res.status(200).send(theme)
   } catch (error) {

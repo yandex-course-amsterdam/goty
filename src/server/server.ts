@@ -32,7 +32,6 @@ const connectPostgres = async () => {
 }
 
 const connectMongo = async () => {
-  console.log(process.env)
   await mongoose.connect(
     process.env.MONGO_DB || 'mongodb://localhost:27017/gotydb',
     {
