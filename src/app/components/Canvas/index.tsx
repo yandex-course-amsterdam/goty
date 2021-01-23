@@ -3,13 +3,12 @@ import { useSelector } from 'react-redux'
 import cn from 'classnames'
 
 import { ENEMY_TYPE } from 'app/constants'
-import { ITEM_NAME, storeScore } from 'app/utils'
+import { ITEM_NAME, storeScore, isServer } from 'app/utils'
 import { StoreState } from 'app/reducers'
 import { postResult } from 'app/api/Api'
 
 import { State, Player, Enemy, Particle } from './entities'
 import { handleFire, handleBoostChoice } from './helpers/listeners'
-import { isServer } from 'app/utils'
 
 import style from './style.css'
 

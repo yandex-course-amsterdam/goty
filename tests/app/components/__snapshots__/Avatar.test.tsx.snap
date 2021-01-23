@@ -20,7 +20,7 @@ exports[`Avatar component Use className prop 1`] = `
 >
   <img
     alt="Top game"
-    src="test-file-stub"
+    src="/images/avatar.png"
   />
   <h1>
     Top game
@@ -34,7 +34,7 @@ exports[`Avatar component Use default image if no avatar is provided 1`] = `
 >
   <img
     alt="Top game"
-    src="test-file-stub"
+    src="/images/avatar.png"
   />
   <h1>
     Top game

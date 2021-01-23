@@ -3,7 +3,7 @@
   height: 56px;
 
   font: normal 700 24px/36px 'Inter Bold', sans-serif;
-  color: #000000;
+  color: var(--second-color);
 
   background: #ffb41f;
   border: none;

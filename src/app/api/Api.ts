@@ -61,8 +61,46 @@ export const getLeaderboard = (limit = 10): Promise<AxiosResponse> => {
   return api.post(RequestRoot.getLeaderboard, body)
 }
 
-export const createToken = (userId: number): Promise<AxiosResponse> =>
-  api.post('/createToken', { userId }, { baseURL: '/' })
+export const createToken = (userLogin: string): Promise<AxiosResponse> =>
+  api.post('/createToken', { userLogin }, { baseURL: '/auth' })
 
 export const invalidateToken = (): Promise<AxiosResponse> =>
-  api.post('/invalidateToken', {}, { baseURL: '/' })
+  api.post('/invalidateToken', {}, { baseURL: '/auth' })
+
+export const getUserTheme = (userId: number): Promise<AxiosResponse> =>
+  api.get('/getTheme', { params: { userId }, baseURL: '/users' })
+
+export const setTheme = (
+  userId: number,
+  themeId: number
+): Promise<AxiosResponse> =>
+  api.post('/setTheme', { userId, themeId }, { baseURL: '/users' })
+
+export const getAllThemes = (): Promise<AxiosResponse> =>
+  api.get('/all', { baseURL: '/themes' })
+
+/**
+ * Ручки ниже «открыты» для пользования, но не представлены в приложении
+ * Можно использовать их для заведения тем новых тем, апдейта текущих, etc.
+ */
+
+export const postTheme = (
+  name: string,
+  baseColor: string
+): Promise<AxiosResponse> =>
+  api.post('/', { name, baseColor }, { baseURL: '/themes' })
+
+export const getTheme = (id: number): Promise<AxiosResponse> =>
+  api.get('/', { params: { id }, baseURL: '/themes' })
+
+export const updateTheme = (
+  id: number,
+  baseColor: string
+): Promise<AxiosResponse> =>
+  api.put('/', { baseColor }, { params: { id }, baseURL: '/themes' })
+
+export const deleteTheme = (
+  userId: number,
+  themeId: number
+): Promise<AxiosResponse> =>
+  api.delete('/', { params: { userId, themeId }, baseURL: '/themes' })

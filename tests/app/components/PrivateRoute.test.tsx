@@ -10,13 +10,13 @@ import { renderWithRouter } from '../../utils'
 
 const history = createMemoryHistory()
 
-interface IUserInfo {
-  login: string | null
+interface ILoginStatus {
+  status: boolean
 }
 
-const initialState: Record<string, IUserInfo> = {
-  userInfo: {
-    login: 'Oh hi'
+const initialState: Record<string, ILoginStatus> = {
+  loginStatus: {
+    status: true
   }
 }
 const mockStore = configureStore()
@@ -37,7 +37,7 @@ describe('PrivateRoute component', () => {
   })
 
   test('Render redirect', () => {
-    initialState.userInfo.login = null
+    initialState.loginStatus.status = false
     store = mockStore(initialState)
     const component = renderer
       .create(

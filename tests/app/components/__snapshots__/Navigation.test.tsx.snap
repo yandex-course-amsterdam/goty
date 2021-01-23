@@ -116,7 +116,7 @@ exports[`Navigation component Render itself correctly 1`] = `
         xmlns="http://www.w3.org/2000/svg"
       >
         <rect
-          fill="#2A2731"
+          fill="var(--field-color)"
           height="56"
           rx="28"
           width="56"

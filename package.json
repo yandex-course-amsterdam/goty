@@ -5,7 +5,7 @@
   "main": "main.tsx",
   "scripts": {
     "start:webpack": "webpack --mode=development --watch",
-    "start:server": "nodemon app.js --watch build/server.js",
+    "start:server": "nodemon index.js --watch build/server.js",
     "start": "NODE_ENV=development npm-run-all --print-label --parallel start:*",
     "build": "webpack -p --progress --colors",
     "lint": "eslint src/**/*.{ts,js} --quiet",
@@ -88,7 +88,7 @@
   },
   "dependencies": {
     "@types/react-transition-group": "4.4.0",
-    "axios": "0.21.0",
+    "axios": "0.21.1",
     "body-parser": "1.19.0",
     "classnames": "2.2.6",
     "compression": "1.7.4",
@@ -97,6 +97,7 @@
     "formik": "2.2.4",
     "jsonwebtoken": "8.5.1",
     "normalize.css": "8.0.1",
+    "pg": "8.5.1",
     "react": "17.0.1",
     "react-dom": "17.0.1",
     "react-redux": "7.2.2",
@@ -107,6 +108,9 @@
     "redux": "4.0.5",
     "redux-actions": "2.6.5",
     "redux-thunk": "2.3.0",
+    "reflect-metadata": "0.1.13",
+    "sequelize": "6.3.5",
+    "sequelize-typescript": "2.0.0-beta.1",
     "yup": "0.29.3"
   }
 }

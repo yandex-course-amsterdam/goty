@@ -27,6 +27,9 @@ export const ExitButton: FC<IProps> = ({
       await invalidateToken()
       dispatch(setLoginStatus(false))
       history.push(route.signIn)
+
+      // invalidate theme
+      document.documentElement.removeAttribute('style')
     } catch (error) {
       console.log(error)
     }

@@ -12,7 +12,8 @@ import {
   SubNavigation,
   DetailsForm,
   PasswordForm,
-  AvatarForm
+  AvatarForm,
+  Theme
 } from 'app/components'
 import { StoreState } from 'app/reducers'
 import { route } from 'app/enums'
@@ -75,6 +76,16 @@ export const Profile: FC = (): JSX.Element => {
                 </div>
               </Route>
             )}
+            <Route exact path={`${path}${route.theme}`}>
+              <div className={style.overflow}>
+                <Description
+                  className={style.description}
+                  title={mainDescriptionTitle}
+                  subtitle={mainDescriptionSubtitle}
+                />
+                <Theme />
+              </div>
+            </Route>
           </Switch>
         </div>
       </Main>

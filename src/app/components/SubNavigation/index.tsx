@@ -45,6 +45,13 @@ export const SubNavigation: FC<IProps> = ({ title }): JSX.Element => {
                 Password
               </NavLink>
             )}
+            <NavLink
+              className={style.sublink}
+              activeClassName={style.active}
+              to={`${url}${route.theme}`}
+            >
+              Theme
+            </NavLink>
           </>
         )}
         {isPathScore && (

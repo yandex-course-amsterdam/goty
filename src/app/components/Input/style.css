@@ -4,10 +4,10 @@
 
   font: normal 400 20px/32px 'Inter Regular', sans-serif;
   letter-spacing: 0.22px;
-  color: #eeecf1;
+  color: var(--text-color);
 
-  background: #2a2731;
-  border: 2px solid #000000;
+  background: var(--field-color);
+  border: 2px solid var(--second-color);
   box-sizing: border-box;
   border-radius: 10px;
   padding: 12px 24px;
@@ -38,10 +38,10 @@
   position: absolute;
   font: normal 400 16px/24px 'Inter Regular', sans-serif;
   letter-spacing: 0.22px;
-  color: #eeecf1;
+  color: var(--text-color);
   content: 'Choose image';
   display: inline-block;
-  background-color: #1b4ea3;
+  background-color: var(--accent-color);
   border-radius: 99px;
   top: 0;
   left: 0;
@@ -55,7 +55,7 @@
 
 input[type='file'] {
   font-size: 16px;
-  color: #7a7585;
+  color: var(--sub-text-color);
 
   border-radius: 99px;
   border: none;
@@ -94,7 +94,7 @@ input[type='file'] {
 
   font: normal normal 16px/24px 'Inter Regular', sans-serif;
   letter-spacing: 0.12px;
-  color: #7a7585;
+  color: var(--sub-text-color);
 
   box-sizing: border-box;
   margin: 5px 0;
@@ -103,7 +103,7 @@ input[type='file'] {
 
 .label {
   font: normal 400 20px/32px 'Inter Regular', sans-serif;
-  color: #eeecf1;
+  color: var(--text-color);
   letter-spacing: 0.22px;
   margin-right: 24px;
 

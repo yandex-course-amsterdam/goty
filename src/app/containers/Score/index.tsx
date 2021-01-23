@@ -34,9 +34,12 @@ const {
 } = TRANSLATIONS
 
 const sortUserData = (data: userScoreData[]) =>
-  data.sort(
-    (a: userScoreData, b: userScoreData) => b.amsterdamScore - a.amsterdamScore
-  )
+  data
+    .slice()
+    .sort(
+      (a: userScoreData, b: userScoreData) =>
+        b.amsterdamScore - a.amsterdamScore
+    )
 
 export const Score: FC = (): JSX.Element => {
   const [scoreData, setScoreData] = useState<userScoreData[]>([])
