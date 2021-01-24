@@ -23,11 +23,7 @@ export const Textarea: FC<IProps> = ({ label, ...props }): JSX.Element => {
       return style.correctinput
     }
 
-    if (meta.touched && field.value.length === 0) {
-      return style.wronginput
-    }
-
-    if (meta.touched && meta.error) {
+    if (meta.touched && (field.value.length === 0 || meta.error)) {
       return style.wronginput
     }
 
@@ -43,12 +39,10 @@ export const Textarea: FC<IProps> = ({ label, ...props }): JSX.Element => {
       return <CorrectIcon className={style.icon} />
     }
 
-    if (meta.touched && field.value.length === 0) {
+    if (meta.touched && (field.value.length === 0 || meta.error)) {
       return <WrongIcon className={style.icon} />
     }
-    if (meta.touched && meta.error) {
-      return <WrongIcon className={style.icon} />
-    }
+
     if (!meta.touched) {
       return null
     }
