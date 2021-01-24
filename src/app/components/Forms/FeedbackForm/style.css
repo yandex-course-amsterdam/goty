@@ -1,0 +1,17 @@
+.error {
+  text-align: center;
+}
+
+.wrapper {
+  margin-left: 178px;
+  width: 337px;
+}
+
+.button {
+  margin-bottom: 20px;
+}
+
+.feedbackSuccess {
+  font: normal 400 20px/32px 'Inter Regular', sans-serif;
+  color: var(--text-color);
+}

@@ -11,6 +11,12 @@ services:
       POSTGRES_USER: ${DB_USER}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
 
+  mongo:
+    image: mongo
+    restart: always
+    ports:
+      - 27017:27017
+
   adminer:
     image: adminer
     restart: always
@@ -21,6 +27,7 @@ services:
     build: .
     depends_on:
       - postgres
+      - mongo
     restart: always
     ports:
       - 5000:5000
@@ -30,3 +37,4 @@ services:
       DB_NAME: ${DB_NAME}
       DB_USER: ${DB_USER}
       DB_PASSWORD: ${DB_PASSWORD}
+      MONGO_DB: ${MONGO_DB}

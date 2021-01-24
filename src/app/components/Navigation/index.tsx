@@ -31,6 +31,11 @@ export const Navigation: FC = (): JSX.Element => {
                 <ScoreIcon />
               </ListItem>
             </Link>
+            <Link className={style.link} to={route.feedback}>
+              <ListItem root={route.feedback} text="Feedback">
+                <ScoreIcon />
+              </ListItem>
+            </Link>
           </>
         ) : (
           <>
