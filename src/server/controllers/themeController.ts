@@ -52,7 +52,9 @@ export const updateTheme = async (
 ): Promise<express.Response> => {
   try {
     const theme = await Theme.findOne({
-      where: { id: req.query.id }
+      where: {
+        id: req.query.id
+      }
     })
     theme!.baseColor = req.body.baseColor
     await theme!.save()
