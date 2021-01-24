@@ -61,7 +61,7 @@ Run project via Docker Compose
 npm run compose
 ```
 
-Build and run project bia Docker Compose
+Build and run project via Docker Compose
 
 ```javascript
 npm run compose:build
