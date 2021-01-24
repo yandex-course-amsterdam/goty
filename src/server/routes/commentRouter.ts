@@ -4,6 +4,6 @@ import { commentController } from '../controllers'
 
 const commentsRouter = Router()
 
-commentsRouter.get('/', commentController.postComment)
+commentsRouter.post('/', commentController.postComment)
 
 export { commentsRouter }

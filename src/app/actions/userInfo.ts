@@ -33,6 +33,7 @@ export const fetchUserInfo = (isLogin = false) => {
         dispatch(setLoginStatus(true))
 
         // Установка темы юзера
+        // TODO: переписать установку темы на более глобальную работу с юзером. В нашей базе нужно хранить имя для отрисовки в комментарии
         const { data: theme } = await getUserTheme(data.id)
         console.log(theme)
         setUserTheme(theme)

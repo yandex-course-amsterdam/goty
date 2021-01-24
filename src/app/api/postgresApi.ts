@@ -35,8 +35,11 @@ export const getAllNews = (): Promise<AxiosResponse> =>
   api.get(RequestRoot.all, { baseURL: baseURLNews })
 
 export const postComment = (
-  body: Record<string, string>
-): Promise<AxiosResponse> => api.post('/', body, { baseURL: baseURLComment })
+  newsId: number,
+  text: string,
+  userId: number
+): Promise<AxiosResponse> =>
+  api.post('/', { newsId, text, userId }, { baseURL: baseURLComment })
 
 /**
  * Ручки ниже «открыты» для пользования, но не представлены в приложении

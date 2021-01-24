@@ -18,7 +18,7 @@ export const getUserTheme = async (
     } = config
     const userThemeWithTheme = await User.findOne({
       where: { userId: req.query.userId },
-      include: [aliases.User]
+      include: [aliases.theme]
     })
 
     let theme
@@ -29,7 +29,7 @@ export const getUserTheme = async (
       theme = format.theme((await Theme.findOne({ where: { id: 1 } })) as Theme)
     } else {
       // @ts-ignore
-      theme = format.theme(userThemeWithTheme[aliases.User])
+      theme = format.theme(userThemeWithTheme[aliases.theme])
     }
 
     return res.status(200).send(theme)

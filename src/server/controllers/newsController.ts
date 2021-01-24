@@ -1,7 +1,9 @@
 import express from 'express'
 
+import { config } from '../config'
+
 import { log } from '../utils'
-import { News } from '../models'
+import { News, Comment } from '../models'
 
 const controllerName = 'NewsController'
 
@@ -10,7 +12,14 @@ export const getAllNews = async (
   res: express.Response
 ): Promise<express.Response> => {
   try {
-    const allNews = await News.findAll()
+    const {
+      models: { aliases }
+    } = config
+    const allNews = await News.findAll({
+      include: [
+        { model: Comment, as: aliases.comments, include: [aliases.user] }
+      ]
+    })
     return res.status(201).send(allNews)
   } catch (error) {
     log(controllerName, 'getAllNews', error)

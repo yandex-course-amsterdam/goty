@@ -6,7 +6,6 @@ export class Comment extends Model {}
 
 Comment.init(
   {
-    id: { primaryKey: true, type: DataType.INTEGER },
     text: { type: DataType.STRING }
   },
   { sequelize, tableName: 'comments' }
