@@ -4,7 +4,13 @@ import express from 'express'
 import compression from 'compression'
 import cookieParser from 'cookie-parser'
 
-import { authRouter, usersRouter, themesRouter, feedbackRouter } from './routes'
+import {
+  authRouter,
+  usersRouter,
+  themesRouter,
+  feedbackRouter,
+  newsRouter
+} from './routes'
 
 import { serverRenderMiddleware } from './serverRenderMiddleware'
 
@@ -19,6 +25,7 @@ app
   .use('/users', usersRouter)
   .use('/themes', themesRouter)
   .use('/feedback', feedbackRouter)
+  .use('/news', newsRouter)
 
 app.get('/images/:src', (req, res) => {
   const { src } = req.params

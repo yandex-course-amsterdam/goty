@@ -10,7 +10,11 @@ enum RequestRoot {
 
 const baseURLUsers = '/users'
 const baseURLThemes = '/themes'
+const baseURLNews = '/news'
 
+/**
+ * Темизация
+ */
 export const getUserTheme = (userId: number): Promise<AxiosResponse> =>
   api.get(RequestRoot.getTheme, { params: { userId }, baseURL: baseURLUsers })
 
@@ -21,7 +25,13 @@ export const setTheme = (
   api.post(RequestRoot.setTheme, { userId, themeId }, { baseURL: baseURLUsers })
 
 export const getAllThemes = (): Promise<AxiosResponse> =>
-  api.get(RequestRoot.all, { baseURL: '/themes' })
+  api.get(RequestRoot.all, { baseURL: baseURLThemes })
+
+/**
+ * Фид
+ */
+export const getAllNews = (): Promise<AxiosResponse> =>
+  api.get(RequestRoot.all, { baseURL: baseURLNews })
 
 /**
  * Ручки ниже «открыты» для пользования, но не представлены в приложении
