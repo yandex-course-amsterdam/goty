@@ -2,7 +2,7 @@ import mongoose from 'mongoose'
 
 import { app } from './app'
 import { sequelize } from './sequelize'
-import { Theme } from './models'
+import { Theme, News } from './models'
 
 const connectPostgres = async () => {
   await sequelize.sync({ force: true }).then(() => {
@@ -28,6 +28,11 @@ const connectPostgres = async () => {
         subTextColor: '#7a7585'
       }
     ])
+
+    News.create({
+      title: 'Title',
+      description: 'Description'
+    })
   })
 }
 

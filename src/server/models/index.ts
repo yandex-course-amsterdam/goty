@@ -1,14 +1,40 @@
 import { config } from '../config'
 
+import { User } from './User'
 import { Theme } from './Theme'
-import { UserTheme } from './UserTheme'
+import { News } from './News'
+import { Comment } from './Comment'
 import { Feedback } from './Feedback'
 
 const {
   models: { aliases }
 } = config
 
-Theme.hasOne(UserTheme, { foreignKey: 'themeId', as: aliases.Theme })
-UserTheme.belongsTo(Theme, { foreignKey: 'themeId', as: aliases.UserTheme })
+Theme.hasMany(User, {
+  foreignKey: 'themeId',
+  as: aliases.Theme
+})
+User.belongsTo(Theme, {
+  foreignKey: 'themeId',
+  as: aliases.User
+})
 
-export { Theme, UserTheme, Feedback }
+News.hasMany(Comment, {
+  foreignKey: 'newsId',
+  as: aliases.News
+})
+Comment.belongsTo(Comment, {
+  foreignKey: 'newsId',
+  as: aliases.Comment
+})
+
+User.hasMany(Comment, {
+  foreignKey: 'userId',
+  as: aliases.UserComment
+})
+Comment.belongsTo(User, {
+  foreignKey: 'userId',
+  as: aliases.CommentUser
+})
+
+export { User, Theme, Feedback, News }

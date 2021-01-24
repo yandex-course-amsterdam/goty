@@ -1,5 +1,5 @@
 import express from 'express'
-import { Theme, UserTheme } from '../models'
+import { Theme, User } from '../models'
 import { format } from '../formatters'
 import { log } from '../utils'
 
@@ -74,7 +74,7 @@ export const deleteTheme = async (
   res: express.Response
 ): Promise<express.Response> => {
   try {
-    await UserTheme.destroy({
+    await User.destroy({
       where: {
         userId: req.query.userId,
         themeId: req.query.themeId

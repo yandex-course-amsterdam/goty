@@ -4,7 +4,7 @@ import { config } from '../config'
 
 import { format } from '../formatters'
 import { log } from '../utils'
-import { Theme, UserTheme } from '../models'
+import { User, Theme } from '../models'
 
 const controllerName = 'UserController'
 
@@ -16,20 +16,20 @@ export const getUserTheme = async (
     const {
       models: { aliases }
     } = config
-    const userThemeWithTheme = await UserTheme.findOne({
+    const userThemeWithTheme = await User.findOne({
       where: { userId: req.query.userId },
-      include: [aliases.UserTheme]
+      include: [aliases.User]
     })
 
     let theme
 
     if (!userThemeWithTheme) {
       // Выставляем дефолтную тему, если юзер не найден
-      await UserTheme.create({ userId: req.query.userId, themeId: 1 })
+      await User.create({ userId: req.query.userId, themeId: 1 })
       theme = format.theme((await Theme.findOne({ where: { id: 1 } })) as Theme)
     } else {
       // @ts-ignore
-      theme = format.theme(userThemeWithTheme[aliases.UserTheme])
+      theme = format.theme(userThemeWithTheme[aliases.User])
     }
 
     return res.status(200).send(theme)
@@ -44,7 +44,7 @@ export const setUserTheme = async (
   res: express.Response
 ): Promise<express.Response> => {
   try {
-    const userTheme = await UserTheme.findOne({
+    const userTheme = await User.findOne({
       where: { userId: req.body.userId }
     })
 
@@ -52,7 +52,7 @@ export const setUserTheme = async (
       userTheme.destroy()
     }
 
-    await UserTheme.create(req.body)
+    await User.create(req.body)
     return res.status(201).send('Theme is set for user successfully')
   } catch (error) {
     log(controllerName, 'setUserTheme', error)
