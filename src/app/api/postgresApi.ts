@@ -11,6 +11,7 @@ enum RequestRoot {
 const baseURLUsers = '/users'
 const baseURLThemes = '/themes'
 const baseURLNews = '/news'
+const baseURLComment = '/comments'
 
 /**
  * Темизация
@@ -32,6 +33,10 @@ export const getAllThemes = (): Promise<AxiosResponse> =>
  */
 export const getAllNews = (): Promise<AxiosResponse> =>
   api.get(RequestRoot.all, { baseURL: baseURLNews })
+
+export const postComment = (
+  body: Record<string, string>
+): Promise<AxiosResponse> => api.post('/', body, { baseURL: baseURLComment })
 
 /**
  * Ручки ниже «открыты» для пользования, но не представлены в приложении

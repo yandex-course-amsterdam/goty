@@ -37,4 +37,4 @@ Comment.belongsTo(User, {
   as: aliases.CommentUser
 })
 
-export { User, Theme, Feedback, News }
+export { User, Theme, Feedback, News, Comment }
