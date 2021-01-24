@@ -5,4 +5,5 @@ node_modules
 .module-cache
 *.log*
 build
-.env
+config-local.env
+config-prod.env

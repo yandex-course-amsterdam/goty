@@ -14,7 +14,7 @@ interface IProps {
   name: string
 }
 
-export const Input: FC<IProps> = ({ label, ...props }): JSX.Element => {
+export const Textarea: FC<IProps> = ({ label, ...props }): JSX.Element => {
   const [field, meta] = useField(props)
   const { id, name } = props
 
@@ -57,8 +57,8 @@ export const Input: FC<IProps> = ({ label, ...props }): JSX.Element => {
       </label>
       <div>
         <div>
-          <input
-            className={cn(style.input, getInputBorderStyle())}
+          <textarea
+            className={cn(style.input, style.textarea, getInputBorderStyle())}
             {...field}
             {...props}
           />

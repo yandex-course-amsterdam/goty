@@ -10,7 +10,8 @@ import {
   ProfileView,
   GameView,
   ScoreView,
-  NotFoundView
+  NotFoundView,
+  FeedbackView
 } from 'app/views'
 import { OfflineBar, PrivateRoute, Authorization } from 'app/components'
 
@@ -34,7 +35,9 @@ import '../../../fonts/fonts.css'
 // startServiceWorker()
 
 export const App: FC = (): JSX.Element => {
-  const [isOffline, setIsOffline] = useState(isServer || !navigator.onLine)
+  const [isOffline, setIsOffline] = useState(
+    isServer ? false : !navigator.onLine
+  )
 
   const dispatch = useDispatch()
 
@@ -106,6 +109,9 @@ export const App: FC = (): JSX.Element => {
         </PrivateRoute>
         <PrivateRoute path={route.score}>
           <ScoreView />
+        </PrivateRoute>
+        <PrivateRoute path={route.feedback}>
+          <FeedbackView />
         </PrivateRoute>
         <Route path="*">
           <NotFoundView />
