@@ -18,17 +18,17 @@
 }
 
 .input:hover {
-  border-color: #4f91ff;
+  border-color: var(--accent-color);
 }
 
 .input:focus {
-  border-color: #4f91ff;
+  border-color: var(--accent-color);
 }
 
 .input::placeholder {
   font: italic 400 20px/32px 'Red Hat Italic', sans-serif;
   letter-spacing: 0.22px;
-  color: #9590a0;
+  color: var(--input-placeholder);
 }
 
 .input::-webkit-file-upload-button {
@@ -50,7 +50,7 @@
   padding: 17px 15px 15px;
 }
 .input:hover::before {
-  border-color: black;
+  border-color: var(--second-color);
 }
 
 input[type='file'] {
@@ -62,11 +62,11 @@ input[type='file'] {
 }
 
 .wronginput {
-  border-color: #f6655a;
+  border-color: var(--input-wrong);
 }
 
 .correctinput {
-  border-color: #87c289;
+  border-color: var(--input-correct);
 }
 
 .wrong {

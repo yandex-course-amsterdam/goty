@@ -5,4 +5,7 @@
   --accent-color: #2264d1;
   --text-color: #eeecf1;
   --sub-text-color: #7a7585;
+  --input-correct: #87c289;
+  --input-wrong: #f6655a;
+  --input-placeholder: #9590a0;
 }
