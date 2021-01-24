@@ -1,6 +1,9 @@
 import express from 'express'
 import { Theme, UserTheme } from '../models'
 import { format } from '../formatters'
+import { log } from '../utils'
+
+const controllerName = 'ThemeController'
 
 export const getAllThemes = async (
   req: express.Request,
@@ -11,7 +14,7 @@ export const getAllThemes = async (
     const allThemesFormatted = format.theme(allThemes)
     return res.status(201).send(allThemesFormatted)
   } catch (error) {
-    console.log(error)
+    log(controllerName, 'getAllThemes', error)
     return res.status(400).send('There is a problem saving your theme')
   }
 }
@@ -24,7 +27,7 @@ export const createTheme = async (
     await Theme.create(req.body)
     return res.status(201).send('Theme has been saved succesfully')
   } catch (error) {
-    console.log(error)
+    log(controllerName, 'createTheme', error)
     return res.status(400).send('There is a problem saving your theme')
   }
 }
@@ -41,7 +44,7 @@ export const getTheme = async (
     })
     return res.status(201).json(theme)
   } catch (error) {
-    console.log(error)
+    log(controllerName, 'getTheme', error)
     return res.sendStatus(400).send('There is a problem getting your theme')
   }
 }
@@ -61,7 +64,7 @@ export const updateTheme = async (
 
     return res.status(201).send(theme)
   } catch (error) {
-    console.log(error)
+    log(controllerName, 'updateTheme', error)
     return res.sendStatus(400).send('There is a problem updating your theme')
   }
 }
@@ -79,7 +82,7 @@ export const deleteTheme = async (
     })
     return res.status(201).send('Theme has been deleted succesfully')
   } catch (error) {
-    console.log(error)
+    log(controllerName, 'deleteTheme', error)
     return res.sendStatus(400).send('There is a problem deleting your theme')
   }
 }

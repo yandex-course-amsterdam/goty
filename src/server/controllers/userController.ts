@@ -3,7 +3,10 @@ import express from 'express'
 import { config } from '../config'
 
 import { format } from '../formatters'
+import { log } from '../utils'
 import { Theme, UserTheme } from '../models'
+
+const controllerName = 'UserController'
 
 export const getUserTheme = async (
   req: express.Request,
@@ -31,7 +34,7 @@ export const getUserTheme = async (
 
     return res.status(200).send(theme)
   } catch (error) {
-    console.log(error)
+    log(controllerName, 'getUserTheme', error)
     return res.sendStatus(400).send('There is a problem getting theme')
   }
 }
@@ -52,7 +55,7 @@ export const setUserTheme = async (
     await UserTheme.create(req.body)
     return res.status(201).send('Theme is set for user successfully')
   } catch (error) {
-    console.log(error)
+    log(controllerName, 'setUserTheme', error)
     return res.sendStatus(400).send('There is a problem setting theme for user')
   }
 }

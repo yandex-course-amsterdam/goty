@@ -12,7 +12,7 @@ const baseURLUsers = '/users'
 const baseURLThemes = '/themes'
 
 export const getUserTheme = (userId: number): Promise<AxiosResponse> =>
-  api.get(RequestRoot.setTheme, { params: { userId }, baseURL: baseURLUsers })
+  api.get(RequestRoot.getTheme, { params: { userId }, baseURL: baseURLUsers })
 
 export const setTheme = (
   userId: number,

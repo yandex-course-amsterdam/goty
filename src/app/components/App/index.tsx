@@ -35,7 +35,9 @@ import '../../../fonts/fonts.css'
 // startServiceWorker()
 
 export const App: FC = (): JSX.Element => {
-  const [isOffline, setIsOffline] = useState(isServer || !navigator.onLine)
+  const [isOffline, setIsOffline] = useState(
+    isServer ? false : !navigator.onLine
+  )
 
   const dispatch = useDispatch()
 
