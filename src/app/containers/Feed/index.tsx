@@ -1,17 +1,30 @@
 import React, { FC } from 'react'
-import { Sidebar, Avatar, Main, Navigation, NewsList } from 'app/components'
+import {
+  Sidebar,
+  Avatar,
+  Main,
+  Title,
+  Navigation,
+  NewsList
+} from 'app/components'
 
 import style from './style.css'
 
 export const Feed: FC = (): JSX.Element => (
-  <div className={style.signup}>
+  <div className={style.feed}>
     <Sidebar>
       <Avatar className={style.avatar} />
       <Navigation />
     </Sidebar>
     <Main>
-      <h1>Feed</h1>
-      <NewsList />
+      <div className={style.container}>
+        <div>
+          <Title className={style.title} title="Feed" />
+        </div>
+        <div className={style.overflow}>
+          <NewsList />
+        </div>
+      </div>
     </Main>
   </div>
 )

@@ -16,16 +16,18 @@ const connectPostgres = async () => {
   //       fieldColor: '#2a2731',
   //       accentColor: '#2264d1',
   //       textColor: '#eeecf1',
+  //       articleBgColor: '#1c1a22',
   //       subTextColor: '#7a7585'
   //     },
   //     {
   //       name: 'light',
   //       default: true,
-  //       baseColor: '#ffffff',
+  //       baseColor: '#f1f1f1',
   //       secondColor: '#000000',
   //       fieldColor: '#ffffff',
   //       accentColor: '#2264d1',
   //       textColor: '#000000',
+  //       articleBgColor: '#ffffff',
   //       subTextColor: '#7a7585'
   //     }
   //   ])

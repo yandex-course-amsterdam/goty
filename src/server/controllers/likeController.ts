@@ -14,7 +14,6 @@ export const postLike = async (
 
     // если лайк такого типа для данной новости от данного юзера есть, его нужно удалить
     if (like) {
-      const { id } = like
       like.destroy()
       // возвращаем id удалённого лайка для выполнения логики на фронте
       return res.status(204).send()

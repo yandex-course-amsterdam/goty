@@ -2,15 +2,37 @@
 import React, { FC, useState, useCallback, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import cn from 'classnames'
+import { Formik, Form, FormikValues } from 'formik'
+import * as Yup from 'yup'
+
+import { VALIDATION_SCHEMA } from 'app/constants'
 
 import { getAllNews, postComment, postLike } from 'app/api/Api'
 
+import { Input, Button } from 'app/components'
+
 import style from './style.css'
+
+enum LikeEmoji {
+  like = '👍',
+  laugh = '🤣',
+  cry = '😿',
+  love = '💘'
+}
 
 export const NewsList: FC = (): JSX.Element => {
   const [news, setNews] = useState([])
-  const [commentText, setCommentText] = useState([])
   const userInfo = useSelector((state: StoreState) => state.userInfo)
+
+  const { commentText } = VALIDATION_SCHEMA
+
+  const validationSchema = Yup.object({
+    commentText
+  })
+
+  const initialValues = {
+    commentText: ''
+  }
 
   const getNews = async () => {
     const res = await getAllNews()
@@ -30,8 +52,9 @@ export const NewsList: FC = (): JSX.Element => {
   )
 
   const submitComment = useCallback(
-    async (newsId: number) => {
-      const { data } = await postComment(newsId, commentText, userInfo.id)
+    async (formData: FormikValues, newsId: number) => {
+      const { commentText: comment } = formData
+      const { data } = await postComment(newsId, comment, userInfo.id)
 
       try {
         updateNews(newsId, (article) => {
@@ -43,7 +66,7 @@ export const NewsList: FC = (): JSX.Element => {
         getNews()
       }
     },
-    [commentText, userInfo, updateNews]
+    [userInfo, updateNews]
   )
 
   const likeArticle = useCallback(
@@ -72,7 +95,9 @@ export const NewsList: FC = (): JSX.Element => {
   )
 
   const renderLikes = useCallback(
-    (likes): JSX.Element[] => {
+    (article): JSX.Element[] => {
+      const { likes } = article
+
       const count = {
         like: 0,
         laugh: 0,
@@ -97,73 +122,119 @@ export const NewsList: FC = (): JSX.Element => {
         }
       })
 
-      const filteredLikes = Object.keys(count)
-        .filter((like) => count[like])
-        .map((like) => ({
-          type: like,
-          count: count[like],
-          userLiked: userLikes[like]
-        }))
+      const processedLikes = Object.keys(count).map((like) => ({
+        type: like,
+        count: count[like],
+        userLiked: userLikes[like]
+      }))
 
-      return filteredLikes.map((like) => (
-        <div
-          className={cn(
-            style.like,
-            like.userLiked === true && style.likeActive
-          )}
-        >
-          {like.type}: {like.count}
+      return (
+        <div className={style.likes}>
+          {processedLikes.map((like) => (
+            <button
+              type="button"
+              className={cn(
+                style.like,
+                like.userLiked === true && style.likeActive,
+                !like.count && style.likeDim
+              )}
+              onClick={() => {
+                likeArticle(article.id, like.type)
+              }}
+            >
+              <span role="img" aria-label={like.type} className={style.emoji}>
+                {LikeEmoji[like.type]}
+              </span>{' '}
+              <span className={style.count}>{like.count}</span>
+            </button>
+          ))}
         </div>
-      ))
+      )
     },
-    [userInfo]
+    [userInfo, likeArticle]
   )
 
   const renderComments = useCallback(
-    (comments): JSX.Element[] =>
-      comments.map((comment) => <div>{comment.text}</div>),
+    (article): JSX.Element[] => (
+      <div className={style.comments}>
+        {article.comments.map((comment) => (
+          <div className={style.comment}>
+            <div className={style.commentAvatar}>
+              <img
+                src={
+                  comment.user.avatar
+                    ? `https://ya-praktikum.tech/${comment.user.avatar}`
+                    : '/images/avatar.png'
+                }
+                alt={comment.user.login}
+              />
+            </div>
+            <div className={style.commentMain}>
+              <div className={style.commentText}>{comment.text}</div>
+              <div className={style.commentMeta}>
+                <div className={style.commentAuthor}>{comment.user.login}</div>
+                <div className={style.commentDate}>
+                  {new Date(comment.user.createdAt).toLocaleString()}
+                </div>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    ),
     []
   )
 
   const renderNews = useCallback(
     (): JSX.Element[] =>
       news.map((article) => (
-        <li className={style.news}>
-          <div>{article.title}</div>
-          <div>{article.text}</div>
+        <div className={style.article}>
+          <h3 className={style.title}>{article.title}</h3>
+          <p className={style.description}>{article.description}</p>
 
-          {renderLikes(article.likes)}
+          {renderLikes(article)}
 
-          {renderComments(article.comments)}
+          {renderComments(article)}
 
-          <button
-            type="button"
-            onClick={() => {
-              likeArticle(article.id, 'love')
+          <Formik
+            enableReinitialize
+            initialValues={initialValues}
+            validationSchema={validationSchema}
+            onSubmit={(data) => {
+              submitComment(data, article.id)
             }}
           >
-            Like article
-            <span role="img" aria-label="like">
-              👍
-            </span>
-          </button>
-
-          <input
-            type="text"
-            value={commentText}
-            onChange={(evt) => setCommentText(evt.target.value)}
-          />
-          <button onClick={() => submitComment(article.id)} type="button">
-            Submit comment
-          </button>
-        </li>
+            <Form>
+              <Input
+                label="Comment"
+                name="commentText"
+                type="text"
+                placeholder="Enter your comment"
+              />
+              <div className={style.wrapper}>
+                <Button
+                  className={style.button}
+                  type="submit"
+                  buttonText="Submit comment"
+                />
+              </div>
+            </Form>
+          </Formik>
+        </div>
       )),
-    [commentText, news, renderComments, renderLikes, submitComment, likeArticle]
+    [
+      news,
+      renderComments,
+      renderLikes,
+      validationSchema,
+      initialValues,
+      submitComment
+    ]
   )
 
   useEffect(() => {
     getNews()
   }, [])
 
-  return <ul>{renderNews()}</ul>
+  return <div className={style.articles}>{renderNews()}</div>
 }
