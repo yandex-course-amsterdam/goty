@@ -71,10 +71,19 @@ export const NewsList: FC = (): JSX.Element => {
     []
   )
 
-  const getNews = async () => {
+  const getNews = useCallback(async () => {
     const res = await getAllNews()
     setNews(res.data)
-  }
+  }, [])
+
+  const handleLocalUpdateError = useCallback(
+    (type: string, error: Error): void => {
+      console.log(`There is trouble updating ${type}: ${error}`)
+      console.log('Fetch correct news list from API...')
+      getNews()
+    },
+    [getNews]
+  )
 
   const updateNews = useCallback(
     (newsId, cb) => {
@@ -105,12 +114,10 @@ export const NewsList: FC = (): JSX.Element => {
           }
         })
       } catch (error) {
-        console.log(`There is trouble updating likes: ${error}`)
-        console.log('Fetch correct news list from API...')
-        getNews()
+        handleLocalUpdateError('likes', error)
       }
     },
-    [userInfo, updateNews]
+    [userInfo, updateNews, handleLocalUpdateError]
   )
 
   const submitComment = useCallback(
@@ -127,12 +134,10 @@ export const NewsList: FC = (): JSX.Element => {
           article.comments.push(data)
         })
       } catch (error) {
-        console.log(`There is trouble updating comment list: ${error}`)
-        console.log('Fetch correct news list from API...')
-        getNews()
+        handleLocalUpdateError('comment list', error)
       }
     },
-    [userInfo, updateNews]
+    [userInfo, updateNews, handleLocalUpdateError]
   )
 
   const removeComment = useCallback(
@@ -141,19 +146,16 @@ export const NewsList: FC = (): JSX.Element => {
 
       try {
         updateNews(newsId, (article: Article) => {
-          console.log(article)
           const removedCommentIndex = article.comments.findIndex(
             (comment) => comment.id === commentId
           )
           article.comments.splice(removedCommentIndex, 1)
         })
       } catch (error) {
-        console.log(`There is trouble updating comment list: ${error}`)
-        console.log('Fetch correct news list from API...')
-        getNews()
+        handleLocalUpdateError('comment list', error)
       }
     },
-    [updateNews]
+    [updateNews, handleLocalUpdateError]
   )
 
   const renderLikes = useCallback(
