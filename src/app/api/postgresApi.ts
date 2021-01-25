@@ -51,12 +51,16 @@ export const postComment = (
 ): Promise<AxiosResponse> =>
   api.post('/', { newsId, text, userId }, { baseURL: baseURLComment })
 
+export const deleteComment = (commentId: number): Promise<AxiosResponse> =>
+  api.delete('/', { params: { commentId }, baseURL: baseURLComment })
+
 export const postLike = (
   newsId: number,
   type: string,
   userId: number
 ): Promise<AxiosResponse> =>
   api.post('/', { newsId, type, userId }, { baseURL: baseURLLike })
+
 /**
  * Ручки ниже «открыты» для пользования, но не представлены в приложении
  * Можно использовать их для заведения тем новых тем, апдейта текущих, etc.
@@ -76,9 +80,3 @@ export const updateTheme = (
   baseColor: string
 ): Promise<AxiosResponse> =>
   api.put('/', { baseColor }, { params: { id }, baseURL: baseURLThemes })
-
-export const deleteTheme = (
-  userId: number,
-  themeId: number
-): Promise<AxiosResponse> =>
-  api.delete('/', { params: { userId, themeId }, baseURL: baseURLThemes })

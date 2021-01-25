@@ -7,7 +7,7 @@ import * as Yup from 'yup'
 
 import { VALIDATION_SCHEMA } from 'app/constants'
 
-import { getAllNews, postComment, postLike } from 'app/api/Api'
+import { getAllNews, postComment, deleteComment, postLike } from 'app/api/Api'
 
 import { Input, Button } from 'app/components'
 import { sanitize } from 'app/utils'
@@ -55,24 +55,6 @@ export const NewsList: FC = (): JSX.Element => {
     [news]
   )
 
-  const submitComment = useCallback(
-    async (formData: FormikValues, newsId: number) => {
-      const { commentText: comment } = formData
-      const { data } = await postComment(newsId, sanitize(comment), userInfo.id)
-
-      try {
-        updateNews(newsId, (article) => {
-          article.comments.push(data)
-        })
-      } catch (error) {
-        console.log(`There is trouble updating comment list: ${error}`)
-        console.log('Fetch correct news list from API...')
-        getNews()
-      }
-    },
-    [userInfo, updateNews]
-  )
-
   const likeArticle = useCallback(
     async (newsId: number, likeType: string) => {
       const { data } = await postLike(newsId, likeType, userInfo.id)
@@ -96,6 +78,45 @@ export const NewsList: FC = (): JSX.Element => {
       }
     },
     [userInfo, updateNews]
+  )
+
+  const submitComment = useCallback(
+    async (newsId: number, formData: FormikValues) => {
+      const { commentText: comment } = formData
+      const { data } = await postComment(newsId, sanitize(comment), userInfo.id)
+
+      try {
+        updateNews(newsId, (article) => {
+          article.comments.push(data)
+        })
+      } catch (error) {
+        console.log(`There is trouble updating comment list: ${error}`)
+        console.log('Fetch correct news list from API...')
+        getNews()
+      }
+    },
+    [userInfo, updateNews]
+  )
+
+  const removeComment = useCallback(
+    async (newsId: number, commentId: number) => {
+      await deleteComment(commentId)
+
+      try {
+        updateNews(newsId, (article) => {
+          console.log(article)
+          const removedCommentIndex = article.comments.findIndex(
+            (comment) => comment.id === commentId
+          )
+          article.comments.splice(removedCommentIndex, 1)
+        })
+      } catch (error) {
+        console.log(`There is trouble updating comment list: ${error}`)
+        console.log('Fetch correct news list from API...')
+        getNews()
+      }
+    },
+    [updateNews]
   )
 
   const renderLikes = useCallback(
@@ -163,6 +184,17 @@ export const NewsList: FC = (): JSX.Element => {
       <div className={style.comments}>
         {article.comments.map((comment) => (
           <div className={style.comment}>
+            {userInfo.id === comment.user.id && (
+              <button
+                type="button"
+                className={style.commentDelete}
+                onClick={() => {
+                  removeComment(article.id, comment.id)
+                }}
+              >
+                Delete comment
+              </button>
+            )}
             <div className={style.commentAvatar}>
               <img
                 src={
@@ -191,7 +223,7 @@ export const NewsList: FC = (): JSX.Element => {
         ))}
       </div>
     ),
-    []
+    [userInfo, removeComment]
   )
 
   const renderNews = useCallback(
@@ -210,7 +242,7 @@ export const NewsList: FC = (): JSX.Element => {
             initialValues={initialValues}
             validationSchema={validationSchema}
             onSubmit={(data) => {
-              submitComment(data, article.id)
+              submitComment(article.id, data)
             }}
           >
             {({ values }) => (

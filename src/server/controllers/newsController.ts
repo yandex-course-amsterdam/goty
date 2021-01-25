@@ -7,14 +7,15 @@ import { News, Comment, Like } from '../models'
 
 const controllerName = 'NewsController'
 
+const {
+  models: { aliases }
+} = config
+
 export const getAllNews = async (
   req: express.Request,
   res: express.Response
 ): Promise<express.Response> => {
   try {
-    const {
-      models: { aliases }
-    } = config
     const allNews = await News.findAll({
       include: [
         { model: Comment, as: aliases.comments, include: [aliases.user] },

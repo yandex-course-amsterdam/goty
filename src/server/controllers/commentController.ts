@@ -7,14 +7,15 @@ import { Comment } from '../models'
 
 const controllerName = 'CommentController'
 
+const {
+  models: { aliases }
+} = config
+
 export const postComment = async (
   req: express.Request,
   res: express.Response
 ): Promise<express.Response> => {
   try {
-    const {
-      models: { aliases }
-    } = config
     const { id } = await Comment.create(req.body)
     const comment = await Comment.findOne({
       where: { id },
@@ -23,6 +24,19 @@ export const postComment = async (
     return res.status(201).send(comment)
   } catch (error) {
     log(controllerName, 'postComment', error)
-    return res.status(400).send('There is a problem saving your theme')
+    return res.status(400).send('There is a problem saving your comment')
+  }
+}
+
+export const deleteComment = async (
+  req: express.Request,
+  res: express.Response
+): Promise<express.Response> => {
+  try {
+    await Comment.destroy({ where: { id: req.query.commentId } })
+    return res.status(204).send()
+  } catch (error) {
+    log(controllerName, 'postComment', error)
+    return res.status(400).send('There is a problem deleting your comment')
   }
 }
