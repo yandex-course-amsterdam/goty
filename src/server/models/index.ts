@@ -36,12 +36,12 @@ Comment.belongsTo(User, {
   as: aliases.user
 })
 
-Theme.hasMany(Like, {
-  foreignKey: 'themeId',
+News.hasMany(Like, {
+  foreignKey: 'newsId',
   as: aliases.likes
 })
-Like.belongsTo(Theme, {
-  foreignKey: 'themeId'
+Like.belongsTo(News, {
+  foreignKey: 'newsId'
 })
 
 User.hasMany(Like, {

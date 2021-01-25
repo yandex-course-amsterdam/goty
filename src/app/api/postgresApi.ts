@@ -53,10 +53,10 @@ export const postComment = (
 
 export const postLike = (
   newsId: number,
-  likeType: string,
+  type: string,
   userId: number
 ): Promise<AxiosResponse> =>
-  api.post('/', { newsId, likeType, userId }, { baseURL: baseURLLike })
+  api.post('/', { newsId, type, userId }, { baseURL: baseURLLike })
 /**
  * Ручки ниже «открыты» для пользования, но не представлены в приложении
  * Можно использовать их для заведения тем новых тем, апдейта текущих, etc.

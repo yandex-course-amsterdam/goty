@@ -1,3 +1,11 @@
 .news {
   display: block;
 }
+
+.like {
+  background: red;
+}
+
+.likeActive {
+  background: blue;
+}

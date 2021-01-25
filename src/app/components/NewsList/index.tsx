@@ -1,6 +1,7 @@
 // @ts-nocheck
 import React, { FC, useState, useCallback, useEffect } from 'react'
 import { useSelector } from 'react-redux'
+import cn from 'classnames'
 
 import { getAllNews, postComment, postLike } from 'app/api/Api'
 
@@ -43,6 +44,56 @@ export const NewsList: FC = (): JSX.Element => {
     [userInfo]
   )
 
+  const renderLikes = useCallback(
+    (likes): JSX.Element[] => {
+      const count = {
+        like: 0,
+        laugh: 0,
+        cry: 0,
+        love: 0
+      }
+      const userLikes = {
+        like: false,
+        laugh: false,
+        cry: false,
+        love: false
+      }
+
+      likes.forEach((like) => {
+        const isUserLike = like.userId === userInfo.id
+        const likeType = like.type
+
+        count[likeType] += 1
+
+        if (isUserLike && !userLikes[likeType]) {
+          userLikes[likeType] = true
+        }
+      })
+
+      const filteredLikes = Object.keys(count)
+        .filter((like) => count[like])
+        .map((like) => ({
+          type: like,
+          count: count[like],
+          userLiked: userLikes[like]
+        }))
+
+      console.log(filteredLikes)
+
+      return filteredLikes.map((like) => (
+        <div
+          className={cn(
+            style.like,
+            like.userLiked === true && style.likeActive
+          )}
+        >
+          {like.type}: {like.count}
+        </div>
+      ))
+    },
+    [userInfo]
+  )
+
   const renderComments = useCallback(
     (comments): JSX.Element[] =>
       comments.map((comment) => <div>{comment.text}</div>),
@@ -56,12 +107,14 @@ export const NewsList: FC = (): JSX.Element => {
           <div>{article.title}</div>
           <div>{article.text}</div>
 
+          {renderLikes(article.likes)}
+
           {renderComments(article.comments)}
 
           <button
             type="button"
-            handleCLick={() => {
-              likeArticle(article.id, 'like')
+            onClick={() => {
+              likeArticle(article.id, 'love')
             }}
           >
             Like article
@@ -80,7 +133,7 @@ export const NewsList: FC = (): JSX.Element => {
           </button>
         </li>
       )),
-    [commentText, news, renderComments, submitComment, likeArticle]
+    [commentText, news, renderComments, renderLikes, submitComment, likeArticle]
   )
 
   useEffect(() => {
