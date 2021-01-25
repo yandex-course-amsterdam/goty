@@ -1,5 +1,5 @@
 import express from 'express'
-import { Theme, User } from '../models'
+import { Theme } from '../models'
 import { format } from '../formatters'
 import { log } from '../utils'
 

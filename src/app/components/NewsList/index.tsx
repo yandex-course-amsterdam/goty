@@ -1,4 +1,3 @@
-// @ts-nocheck
 import React, { FC, useState, useCallback, useEffect, useMemo } from 'react'
 import { useSelector } from 'react-redux'
 import cn from 'classnames'
@@ -9,10 +8,44 @@ import { VALIDATION_SCHEMA } from 'app/constants'
 
 import { getAllNews, postComment, deleteComment, postLike } from 'app/api/Api'
 
+import { UserInfo } from 'app/actions'
+import { StoreState } from 'app/reducers'
 import { Input, Button } from 'app/components'
 import { sanitize } from 'app/utils'
 
 import style from './style.css'
+
+type User = UserInfo & {
+  createdAt: string
+}
+
+enum LikeType {
+  like = 'like',
+  laugh = 'laugh',
+  cry = 'cry',
+  love = 'love'
+}
+
+type Like = {
+  id: number
+  type: keyof typeof LikeType
+  userId: number
+}
+
+type Comment = {
+  id: number
+  text: string
+  createdAt: string
+  user: User
+}
+
+type Article = {
+  id: number
+  title: string
+  description: string
+  likes: Like[]
+  comments: Comment[]
+}
 
 enum LikeEmoji {
   like = '👍',
@@ -22,7 +55,7 @@ enum LikeEmoji {
 }
 
 export const NewsList: FC = (): JSX.Element => {
-  const [news, setNews] = useState([])
+  const [news, setNews] = useState<Article[]>([])
   const userInfo = useSelector((state: StoreState) => state.userInfo)
 
   const { comment: commentText } = VALIDATION_SCHEMA
@@ -47,7 +80,7 @@ export const NewsList: FC = (): JSX.Element => {
     (newsId, cb) => {
       const updatedNews = JSON.parse(JSON.stringify(news))
       const updatedArticle = updatedNews.find(
-        (article) => article.id === newsId
+        (article: Article) => article.id === newsId
       )
       cb(updatedArticle)
       setNews(updatedNews)
@@ -57,10 +90,10 @@ export const NewsList: FC = (): JSX.Element => {
 
   const likeArticle = useCallback(
     async (newsId: number, likeType: string) => {
-      const { data } = await postLike(newsId, likeType, userInfo.id)
+      const { data } = await postLike(newsId, likeType, userInfo.id as number)
 
       try {
-        updateNews(newsId, (article) => {
+        updateNews(newsId, (article: Article) => {
           // при попытке сохранить имеющийся лайк (лайк с таким же типом, newsId и userId) сервер отвечает 204
           if (data) {
             article.likes.push(data)
@@ -83,10 +116,14 @@ export const NewsList: FC = (): JSX.Element => {
   const submitComment = useCallback(
     async (newsId: number, formData: FormikValues) => {
       const { commentText: comment } = formData
-      const { data } = await postComment(newsId, sanitize(comment), userInfo.id)
+      const { data } = await postComment(
+        newsId,
+        sanitize(comment),
+        userInfo.id as number
+      )
 
       try {
-        updateNews(newsId, (article) => {
+        updateNews(newsId, (article: Article) => {
           article.comments.push(data)
         })
       } catch (error) {
@@ -103,7 +140,7 @@ export const NewsList: FC = (): JSX.Element => {
       await deleteComment(commentId)
 
       try {
-        updateNews(newsId, (article) => {
+        updateNews(newsId, (article: Article) => {
           console.log(article)
           const removedCommentIndex = article.comments.findIndex(
             (comment) => comment.id === commentId
@@ -120,23 +157,23 @@ export const NewsList: FC = (): JSX.Element => {
   )
 
   const renderLikes = useCallback(
-    (article): JSX.Element[] => {
+    (article): JSX.Element => {
       const { likes } = article
 
-      const count = {
+      const count: Record<keyof typeof LikeType, number> = {
         like: 0,
         laugh: 0,
         cry: 0,
         love: 0
       }
-      const userLikes = {
+      const userLikes: Record<keyof typeof LikeType, boolean> = {
         like: false,
         laugh: false,
         cry: false,
         love: false
       }
 
-      likes.forEach((like) => {
+      likes.forEach((like: Like) => {
         const isUserLike = like.userId === userInfo.id
         const likeType = like.type
 
@@ -147,11 +184,14 @@ export const NewsList: FC = (): JSX.Element => {
         }
       })
 
-      const processedLikes = Object.keys(count).map((like) => ({
-        type: like,
-        count: count[like],
-        userLiked: userLikes[like]
-      }))
+      const processedLikes = Object.keys(count).map((like: string) => {
+        const castedLike = like as keyof typeof LikeType
+        return {
+          type: castedLike,
+          count: count[castedLike],
+          userLiked: userLikes[castedLike]
+        }
+      })
 
       return (
         <div className={style.likes}>
@@ -180,9 +220,9 @@ export const NewsList: FC = (): JSX.Element => {
   )
 
   const renderComments = useCallback(
-    (article): JSX.Element[] => (
+    (article): JSX.Element => (
       <div className={style.comments}>
-        {article.comments.map((comment) => (
+        {article.comments.map((comment: Comment) => (
           <div className={style.comment}>
             {userInfo.id === comment.user.id && (
               <button
@@ -202,7 +242,7 @@ export const NewsList: FC = (): JSX.Element => {
                     ? `https://ya-praktikum.tech/${comment.user.avatar}`
                     : '/images/avatar.png'
                 }
-                alt={comment.user.login}
+                alt={comment.user.login || 'User avatar'}
               />
             </div>
             <div className={style.commentMain}>
@@ -248,7 +288,7 @@ export const NewsList: FC = (): JSX.Element => {
             {({ values }) => (
               <Form className={style.commentForm}>
                 <Input
-                  values="Comment"
+                  label="Comment"
                   name="commentText"
                   type="text"
                   placeholder="Enter your comment"
