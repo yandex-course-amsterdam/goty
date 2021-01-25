@@ -1,5 +1,5 @@
 // @ts-nocheck
-import React, { FC, useState, useCallback, useEffect } from 'react'
+import React, { FC, useState, useCallback, useEffect, useMemo } from 'react'
 import { useSelector } from 'react-redux'
 import cn from 'classnames'
 import { Formik, Form, FormikValues } from 'formik'
@@ -10,6 +10,7 @@ import { VALIDATION_SCHEMA } from 'app/constants'
 import { getAllNews, postComment, postLike } from 'app/api/Api'
 
 import { Input, Button } from 'app/components'
+import { sanitize } from 'app/utils'
 
 import style from './style.css'
 
@@ -24,15 +25,18 @@ export const NewsList: FC = (): JSX.Element => {
   const [news, setNews] = useState([])
   const userInfo = useSelector((state: StoreState) => state.userInfo)
 
-  const { commentText } = VALIDATION_SCHEMA
+  const { comment: commentText } = VALIDATION_SCHEMA
 
   const validationSchema = Yup.object({
     commentText
   })
 
-  const initialValues = {
-    commentText: ''
-  }
+  const initialValues = useMemo(
+    () => ({
+      commentText: ''
+    }),
+    []
+  )
 
   const getNews = async () => {
     const res = await getAllNews()
@@ -54,7 +58,7 @@ export const NewsList: FC = (): JSX.Element => {
   const submitComment = useCallback(
     async (formData: FormikValues, newsId: number) => {
       const { commentText: comment } = formData
-      const { data } = await postComment(newsId, comment, userInfo.id)
+      const { data } = await postComment(newsId, sanitize(comment), userInfo.id)
 
       try {
         updateNews(newsId, (article) => {
@@ -170,7 +174,12 @@ export const NewsList: FC = (): JSX.Element => {
               />
             </div>
             <div className={style.commentMain}>
-              <div className={style.commentText}>{comment.text}</div>
+              <div className={style.commentText}>
+                {
+                  new DOMParser().parseFromString(comment.text, 'text/html')
+                    .documentElement.textContent
+                }
+              </div>
               <div className={style.commentMeta}>
                 <div className={style.commentAuthor}>{comment.user.login}</div>
                 <div className={style.commentDate}>
@@ -204,21 +213,24 @@ export const NewsList: FC = (): JSX.Element => {
               submitComment(data, article.id)
             }}
           >
-            <Form>
-              <Input
-                label="Comment"
-                name="commentText"
-                type="text"
-                placeholder="Enter your comment"
-              />
-              <div className={style.wrapper}>
-                <Button
-                  className={style.button}
-                  type="submit"
-                  buttonText="Submit comment"
+            {({ values }) => (
+              <Form className={style.commentForm}>
+                <Input
+                  values="Comment"
+                  name="commentText"
+                  type="text"
+                  placeholder="Enter your comment"
                 />
-              </div>
-            </Form>
+                <div className={style.wrapper}>
+                  <Button
+                    className={style.button}
+                    type="submit"
+                    disabled={!values.commentText}
+                    buttonText="🚀"
+                  />
+                </div>
+              </Form>
+            )}
           </Formik>
         </div>
       )),

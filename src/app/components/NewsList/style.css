@@ -83,7 +83,7 @@
 }
 
 .comments {
-  margin: 20px 0;
+  margin: 20px 0 30px;
 }
 
 .comment {
@@ -128,4 +128,40 @@
 .commentDate {
   font: normal 700 12px/18px 'Inter Regular', sans-serif;
   color: var(--text-color);
+}
+
+.commentForm {
+  display: flex;
+}
+
+.commentForm label {
+  display: none;
+}
+
+.commentForm > div:first-child {
+  flex-grow: 1;
+
+  margin-right: 12px;
+}
+
+.commentForm > div:first-child div,
+.commentForm > div:first-child input {
+  width: 100%;
+}
+
+.commentForm [class*='error'] {
+  display: none;
+}
+
+.commentForm button {
+  width: 56px;
+}
+
+.commentForm button,
+.commentForm button:disabled {
+  background: var(--accent-color);
+}
+
+.commentForm button:disabled {
+  opacity: 0.5;
 }

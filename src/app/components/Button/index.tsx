@@ -14,11 +14,13 @@ export const Button: FC<IProps> = ({
   type = 'button',
   buttonText,
   className,
+  disabled = false,
   handleClick
 }): JSX.Element => (
   <button
     onClick={handleClick}
     className={cn(style.button, className)}
+    disabled={disabled}
     type={type}
   >
     {buttonText}
