@@ -3,7 +3,8 @@ export const config = {
     aliases: {
       user: 'user',
       theme: 'theme',
-      comments: 'comments'
+      comments: 'comments',
+      likes: 'likes'
     }
   }
 }
