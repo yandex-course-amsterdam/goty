@@ -14,6 +14,7 @@ const baseURLUsers = '/users'
 const baseURLThemes = '/themes'
 const baseURLNews = '/news'
 const baseURLComment = '/comments'
+const baseURLLike = '/likes'
 
 /**
  * Юзер
@@ -50,6 +51,12 @@ export const postComment = (
 ): Promise<AxiosResponse> =>
   api.post('/', { newsId, text, userId }, { baseURL: baseURLComment })
 
+export const postLike = (
+  newsId: number,
+  likeType: string,
+  userId: number
+): Promise<AxiosResponse> =>
+  api.post('/', { newsId, likeType, userId }, { baseURL: baseURLLike })
 /**
  * Ручки ниже «открыты» для пользования, но не представлены в приложении
  * Можно использовать их для заведения тем новых тем, апдейта текущих, etc.

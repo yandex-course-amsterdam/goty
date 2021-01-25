@@ -2,7 +2,7 @@
 import React, { FC, useState, useCallback, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 
-import { getAllNews, postComment } from 'app/api/Api'
+import { getAllNews, postComment, postLike } from 'app/api/Api'
 
 import style from './style.css'
 
@@ -18,7 +18,6 @@ export const NewsList: FC = (): JSX.Element => {
 
   const submitComment = useCallback(
     async (newsId: number) => {
-      console.log(userInfo)
       const { data } = await postComment(newsId, commentText, userInfo.id)
 
       try {
@@ -37,6 +36,13 @@ export const NewsList: FC = (): JSX.Element => {
     [commentText, news, userInfo]
   )
 
+  const likeArticle = useCallback(
+    async (newsId: number, likeType: string) => {
+      await postLike(newsId, likeType, userInfo.id)
+    },
+    [userInfo]
+  )
+
   const renderComments = useCallback(
     (comments): JSX.Element[] =>
       comments.map((comment) => <div>{comment.text}</div>),
@@ -52,6 +58,18 @@ export const NewsList: FC = (): JSX.Element => {
 
           {renderComments(article.comments)}
 
+          <button
+            type="button"
+            handleCLick={() => {
+              likeArticle(article.id, 'like')
+            }}
+          >
+            Like article
+            <span role="img" aria-label="like">
+              👍
+            </span>
+          </button>
+
           <input
             type="text"
             value={commentText}
@@ -62,7 +80,7 @@ export const NewsList: FC = (): JSX.Element => {
           </button>
         </li>
       )),
-    [commentText, news, renderComments, submitComment]
+    [commentText, news, renderComments, submitComment, likeArticle]
   )
 
   useEffect(() => {

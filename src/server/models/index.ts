@@ -52,4 +52,4 @@ Like.belongsTo(User, {
   foreignKey: 'userId'
 })
 
-export { User, Theme, Feedback, News, Comment }
+export { User, Theme, Feedback, News, Comment, Like }

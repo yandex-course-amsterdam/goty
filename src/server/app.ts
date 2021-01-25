@@ -10,7 +10,8 @@ import {
   themesRouter,
   feedbackRouter,
   newsRouter,
-  commentsRouter
+  commentsRouter,
+  likeRouter
 } from './routes'
 
 import { serverRenderMiddleware } from './serverRenderMiddleware'
@@ -28,6 +29,7 @@ app
   .use('/feedback', feedbackRouter)
   .use('/news', newsRouter)
   .use('/comments', commentsRouter)
+  .use('/likes', likeRouter)
 
 app.get('/images/:src', (req, res) => {
   const { src } = req.params
