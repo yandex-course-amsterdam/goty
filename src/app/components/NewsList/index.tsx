@@ -208,6 +208,7 @@ export const NewsList: FC = (): JSX.Element => {
               onClick={() => {
                 likeArticle(article.id, like.type)
               }}
+              key={like.type}
             >
               <span role="img" aria-label={like.type} className={style.emoji}>
                 {LikeEmoji[like.type]}
@@ -225,7 +226,7 @@ export const NewsList: FC = (): JSX.Element => {
     (article): JSX.Element => (
       <div className={style.comments}>
         {article.comments.map((comment: Comment) => (
-          <div className={style.comment}>
+          <div className={style.comment} key={comment.id}>
             {userInfo.id === comment.user.id && (
               <button
                 type="button"
@@ -271,7 +272,7 @@ export const NewsList: FC = (): JSX.Element => {
   const renderNews = useCallback(
     (): JSX.Element[] =>
       news.map((article) => (
-        <div className={style.article}>
+        <div className={style.article} key={article.id}>
           <h3 className={style.title}>{article.title}</h3>
           <p className={style.description}>{article.description}</p>
 
@@ -320,7 +321,7 @@ export const NewsList: FC = (): JSX.Element => {
 
   useEffect(() => {
     getNews()
-  }, [])
+  }, [getNews])
 
   return <div className={style.articles}>{renderNews()}</div>
 }

@@ -8,6 +8,7 @@ const themeProps = [
   'fieldColor',
   'accentColor',
   'textColor',
+  'articleBgColor',
   'subTextColor'
 ]
 

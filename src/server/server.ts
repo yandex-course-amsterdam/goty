@@ -2,41 +2,55 @@ import mongoose from 'mongoose'
 
 import { app } from './app'
 import { sequelize } from './sequelize'
-// import { Theme, News } from './models'
+import { Theme, News } from './models'
 
 const connectPostgres = async () => {
-  await sequelize.sync()
-  // .then(() => {
-  //   Theme.bulkCreate([
-  //     {
-  //       name: 'dark',
-  //       default: true,
-  //       baseColor: '#17151c',
-  //       secondColor: '#000000',
-  //       fieldColor: '#2a2731',
-  //       accentColor: '#2264d1',
-  //       textColor: '#eeecf1',
-  //       articleBgColor: '#1c1a22',
-  //       subTextColor: '#7a7585'
-  //     },
-  //     {
-  //       name: 'light',
-  //       default: true,
-  //       baseColor: '#f1f1f1',
-  //       secondColor: '#000000',
-  //       fieldColor: '#ffffff',
-  //       accentColor: '#2264d1',
-  //       textColor: '#000000',
-  //       articleBgColor: '#ffffff',
-  //       subTextColor: '#7a7585'
-  //     }
-  //   ])
+  // Дропаем имеющиеся темы...
+  await Theme.sync({ force: true }).then(() => {
+    Theme.bulkCreate([
+      {
+        name: 'dark',
+        default: true,
+        baseColor: '#17151c',
+        secondColor: '#000000',
+        fieldColor: '#2a2731',
+        accentColor: '#2264d1',
+        textColor: '#eeecf1',
+        articleBgColor: '#1c1a22',
+        subTextColor: '#7a7585'
+      },
+      {
+        name: 'light',
+        default: true,
+        baseColor: '#f1f1f1',
+        secondColor: '#000000',
+        fieldColor: '#ffffff',
+        accentColor: '#2264d1',
+        textColor: '#000000',
+        articleBgColor: '#ffffff',
+        subTextColor: '#7a7585'
+      }
+    ])
+  })
 
-  //   News.create({
-  //     title: 'Title',
-  //     description: 'Description'
-  //   })
-  // })
+  // ...и новости...
+  await News.sync({ force: true }).then(() => {
+    News.bulkCreate([
+      {
+        title: 'First article',
+        description:
+          'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Corrupti, culpa fugit cupiditate recusandae magnam dolores quae amet assumenda, soluta unde aut nulla.'
+      },
+      {
+        title: 'Second article',
+        description:
+          'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Corrupti, culpa fugit cupiditate recusandae magnam dolores quae amet assumenda, soluta unde aut nulla.'
+      }
+    ])
+  })
+
+  // ...а остальное просто синхронизируем
+  await sequelize.sync()
 }
 
 const connectMongo = async () => {

@@ -7,7 +7,7 @@ interface IProps {
   type?: 'button' | 'submit'
   buttonText: string
   className?: string
-  disabled: boolean
+  disabled?: boolean
   handleClick?: () => void
 }
 

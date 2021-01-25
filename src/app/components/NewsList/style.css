@@ -9,6 +9,10 @@
   border-radius: 10px;
 }
 
+.article:not(:last-child) {
+  margin-bottom: 60px;
+}
+
 .title {
   font: normal 700 24px/36px 'Inter Bold', sans-serif;
   color: var(--text-color);
@@ -66,6 +70,10 @@
   transition: width 0.3s ease;
 }
 
+.likes {
+  margin-bottom: 30px;
+}
+
 .like:not(.likeDim):hover .count {
   width: 20px;
 }
@@ -83,7 +91,7 @@
 }
 
 .comments {
-  margin: 20px 0 30px;
+  margin-bottom: 30px;
 }
 
 .comment {
@@ -169,6 +177,11 @@
 
 .commentForm [class*='error'] {
   display: none;
+}
+
+.commentForm [class*='icon'] {
+  right: 8px;
+  left: unset;
 }
 
 .commentForm button {
