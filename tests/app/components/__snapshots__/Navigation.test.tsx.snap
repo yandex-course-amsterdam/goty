@@ -100,6 +100,72 @@ exports[`Navigation component Render itself correctly 1`] = `
         </p>
       </li>
     </a>
+    <a
+      href="/feedback"
+      onClick={[Function]}
+    >
+      <li
+        className=""
+      >
+        <svg
+          fill="none"
+          height="32"
+          width="32"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M16 19.429a8 8 0 100-16 8 8 0 000 16z"
+            stroke="#787885"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="2"
+          />
+          <path
+            d="M11.668 18.16L10.287 28.57 16 25.143l5.714 3.428-1.383-10.423"
+            stroke="#787885"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="2"
+          />
+        </svg>
+        <p>
+          Feedback
+        </p>
+      </li>
+    </a>
+    <a
+      href="/feed"
+      onClick={[Function]}
+    >
+      <li
+        className=""
+      >
+        <svg
+          fill="none"
+          height="32"
+          width="32"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M16 19.429a8 8 0 100-16 8 8 0 000 16z"
+            stroke="#787885"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="2"
+          />
+          <path
+            d="M11.668 18.16L10.287 28.57 16 25.143l5.714 3.428-1.383-10.423"
+            stroke="#787885"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="2"
+          />
+        </svg>
+        <p>
+          Feed
+        </p>
+      </li>
+    </a>
   </ul>
   <button
     className=""
