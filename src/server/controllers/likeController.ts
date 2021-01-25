@@ -10,8 +10,18 @@ export const postLike = async (
   res: express.Response
 ): Promise<express.Response> => {
   try {
-    await Like.create(req.body)
-    return res.status(200).send()
+    let like = await Like.findOne({ where: req.body })
+
+    // если лайк такого типа для данной новости от данного юзера есть, его нужно удалить
+    if (like) {
+      const { id } = like
+      like.destroy()
+      // возвращаем id удалённого лайка для выполнения логики на фронте
+      return res.status(204).send()
+    }
+
+    like = await Like.create(req.body)
+    return res.status(200).send(like)
   } catch (error) {
     log(controllerName, 'postLike', error)
     return res.status(400).send('There is a problem saving your theme')

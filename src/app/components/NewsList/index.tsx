@@ -17,31 +17,58 @@ export const NewsList: FC = (): JSX.Element => {
     setNews(res.data)
   }
 
+  const updateNews = useCallback(
+    (newsId, cb) => {
+      const updatedNews = JSON.parse(JSON.stringify(news))
+      const updatedArticle = updatedNews.find(
+        (article) => article.id === newsId
+      )
+      cb(updatedArticle)
+      setNews(updatedNews)
+    },
+    [news]
+  )
+
   const submitComment = useCallback(
     async (newsId: number) => {
       const { data } = await postComment(newsId, commentText, userInfo.id)
 
       try {
-        const updatedNews = JSON.parse(JSON.stringify(news))
-        const updatedArticle = updatedNews.find(
-          (article) => article.id === newsId
-        )
-        updatedArticle.comments.push(data)
-        setNews(updatedNews)
+        updateNews(newsId, (article) => {
+          article.comments.push(data)
+        })
       } catch (error) {
         console.log(`There is trouble updating comment list: ${error}`)
         console.log('Fetch correct news list from API...')
         getNews()
       }
     },
-    [commentText, news, userInfo]
+    [commentText, userInfo, updateNews]
   )
 
   const likeArticle = useCallback(
     async (newsId: number, likeType: string) => {
-      await postLike(newsId, likeType, userInfo.id)
+      const { data } = await postLike(newsId, likeType, userInfo.id)
+
+      try {
+        updateNews(newsId, (article) => {
+          // при попытке сохранить имеющийся лайк (лайк с таким же типом, newsId и userId) сервер отвечает 204
+          if (data) {
+            article.likes.push(data)
+          } else {
+            const removedLikeIndex = article.likes.findIndex(
+              (like) => like.type === likeType && like.userId === userInfo.id
+            )
+            article.likes.splice(removedLikeIndex, 1)
+          }
+        })
+      } catch (error) {
+        console.log(`There is trouble updating likes: ${error}`)
+        console.log('Fetch correct news list from API...')
+        getNews()
+      }
     },
-    [userInfo]
+    [userInfo, updateNews]
   )
 
   const renderLikes = useCallback(
@@ -77,8 +104,6 @@ export const NewsList: FC = (): JSX.Element => {
           count: count[like],
           userLiked: userLikes[like]
         }))
-
-      console.log(filteredLikes)
 
       return filteredLikes.map((like) => (
         <div
