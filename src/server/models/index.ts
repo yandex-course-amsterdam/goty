@@ -27,11 +27,11 @@ Comment.belongsTo(News, {
 })
 
 User.hasMany(Comment, {
-  foreignKey: 'userId',
+  foreignKey: 'id',
   as: aliases.user
 })
 Comment.belongsTo(User, {
-  foreignKey: 'userId',
+  foreignKey: 'id',
   as: aliases.user
 })
 

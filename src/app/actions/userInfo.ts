@@ -7,7 +7,7 @@ import {
   SetUserInfoAction,
   setLoginStatus
 } from 'app/actions'
-import { getUserInfo, createToken, getUserTheme } from 'app/api/Api'
+import { getUserInfo, createToken, getUserTheme, setUser } from 'app/api/Api'
 
 import { setUserTheme, storeUserTheme } from 'app/utils'
 
@@ -32,10 +32,10 @@ export const fetchUserInfo = (isLogin = false) => {
         createToken(data.login)
         dispatch(setLoginStatus(true))
 
-        // Установка темы юзера
-        // TODO: переписать установку темы на более глобальную работу с юзером. В нашей базе нужно хранить имя для отрисовки в комментарии
-        const { data: theme } = await getUserTheme(data.id)
-        console.log(theme)
+        // Сохранение юзера в postgres
+        const { data: user } = await setUser(data)
+        // Фетч темы из postgres по id найденного/созданного юзера
+        const { data: theme } = await getUserTheme(user.id)
         setUserTheme(theme)
         storeUserTheme(theme)
       }

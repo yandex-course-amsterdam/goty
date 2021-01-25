@@ -1,5 +1,7 @@
 import { AxiosResponse } from 'axios'
 
+import { UserInfo } from '../actions/types'
+
 import { api } from './index'
 
 enum RequestRoot {
@@ -12,6 +14,13 @@ const baseURLUsers = '/users'
 const baseURLThemes = '/themes'
 const baseURLNews = '/news'
 const baseURLComment = '/comments'
+
+/**
+ * Юзер
+ */
+
+export const setUser = (body: UserInfo): Promise<AxiosResponse> =>
+  api.post('/', body, { baseURL: baseURLUsers })
 
 /**
  * Темизация

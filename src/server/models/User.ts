@@ -6,8 +6,13 @@ export class User extends Model {}
 
 User.init(
   {
-    userId: { primaryKey: true, type: DataType.INTEGER },
-    name: { type: DataType.STRING }
+    first_name: { type: DataType.STRING },
+    second_name: { type: DataType.STRING },
+    display_name: { type: DataType.STRING },
+    login: { type: DataType.STRING },
+    email: { type: DataType.STRING },
+    phone: { type: DataType.STRING },
+    avatar: { type: DataType.STRING }
   },
   { sequelize, tableName: 'users' }
 )
