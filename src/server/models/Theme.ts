@@ -22,6 +22,7 @@ Theme.init(
     fieldColor: { type: DataType.STRING, validate: { hexColorValidator } },
     accentColor: { type: DataType.STRING, validate: { hexColorValidator } },
     textColor: { type: DataType.STRING, validate: { hexColorValidator } },
+    articleBgColor: { type: DataType.STRING, validate: { hexColorValidator } },
     subTextColor: { type: DataType.STRING, validate: { hexColorValidator } }
   },
   { sequelize, tableName: 'themes' }

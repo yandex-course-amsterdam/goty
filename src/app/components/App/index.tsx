@@ -11,7 +11,8 @@ import {
   GameView,
   ScoreView,
   NotFoundView,
-  FeedbackView
+  FeedbackView,
+  FeedView
 } from 'app/views'
 import { OfflineBar, PrivateRoute, Authorization } from 'app/components'
 
@@ -112,6 +113,9 @@ export const App: FC = (): JSX.Element => {
         </PrivateRoute>
         <PrivateRoute path={route.feedback}>
           <FeedbackView />
+        </PrivateRoute>
+        <PrivateRoute path={route.feed}>
+          <FeedView />
         </PrivateRoute>
         <Route path="*">
           <NotFoundView />

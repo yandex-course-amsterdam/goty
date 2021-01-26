@@ -1,0 +1,28 @@
+.articles {
+  margin-bottom: 60px;
+}
+
+.article {
+  padding: 40px 50px 50px;
+
+  background: var(--article-bg-color);
+  border-radius: 10px;
+}
+
+.article:not(:last-child) {
+  margin-bottom: 60px;
+}
+
+.title {
+  font: normal 700 24px/36px 'Inter Bold', sans-serif;
+  color: var(--text-color);
+
+  margin: 0 0 20px;
+}
+
+.description {
+  font: normal 700 16px/24px 'Inter Regular', sans-serif;
+  color: var(--text-color);
+
+  margin: 0 0 20px;
+}

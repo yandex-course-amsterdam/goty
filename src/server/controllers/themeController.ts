@@ -1,5 +1,5 @@
 import express from 'express'
-import { Theme, UserTheme } from '../models'
+import { Theme } from '../models'
 import { format } from '../formatters'
 import { log } from '../utils'
 
@@ -66,23 +66,5 @@ export const updateTheme = async (
   } catch (error) {
     log(controllerName, 'updateTheme', error)
     return res.sendStatus(400).send('There is a problem updating your theme')
-  }
-}
-
-export const deleteTheme = async (
-  req: express.Request,
-  res: express.Response
-): Promise<express.Response> => {
-  try {
-    await UserTheme.destroy({
-      where: {
-        userId: req.query.userId,
-        themeId: req.query.themeId
-      }
-    })
-    return res.status(201).send('Theme has been deleted succesfully')
-  } catch (error) {
-    log(controllerName, 'deleteTheme', error)
-    return res.sendStatus(400).send('There is a problem deleting your theme')
   }
 }

@@ -1,8 +1,10 @@
 export const config = {
   models: {
     aliases: {
-      UserTheme: 'UserThemeAlias',
-      Theme: 'ThemeAlias'
+      user: 'user',
+      theme: 'theme',
+      comments: 'comments',
+      likes: 'likes'
     }
   }
 }

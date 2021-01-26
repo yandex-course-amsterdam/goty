@@ -23,31 +23,33 @@ export const getUserInfo = (): Promise<AxiosResponse> =>
   api.get(RequestRoot.userInfo, { baseURL })
 
 export const signIn = (body: FormikValues): Promise<AxiosResponse> =>
-  api.post(RequestRoot.signIn, body)
+  api.post(RequestRoot.signIn, body, { baseURL })
 
 export const signUp = (body: FormikValues): Promise<AxiosResponse> =>
-  api.post(RequestRoot.signUp, body)
+  api.post(RequestRoot.signUp, body, { baseURL })
 
 export const updatePassword = (body: FormikValues): Promise<AxiosResponse> =>
-  api.put(RequestRoot.password, body)
+  api.put(RequestRoot.password, body, { baseURL })
 
 export const updateProfile = (body: FormikValues): Promise<AxiosResponse> =>
-  api.put(RequestRoot.profile, body)
+  api.put(RequestRoot.profile, body, { baseURL })
 
 export const updateAvatar = (body: FormData): Promise<AxiosResponse> =>
-  api.put(RequestRoot.avatar, body)
+  api.put(RequestRoot.avatar, body, { baseURL })
 
-export const logout = (): Promise<AxiosResponse> => api.post(RequestRoot.logout)
+export const logout = (): Promise<AxiosResponse> =>
+  api.post(RequestRoot.logout, {}, { baseURL })
 
 export const getServiceId = (): Promise<AxiosResponse> =>
-  api.get(RequestRoot.serviceId)
+  api.get(RequestRoot.serviceId, { baseURL })
 
 export const authWithYandexOauth = (
   codeString: string | null
-): Promise<AxiosResponse> => api.post(RequestRoot.oauth, { code: codeString })
+): Promise<AxiosResponse> =>
+  api.post(RequestRoot.oauth, { baseURL, code: codeString })
 
 export const postResult = (body: Record<string, any>): Promise<AxiosResponse> =>
-  api.post(RequestRoot.storeResult, body)
+  api.post(RequestRoot.storeResult, body, { baseURL })
 
 export const getLeaderboard = (limit = 10): Promise<AxiosResponse> => {
   const body = {
@@ -56,5 +58,5 @@ export const getLeaderboard = (limit = 10): Promise<AxiosResponse> => {
     limit
   }
 
-  return api.post(RequestRoot.getLeaderboard, body)
+  return api.post(RequestRoot.getLeaderboard, body, { baseURL })
 }

@@ -30,5 +30,6 @@ export const VALIDATION_SCHEMA = {
       /^(\+7((\(\d{3}\)\s?\d{3}-\d{2}-\d{2})|(\s\d{3}-\d{3}-\d{2}-\d{2})|(\d{10})))|(8\d{10})$/,
       'Phone must be valid'
     )
-    .required('Phone is required')
+    .required('Phone is required'),
+  comment: Yup.string().required('Comment is required')
 }

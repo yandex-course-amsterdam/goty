@@ -12,6 +12,4 @@ themesRouter.get('/', themeController.getTheme)
 
 themesRouter.put('/', themeController.updateTheme)
 
-themesRouter.delete('/', themeController.deleteTheme)
-
 export { themesRouter }

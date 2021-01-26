@@ -7,5 +7,6 @@ export const sequelize = new Sequelize({
   password: process.env.DB_PASSWORD || 'gotypass',
   database: process.env.DB_NAME || 'gotydb',
 
-  dialect: 'postgres'
+  dialect: 'postgres',
+  logging: false
 })

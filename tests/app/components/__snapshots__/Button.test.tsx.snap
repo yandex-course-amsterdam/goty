@@ -3,6 +3,7 @@
 exports[`Button component Render buttonText correctly 1`] = `
 <button
   className=""
+  disabled={false}
   type="button"
 >
   ohHi
@@ -12,6 +13,7 @@ exports[`Button component Render buttonText correctly 1`] = `
 exports[`Button component Use className prop 1`] = `
 <button
   className="someClass"
+  disabled={false}
   type="button"
 >
   Oh hi
@@ -21,6 +23,7 @@ exports[`Button component Use className prop 1`] = `
 exports[`Button component Use default type "button" if no type is provided 1`] = `
 <button
   className=""
+  disabled={false}
   type="button"
 >
   Oh hi
@@ -30,6 +33,7 @@ exports[`Button component Use default type "button" if no type is provided 1`] =
 exports[`Button component Use handleClick prop 1`] = `
 <button
   className=""
+  disabled={false}
   onClick={[Function]}
   type="button"
 >
@@ -40,6 +44,7 @@ exports[`Button component Use handleClick prop 1`] = `
 exports[`Button component Use specified type when it is provided 1`] = `
 <button
   className=""
+  disabled={false}
   type="submit"
 >
   Oh hi
