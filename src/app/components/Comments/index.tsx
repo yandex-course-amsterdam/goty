@@ -7,44 +7,12 @@ import { VALIDATION_SCHEMA } from 'app/constants'
 
 import { postComment, deleteComment } from 'app/api/Api'
 
-import { UserInfo } from 'app/actions'
+import { Article, Comment } from 'app/interfaces'
 import { StoreState } from 'app/reducers'
 import { Input, Button } from 'app/components'
 import { sanitize } from 'app/utils'
 
 import style from './style.css'
-
-type User = UserInfo & {
-  createdAt: string
-}
-
-enum LikeType {
-  like = 'like',
-  laugh = 'laugh',
-  cry = 'cry',
-  love = 'love'
-}
-
-type Like = {
-  id: number
-  type: keyof typeof LikeType
-  userId: number
-}
-
-type Comment = {
-  id: number
-  text: string
-  createdAt: string
-  user: User
-}
-
-type Article = {
-  id: number
-  title: string
-  description: string
-  likes: Like[]
-  comments: Comment[]
-}
 
 interface IProps {
   article: Article

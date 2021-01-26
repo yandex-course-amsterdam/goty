@@ -4,41 +4,15 @@ import cn from 'classnames'
 
 import { postLike } from 'app/api/Api'
 
-import { UserInfo } from 'app/actions'
+import { Article, Like, LikeType } from 'app/interfaces'
 import { StoreState } from 'app/reducers'
 
 import style from './style.css'
 
-type User = UserInfo & {
-  createdAt: string
-}
-
-enum LikeType {
-  like = 'like',
-  laugh = 'laugh',
-  cry = 'cry',
-  love = 'love'
-}
-
-type Like = {
-  id: number
-  type: keyof typeof LikeType
-  userId: number
-}
-
-type Comment = {
-  id: number
-  text: string
-  createdAt: string
-  user: User
-}
-
-type Article = {
-  id: number
-  title: string
-  description: string
-  likes: Like[]
-  comments: Comment[]
+interface IProps {
+  article: Article
+  // eslint-disable-next-line
+  cb: Function
 }
 
 enum LikeEmoji {
@@ -46,12 +20,6 @@ enum LikeEmoji {
   laugh = '🤣',
   cry = '😿',
   love = '💘'
-}
-
-interface IProps {
-  article: Article
-  // eslint-disable-next-line
-  cb: Function
 }
 
 export const Likes: FC<IProps> = ({ article, cb }): JSX.Element => {

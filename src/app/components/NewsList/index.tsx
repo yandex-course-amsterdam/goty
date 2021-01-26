@@ -2,42 +2,10 @@ import React, { FC, useState, useCallback, useEffect } from 'react'
 
 import { getAllNews } from 'app/api/Api'
 
-import { UserInfo } from 'app/actions'
+import { Article } from 'app/interfaces'
 import { Comments, Likes } from 'app/components'
 
 import style from './style.css'
-
-type User = UserInfo & {
-  createdAt: string
-}
-
-enum LikeType {
-  like = 'like',
-  laugh = 'laugh',
-  cry = 'cry',
-  love = 'love'
-}
-
-type Like = {
-  id: number
-  type: keyof typeof LikeType
-  userId: number
-}
-
-type Comment = {
-  id: number
-  text: string
-  createdAt: string
-  user: User
-}
-
-type Article = {
-  id: number
-  title: string
-  description: string
-  likes: Like[]
-  comments: Comment[]
-}
 
 export const NewsList: FC = (): JSX.Element => {
   const [news, setNews] = useState<Article[]>([])
