@@ -11,7 +11,7 @@ Welcome here, pal
 
 To start your local project please first install dependencies
 
-Please note that for local development you should use `config-local.env` file to set environment variables. This file is not commited to repo for security reason so make sure you create your local copy from `config-cample.env` scaffold
+Please note that for local development you should use `config-local.env` file to set environment variables and have mongo and postgres databases running locally. This file is not commited to repo for security reason so make sure you create your local copy from `config-sample.env` scaffold
 
 ```javascript
 npm install
