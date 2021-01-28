@@ -3,7 +3,7 @@ import express from 'express'
 import { log } from '../utils'
 import { Like } from '../models'
 
-const controllerName = 'LikeController'
+const controller = 'LikeController'
 
 export const postLike = async (
   req: express.Request,
@@ -22,7 +22,7 @@ export const postLike = async (
     like = await Like.create(req.body)
     return res.status(200).send(like)
   } catch (error) {
-    log(controllerName, 'postLike', error)
+    log({ controller, method: 'postLike', error })
     return res.status(400).send('There is a problem saving your theme')
   }
 }

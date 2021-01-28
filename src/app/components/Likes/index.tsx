@@ -4,7 +4,8 @@ import cn from 'classnames'
 
 import { postLike } from 'app/api/Api'
 
-import { ArticleInterface, LikeInterface, LikeType } from 'app/interfaces'
+import { LikeType } from 'shared'
+import { ArticleInterface, LikeInterface } from 'app/interfaces'
 import { StoreState } from 'app/reducers'
 
 import style from './style.css'
@@ -14,11 +15,11 @@ interface IProps {
   cb(id: number, article: (prop: ArticleInterface) => ArticleInterface): void
 }
 
-enum LikeEmoji {
-  Like = '👍',
-  Laugh = '🤣',
-  Cry = '😿',
-  Love = '💘'
+const mapEmoji = {
+  like: '👍',
+  laugh: '🤣',
+  cry: '😿',
+  love: '💘'
 }
 
 export const Likes: FC<IProps> = ({ article, cb }): JSX.Element => {
@@ -55,17 +56,17 @@ export const Likes: FC<IProps> = ({ article, cb }): JSX.Element => {
   const processLikes = useCallback((): JSX.Element => {
     const { likes } = article
 
-    const count: Record<keyof typeof LikeType, number> = {
-      Like: 0,
-      Laugh: 0,
-      Cry: 0,
-      Love: 0
+    const count: Record<LikeType, number> = {
+      like: 0,
+      laugh: 0,
+      cry: 0,
+      love: 0
     }
-    const userLikes: Record<keyof typeof LikeType, boolean> = {
-      Like: false,
-      Laugh: false,
-      Cry: false,
-      Love: false
+    const userLikes: Record<LikeType, boolean> = {
+      like: false,
+      laugh: false,
+      cry: false,
+      love: false
     }
 
     likes.forEach((like: LikeInterface) => {
@@ -80,7 +81,7 @@ export const Likes: FC<IProps> = ({ article, cb }): JSX.Element => {
     })
 
     const processedLikes = Object.keys(count).map((like: string) => {
-      const castedLike = like as keyof typeof LikeType
+      const castedLike = like as LikeType
       return {
         type: castedLike,
         count: count[castedLike],
@@ -96,7 +97,7 @@ export const Likes: FC<IProps> = ({ article, cb }): JSX.Element => {
             className={cn(
               style.like,
               like.userLiked === true && style.likeActive,
-              !like.count && style.likeDim
+              !like.count && style.likeTransparent
             )}
             onClick={() => {
               likeArticle(like.type)
@@ -104,8 +105,8 @@ export const Likes: FC<IProps> = ({ article, cb }): JSX.Element => {
             key={like.type}
           >
             <span role="img" aria-label={like.type} className={style.emoji}>
-              {LikeEmoji[like.type]}
-            </span>{' '}
+              {mapEmoji[like.type]}
+            </span>
             <span className={style.count}>{like.count}</span>
           </button>
         ))}

@@ -6,7 +6,7 @@ import { format } from '../formatters'
 import { log } from '../utils'
 import { User } from '../models'
 
-const controllerName = 'UserController'
+const controller = 'UserController'
 
 const {
   models: { aliases }
@@ -24,7 +24,7 @@ export const setUser = async (
     const user = row.shift()
     return res.status(200).send(user)
   } catch (error) {
-    log(controllerName, 'setUser', error)
+    log({ controller, method: 'setUser', error })
     return res.sendStatus(400).send('There is a problem saving user')
   }
 }
@@ -42,7 +42,7 @@ export const getUserTheme = async (
     const theme = format.theme(userWithTheme[aliases.theme])
     return res.status(200).send(theme)
   } catch (error) {
-    log(controllerName, 'getUserTheme', error)
+    log({ controller, method: 'getUserTheme', error })
     return res.sendStatus(400).send('There is a problem getting theme')
   }
 }
@@ -61,7 +61,7 @@ export const setUserTheme = async (
     )
     return res.status(201).send('Theme is set for user successfully')
   } catch (error) {
-    log(controllerName, 'setUserTheme', error)
+    log({ controller, method: 'setUserTheme', error })
     return res.sendStatus(400).send('There is a problem setting theme for user')
   }
 }

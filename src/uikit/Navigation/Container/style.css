@@ -5,7 +5,7 @@
 }
 
 .title {
-  font: normal bold 14px/16px 'Inter Bold', sans-serif;
+  font: normal bold 14px/16px var(--bold-font);
   letter-spacing: 0.75px;
   color: #605b6a;
   padding: 0 0 19px 15px;

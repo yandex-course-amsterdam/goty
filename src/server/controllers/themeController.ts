@@ -3,7 +3,7 @@ import { Theme } from '../models'
 import { format } from '../formatters'
 import { log } from '../utils'
 
-const controllerName = 'ThemeController'
+const controller = 'ThemeController'
 
 export const getAllThemes = async (
   req: express.Request,
@@ -14,7 +14,7 @@ export const getAllThemes = async (
     const allThemesFormatted = format.theme(allThemes)
     return res.status(201).send(allThemesFormatted)
   } catch (error) {
-    log(controllerName, 'getAllThemes', error)
+    log({ controller, method: 'getAllThemes', error })
     return res.status(400).send('There is a problem saving your theme')
   }
 }
@@ -27,7 +27,7 @@ export const createTheme = async (
     await Theme.create(req.body)
     return res.status(201).send('Theme has been saved succesfully')
   } catch (error) {
-    log(controllerName, 'createTheme', error)
+    log({ controller, method: 'createTheme', error })
     return res.status(400).send('There is a problem saving your theme')
   }
 }
@@ -44,7 +44,7 @@ export const getTheme = async (
     })
     return res.status(201).json(theme)
   } catch (error) {
-    log(controllerName, 'getTheme', error)
+    log({ controller, method: 'getTheme', error })
     return res.sendStatus(400).send('There is a problem getting your theme')
   }
 }
@@ -61,14 +61,14 @@ export const updateTheme = async (
     })
 
     if (theme) {
-      theme!.baseColor = req.body.baseColor
-      await theme!.save()
+      theme.baseColor = req.body.baseColor
+      await theme.save()
       return res.status(201).send(theme)
     }
 
     throw new Error('There is no such theme :c')
   } catch (error) {
-    log(controllerName, 'updateTheme', error)
+    log({ controller, method: 'updateTheme', error })
     return res.sendStatus(400).send('There is a problem updating your theme')
   }
 }

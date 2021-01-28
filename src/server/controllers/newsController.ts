@@ -5,7 +5,7 @@ import { config } from '../config'
 import { log } from '../utils'
 import { News, Comment, Like } from '../models'
 
-const controllerName = 'NewsController'
+const controller = 'NewsController'
 
 const {
   models: { aliases }
@@ -28,7 +28,7 @@ export const getAllNews = async (
     })
     return res.status(201).send(allNews)
   } catch (error) {
-    log(controllerName, 'getAllNews', error)
+    log({ controller, method: 'getAllNews', error })
     return res.status(400).send('There is a problem saving your theme')
   }
 }

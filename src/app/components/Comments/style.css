@@ -17,7 +17,7 @@
   top: 0;
   right: 0;
 
-  font: normal 700 12px/18px 'Inter Regular', sans-serif;
+  font: normal 700 12px/18px var(--regular-font);
   color: var(--input-wrong);
 
   padding: 0;
@@ -54,13 +54,13 @@
 .commentText {
   margin-bottom: 10px;
 
-  font: normal 700 16px/24px 'Inter Regular', sans-serif;
+  font: normal 700 16px/24px var(--regular-font);
   color: var(--text-color);
 }
 
 .commentAuthor,
 .commentDate {
-  font: normal 700 12px/18px 'Inter Regular', sans-serif;
+  font: normal 700 12px/18px var(--regular-font);
   color: var(--text-color);
 }
 

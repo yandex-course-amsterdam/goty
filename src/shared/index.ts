@@ -8,3 +8,10 @@ export type ThemeFormattedShallow = {
 export type ThemeFormatted = ThemeFormattedShallow & {
   id: number
 }
+
+export enum LikeType {
+  Like = 'like',
+  Laugh = 'laugh',
+  Cry = 'cry',
+  Love = 'love'
+}

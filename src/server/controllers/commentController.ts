@@ -5,7 +5,7 @@ import { config } from '../config'
 import { log } from '../utils'
 import { Comment } from '../models'
 
-const controllerName = 'CommentController'
+const controller = 'CommentController'
 
 const {
   models: { aliases }
@@ -23,7 +23,7 @@ export const postComment = async (
     })
     return res.status(201).send(comment)
   } catch (error) {
-    log(controllerName, 'postComment', error)
+    log({ controller, method: 'postComment', error })
     return res.status(400).send('There is a problem saving your comment')
   }
 }
@@ -36,7 +36,7 @@ export const deleteComment = async (
     await Comment.destroy({ where: { id: req.query.commentId } })
     return res.status(204).send()
   } catch (error) {
-    log(controllerName, 'postComment', error)
+    log({ controller, method: 'postComment', error })
     return res.status(400).send('There is a problem deleting your comment')
   }
 }
