@@ -4,8 +4,8 @@ import { commentController } from '../controllers'
 
 const commentsRouter = Router()
 
-commentsRouter.post('/', commentController.postComment)
-
-commentsRouter.delete('/', commentController.deleteComment)
+commentsRouter
+  .post('/', commentController.postComment)
+  .delete('/', commentController.deleteComment)
 
 export { commentsRouter }
