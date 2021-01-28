@@ -4,12 +4,6 @@ import { UserInfo } from '../actions/types'
 
 import { api } from './index'
 
-enum RequestRoot {
-  getTheme = '/getTheme',
-  setTheme = '/setTheme',
-  all = '/all'
-}
-
 const baseURLUsers = '/users'
 const baseURLThemes = '/themes'
 const baseURLNews = '/news'
@@ -27,22 +21,22 @@ export const setUser = (body: UserInfo): Promise<AxiosResponse> =>
  * Темизация
  */
 export const getUserTheme = (userId: number): Promise<AxiosResponse> =>
-  api.get(RequestRoot.getTheme, { params: { userId }, baseURL: baseURLUsers })
+  api.get(`/theme/${userId}`, { baseURL: baseURLUsers })
 
 export const setTheme = (
   userId: number,
   themeId: number
 ): Promise<AxiosResponse> =>
-  api.post(RequestRoot.setTheme, { userId, themeId }, { baseURL: baseURLUsers })
+  api.post('/theme', { userId, themeId }, { baseURL: baseURLUsers })
 
 export const getAllThemes = (): Promise<AxiosResponse> =>
-  api.get(RequestRoot.all, { baseURL: baseURLThemes })
+  api.get('/', { baseURL: baseURLThemes })
 
 /**
  * Фид
  */
 export const getAllNews = (): Promise<AxiosResponse> =>
-  api.get(RequestRoot.all, { baseURL: baseURLNews })
+  api.get('/all', { baseURL: baseURLNews })
 
 export const postComment = (
   newsId: number,
@@ -66,17 +60,17 @@ export const postLike = (
  * Можно использовать их для заведения тем новых тем, апдейта текущих, etc.
  */
 
-export const postTheme = (
+export const createTheme = (
   name: string,
   baseColor: string
 ): Promise<AxiosResponse> =>
   api.post('/', { name, baseColor }, { baseURL: baseURLThemes })
 
 export const getTheme = (id: number): Promise<AxiosResponse> =>
-  api.get('/', { params: { id }, baseURL: baseURLThemes })
+  api.get(`/${id}`, { baseURL: baseURLThemes })
 
 export const updateTheme = (
   id: number,
   baseColor: string
 ): Promise<AxiosResponse> =>
-  api.put('/', { baseColor }, { params: { id }, baseURL: baseURLThemes })
+  api.put(`/${id}`, { baseColor }, { baseURL: baseURLThemes })

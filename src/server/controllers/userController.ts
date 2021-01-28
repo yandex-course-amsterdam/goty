@@ -35,7 +35,7 @@ export const getUserTheme = async (
 ): Promise<express.Response> => {
   try {
     const userWithTheme = await User.findOne({
-      where: { id: req.query.userId },
+      where: { id: req.params.id },
       include: [aliases.theme]
     })
     // @ts-ignore

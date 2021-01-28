@@ -39,7 +39,7 @@ export const getTheme = async (
   try {
     const theme = await Theme.findOne({
       where: {
-        id: req.query.id
+        id: req.params.id
       }
     })
     return res.status(201).json(theme)
@@ -56,7 +56,7 @@ export const updateTheme = async (
   try {
     const theme = await Theme.findOne({
       where: {
-        id: req.query.id
+        id: req.params.id
       }
     })
     theme!.baseColor = req.body.baseColor

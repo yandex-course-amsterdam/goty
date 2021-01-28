@@ -6,7 +6,7 @@ const usersRouter = Router()
 
 usersRouter
   .post('/', userController.setUser)
-  .get('/getTheme', userController.getUserTheme)
-  .post('/setTheme', userController.setUserTheme)
+  .get('/theme/:id', userController.getUserTheme)
+  .post('/theme', userController.setUserTheme)
 
 export { usersRouter }

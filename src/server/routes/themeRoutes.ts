@@ -5,9 +5,9 @@ import { themeController } from '../controllers'
 const themesRouter = Router()
 
 themesRouter
-  .get('/all', themeController.getAllThemes)
+  .get('/', themeController.getAllThemes)
   .post('/', themeController.createTheme)
-  .get('/', themeController.getTheme)
+  .get('/:id', themeController.getTheme)
   .put('/', themeController.updateTheme)
 
 export { themesRouter }
