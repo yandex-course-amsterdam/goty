@@ -9,7 +9,7 @@ interface LogFunc {
   (params: LogProps): void
 }
 
-export const log: LogFunc = ({
+export const logError: LogFunc = ({
   controller,
   method,
   error,

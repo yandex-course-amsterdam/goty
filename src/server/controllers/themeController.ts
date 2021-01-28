@@ -1,9 +1,13 @@
 import express from 'express'
+
+import { config } from '../config'
 import { Theme } from '../models'
 import { format } from '../formatters'
-import { log } from '../utils'
+import { logError } from '../utils'
 
 const controller = 'ThemeController'
+
+const { status } = config
 
 export const getAllThemes = async (
   req: express.Request,
@@ -12,10 +16,15 @@ export const getAllThemes = async (
   try {
     const allThemes = await Theme.findAll()
     const allThemesFormatted = format.theme(allThemes)
-    return res.status(201).send(allThemesFormatted)
+    return res
+      .status(201)
+      .json({ status: status.success, payload: allThemesFormatted })
   } catch (error) {
-    log({ controller, method: 'getAllThemes', error })
-    return res.status(400).send('There is a problem saving your theme')
+    logError({ controller, method: 'getAllThemes', error })
+    return res.status(400).json({
+      status: status.error,
+      message: 'There is a problem saving your theme'
+    })
   }
 }
 
@@ -24,11 +33,14 @@ export const createTheme = async (
   res: express.Response
 ): Promise<express.Response> => {
   try {
-    await Theme.create(req.body)
-    return res.status(201).send('Theme has been saved succesfully')
+    const theme = await Theme.create(req.body)
+    return res.status(201).json({ status: status.success, payload: theme })
   } catch (error) {
-    log({ controller, method: 'createTheme', error })
-    return res.status(400).send('There is a problem saving your theme')
+    logError({ controller, method: 'createTheme', error })
+    return res.status(400).json({
+      status: status.error,
+      message: 'There is a problem saving your theme'
+    })
   }
 }
 
@@ -42,10 +54,13 @@ export const getTheme = async (
         id: req.params.id
       }
     })
-    return res.status(201).json(theme)
+    return res.status(201).json({ status: status.success, payload: theme })
   } catch (error) {
-    log({ controller, method: 'getTheme', error })
-    return res.sendStatus(400).send('There is a problem getting your theme')
+    logError({ controller, method: 'getTheme', error })
+    return res.sendStatus(400).json({
+      status: status.error,
+      message: 'There is a problem getting your theme'
+    })
   }
 }
 
@@ -63,12 +78,15 @@ export const updateTheme = async (
     if (theme) {
       theme.baseColor = req.body.baseColor
       await theme.save()
-      return res.status(201).send(theme)
+      return res.status(201).json({ status: status.success, payload: theme })
     }
 
     throw new Error('There is no such theme :c')
   } catch (error) {
-    log({ controller, method: 'updateTheme', error })
-    return res.sendStatus(400).send('There is a problem updating your theme')
+    logError({ controller, method: 'updateTheme', error })
+    return res.sendStatus(400).json({
+      status: status.error,
+      message: 'There is a problem updating your theme'
+    })
   }
 }

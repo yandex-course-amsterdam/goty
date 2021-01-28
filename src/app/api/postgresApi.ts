@@ -4,11 +4,11 @@ import { UserInfo } from '../actions/types'
 
 import { api } from './index'
 
-const baseURLUsers = '/users'
-const baseURLThemes = '/themes'
+const baseURLUsers = '/user'
+const baseURLThemes = '/theme'
 const baseURLNews = '/news'
-const baseURLComment = '/comments'
-const baseURLLike = '/likes'
+const baseURLComment = '/comment'
+const baseURLLike = '/like'
 
 /**
  * Юзер
@@ -21,7 +21,7 @@ export const setUser = (body: UserInfo): Promise<AxiosResponse> =>
  * Темизация
  */
 export const getUserTheme = (userId: number): Promise<AxiosResponse> =>
-  api.get(`/theme/${userId}`, { baseURL: baseURLUsers })
+  api.get(`/${userId}/theme`, { baseURL: baseURLUsers })
 
 export const setTheme = (
   userId: number,
@@ -36,7 +36,7 @@ export const getAllThemes = (): Promise<AxiosResponse> =>
  * Фид
  */
 export const getAllNews = (): Promise<AxiosResponse> =>
-  api.get('/all', { baseURL: baseURLNews })
+  api.get('/', { baseURL: baseURLNews })
 
 export const postComment = (
   newsId: number,
@@ -46,7 +46,7 @@ export const postComment = (
   api.post('/', { newsId, text, userId }, { baseURL: baseURLComment })
 
 export const deleteComment = (commentId: number): Promise<AxiosResponse> =>
-  api.delete('/', { params: { commentId }, baseURL: baseURLComment })
+  api.delete(`/${commentId}`, { baseURL: baseURLComment })
 
 export const postLike = (
   newsId: number,

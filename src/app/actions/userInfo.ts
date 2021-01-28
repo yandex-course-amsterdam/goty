@@ -35,9 +35,13 @@ export const fetchUserInfo = (isLogin = false) => {
         dispatch(setLoginStatus(true))
 
         // Сохранение юзера в postgres
-        const { data: user } = await postgresApi.setUser(data)
+        const {
+          data: { payload: user }
+        } = await postgresApi.setUser(data)
         // Фетч темы из postgres по id найденного/созданного юзера
-        const { data: theme } = await postgresApi.getUserTheme(user.id)
+        const {
+          data: { payload: theme }
+        } = await postgresApi.getUserTheme(user.id)
         setUserTheme(theme)
         storeUserTheme(theme)
       }

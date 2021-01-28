@@ -13,7 +13,6 @@ import {
   commentsRouter,
   likeRouter
 } from './routes'
-
 import { serverRenderMiddleware } from './serverRenderMiddleware'
 
 const app = express()
@@ -24,12 +23,12 @@ app
   .use(compression())
   .use('/', express.static(__dirname))
   .use('/auth', authRouter)
-  .use('/users', usersRouter)
-  .use('/themes', themesRouter)
+  .use('/user', usersRouter)
+  .use('/theme', themesRouter)
   .use('/feedback', feedbackRouter)
   .use('/news', newsRouter)
-  .use('/comments', commentsRouter)
-  .use('/likes', likeRouter)
+  .use('/comment', commentsRouter)
+  .use('/like', likeRouter)
 
 app.get('/images/:src', (req, res) => {
   const { src } = req.params

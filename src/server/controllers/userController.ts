@@ -3,13 +3,14 @@ import express from 'express'
 import { config } from '../config'
 
 import { format } from '../formatters'
-import { log } from '../utils'
+import { logError } from '../utils'
 import { User } from '../models'
 
 const controller = 'UserController'
 
 const {
-  models: { aliases }
+  models: { aliases },
+  status
 } = config
 
 export const setUser = async (
@@ -22,10 +23,12 @@ export const setUser = async (
       defaults: { ...req.body, themeId: 1 }
     })
     const user = row.shift()
-    return res.status(200).send(user)
+    return res.status(200).json({ status: status.success, payload: user })
   } catch (error) {
-    log({ controller, method: 'setUser', error })
-    return res.sendStatus(400).send('There is a problem saving user')
+    logError({ controller, method: 'setUser', error })
+    return res
+      .sendStatus(400)
+      .json({ status: status.error, message: 'There is a problem saving user' })
   }
 }
 
@@ -40,10 +43,13 @@ export const getUserTheme = async (
     })
     // @ts-ignore
     const theme = format.theme(userWithTheme[aliases.theme])
-    return res.status(200).send(theme)
+    return res.status(200).json({ status: status.success, payload: theme })
   } catch (error) {
-    log({ controller, method: 'getUserTheme', error })
-    return res.sendStatus(400).send('There is a problem getting theme')
+    logError({ controller, method: 'getUserTheme', error })
+    return res.sendStatus(400).json({
+      status: status.error,
+      message: 'There is a problem getting theme'
+    })
   }
 }
 
@@ -59,9 +65,15 @@ export const setUserTheme = async (
         where: { id }
       }
     )
-    return res.status(201).send('Theme is set for user successfully')
+    return res.status(201).json({
+      status: status.success,
+      payload: null
+    })
   } catch (error) {
-    log({ controller, method: 'setUserTheme', error })
-    return res.sendStatus(400).send('There is a problem setting theme for user')
+    logError({ controller, method: 'setUserTheme', error })
+    return res.sendStatus(400).json({
+      status: status.error,
+      message: 'There is a problem setting theme for user'
+    })
   }
 }

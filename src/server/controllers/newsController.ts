@@ -2,13 +2,14 @@ import express from 'express'
 
 import { config } from '../config'
 
-import { log } from '../utils'
+import { logError } from '../utils'
 import { News, Comment, Like } from '../models'
 
 const controller = 'NewsController'
 
 const {
-  models: { aliases }
+  models: { aliases },
+  status
 } = config
 
 export const getAllNews = async (
@@ -26,9 +27,12 @@ export const getAllNews = async (
         [{ model: Comment, as: aliases.comments }, 'createdAt', 'ASC']
       ]
     })
-    return res.status(201).send(allNews)
+    return res.status(201).json({ status: status.success, payload: allNews })
   } catch (error) {
-    log({ controller, method: 'getAllNews', error })
-    return res.status(400).send('There is a problem saving your theme')
+    logError({ controller, method: 'getAllNews', error })
+    return res.status(400).json({
+      status: status.error,
+      message: 'There is a problem saving your theme'
+    })
   }
 }

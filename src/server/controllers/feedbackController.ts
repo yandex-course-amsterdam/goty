@@ -1,9 +1,12 @@
 import express from 'express'
 
-import { log } from '../utils'
+import { config } from '../config'
+import { logError } from '../utils'
 import { Feedback } from '../models'
 
 const controller = 'FeedbackController'
+
+const { status } = config
 
 export const saveFeedback = async (
   req: express.Request,
@@ -11,9 +14,12 @@ export const saveFeedback = async (
 ): Promise<express.Response> => {
   try {
     await Feedback.create(req.body)
-    return res.status(200).send()
+    return res.status(200).json({ status: status.success, payload: null })
   } catch (error) {
-    log({ controller, method: 'saveFeedback', error })
-    return res.status(400).send('There is a problem saving your feedback')
+    logError({ controller, method: 'saveFeedback', error })
+    return res.status(400).json({
+      status: status.error,
+      message: 'There is a problem saving your feedback'
+    })
   }
 }

@@ -21,14 +21,16 @@ export const Theme: FC = () => {
 
   const getThemes = useCallback(async () => {
     try {
-      const res = await getAllThemes()
+      const {
+        data: { payload }
+      } = await getAllThemes()
       const userTheme = getUserTheme()
 
       if (userTheme) {
         setCurrentThemeId(userTheme.id)
       }
 
-      setThemes(res.data)
+      setThemes(payload)
     } catch (error) {
       console.error(error)
     }

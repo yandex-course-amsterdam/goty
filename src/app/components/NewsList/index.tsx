@@ -11,8 +11,10 @@ export const NewsList: FC = (): JSX.Element => {
   const [news, setNews] = useState<ArticleInterface[]>([])
 
   const getNews = useCallback(async () => {
-    const res = await getAllNews()
-    setNews(res.data)
+    const {
+      data: { payload }
+    } = await getAllNews()
+    setNews(payload)
   }, [])
 
   const handleLocalUpdateError = useCallback(

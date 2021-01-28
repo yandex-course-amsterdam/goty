@@ -2,13 +2,14 @@ import express from 'express'
 
 import { config } from '../config'
 
-import { log } from '../utils'
+import { logError } from '../utils'
 import { Comment } from '../models'
 
 const controller = 'CommentController'
 
 const {
-  models: { aliases }
+  models: { aliases },
+  status
 } = config
 
 export const postComment = async (
@@ -21,10 +22,13 @@ export const postComment = async (
       where: { id },
       include: [aliases.user]
     })
-    return res.status(201).send(comment)
+    return res.status(201).json({ status: status.success, payload: comment })
   } catch (error) {
-    log({ controller, method: 'postComment', error })
-    return res.status(400).send('There is a problem saving your comment')
+    logError({ controller, method: 'postComment', error })
+    return res.status(400).json({
+      status: status.error,
+      message: 'There is a problem saving your comment'
+    })
   }
 }
 
@@ -33,10 +37,16 @@ export const deleteComment = async (
   res: express.Response
 ): Promise<express.Response> => {
   try {
-    await Comment.destroy({ where: { id: req.query.commentId } })
-    return res.status(204).send()
+    await Comment.destroy({ where: { id: req.params.id } })
+    return res.status(204).json({
+      status: status.success,
+      payload: null
+    })
   } catch (error) {
-    log({ controller, method: 'postComment', error })
-    return res.status(400).send('There is a problem deleting your comment')
+    logError({ controller, method: 'postComment', error })
+    return res.status(400).json({
+      status: status.error,
+      message: 'There is a problem deleting your comment'
+    })
   }
 }

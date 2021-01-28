@@ -35,7 +35,9 @@ export const Comments: FC<IProps> = ({ article, cb }): JSX.Element => {
   const submitComment = useCallback(
     async (formData: FormikValues) => {
       const { commentText: comment } = formData
-      const { data } = await postComment(
+      const {
+        data: { payload }
+      } = await postComment(
         article.id,
         sanitize(comment),
         userInfo.id as number
@@ -44,7 +46,7 @@ export const Comments: FC<IProps> = ({ article, cb }): JSX.Element => {
       cb(
         article.id,
         (articleCopy: ArticleInterface): ArticleInterface => {
-          articleCopy.comments.push(data)
+          articleCopy.comments.push(payload)
           return articleCopy
         }
       )

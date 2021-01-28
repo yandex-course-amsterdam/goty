@@ -27,18 +27,16 @@ export const Likes: FC<IProps> = ({ article, cb }): JSX.Element => {
 
   const likeArticle = useCallback(
     async (likeType: string) => {
-      const { data } = await postLike(
-        article.id,
-        likeType,
-        userInfo.id as number
-      )
+      const {
+        data: { payload }
+      } = await postLike(article.id, likeType, userInfo.id as number)
 
       cb(
         article.id,
         (articleCopy: ArticleInterface): ArticleInterface => {
           // при попытке сохранить имеющийся лайк (лайк с таким же типом, newsId и userId) сервер отвечает 204
-          if (data) {
-            articleCopy.likes.push(data)
+          if (payload) {
+            articleCopy.likes.push(payload)
           } else {
             const removedLikeIndex = articleCopy.likes.findIndex(
               (like) => like.type === likeType && like.userId === userInfo.id

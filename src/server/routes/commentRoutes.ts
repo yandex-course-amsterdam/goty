@@ -6,6 +6,6 @@ const commentsRouter = Router()
 
 commentsRouter
   .post('/', commentController.postComment)
-  .delete('/', commentController.deleteComment)
+  .delete('/:id', commentController.deleteComment)
 
 export { commentsRouter }
