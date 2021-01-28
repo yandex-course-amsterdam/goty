@@ -1,0 +1,61 @@
+.comment {
+  display: flex;
+
+  position: relative;
+}
+
+.comment:not(:last-child) {
+  margin-block: 20px;
+}
+
+.commentDelete {
+  position: absolute;
+  top: 0;
+  right: 0;
+
+  font: normal 700 12px/18px var(--regular-font);
+  color: var(--input-wrong);
+
+  padding: 0;
+
+  background: none;
+  border: none;
+
+  cursor: pointer;
+}
+
+.commentAvatar {
+  width: 48px;
+  height: 48px;
+
+  margin-right: 20px;
+}
+
+.commentMain {
+  flex-grow: 1;
+
+  padding-bottom: 10px;
+}
+
+.comment:not(:last-child) .commentMain {
+  border-bottom: 1px solid var(--base-color);
+}
+
+.commentMeta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.commentText {
+  margin-bottom: 10px;
+
+  font: normal 700 16px/24px var(--regular-font);
+  color: var(--text-color);
+}
+
+.commentAuthor,
+.commentDate {
+  font: normal 700 12px/18px var(--regular-font);
+  color: var(--text-color);
+}

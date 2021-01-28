@@ -27,7 +27,7 @@ export const setUser = async (
   } catch (error) {
     logError({ controller, method: 'setUser', error })
     return res
-      .sendStatus(400)
+      .status(400)
       .json({ status: status.error, message: 'There is a problem saving user' })
   }
 }
@@ -46,7 +46,7 @@ export const getUserTheme = async (
     return res.status(200).json({ status: status.success, payload: theme })
   } catch (error) {
     logError({ controller, method: 'getUserTheme', error })
-    return res.sendStatus(400).json({
+    return res.status(400).json({
       status: status.error,
       message: 'There is a problem getting theme'
     })
@@ -71,7 +71,7 @@ export const setUserTheme = async (
     })
   } catch (error) {
     logError({ controller, method: 'setUserTheme', error })
-    return res.sendStatus(400).json({
+    return res.status(400).json({
       status: status.error,
       message: 'There is a problem setting theme for user'
     })

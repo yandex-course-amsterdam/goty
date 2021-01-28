@@ -57,7 +57,7 @@ export const getTheme = async (
     return res.status(201).json({ status: status.success, payload: theme })
   } catch (error) {
     logError({ controller, method: 'getTheme', error })
-    return res.sendStatus(400).json({
+    return res.status(400).json({
       status: status.error,
       message: 'There is a problem getting your theme'
     })
@@ -84,7 +84,7 @@ export const updateTheme = async (
     throw new Error('There is no such theme :c')
   } catch (error) {
     logError({ controller, method: 'updateTheme', error })
-    return res.sendStatus(400).json({
+    return res.status(400).json({
       status: status.error,
       message: 'There is a problem updating your theme'
     })
