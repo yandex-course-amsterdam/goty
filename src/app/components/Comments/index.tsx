@@ -7,7 +7,7 @@ import { VALIDATION_SCHEMA } from 'app/constants'
 
 import { postComment, deleteComment } from 'app/api/Api'
 
-import { Article, Comment } from 'app/interfaces'
+import { ArticleInterface, CommentInterface } from 'app/interfaces'
 import { StoreState } from 'app/reducers'
 import { Input, Button } from 'app/components'
 import { sanitize } from 'app/utils'
@@ -15,9 +15,8 @@ import { sanitize } from 'app/utils'
 import style from './style.css'
 
 interface IProps {
-  article: Article
-  // eslint-disable-next-line
-  cb: Function
+  article: ArticleInterface
+  cb(id: number, article: (prop: ArticleInterface) => ArticleInterface): void
 }
 
 const { comment: commentText } = VALIDATION_SCHEMA
@@ -44,7 +43,7 @@ export const Comments: FC<IProps> = ({ article, cb }): JSX.Element => {
 
       cb(
         article.id,
-        (articleCopy: Article): Article => {
+        (articleCopy: ArticleInterface): ArticleInterface => {
           articleCopy.comments.push(data)
           return articleCopy
         }
@@ -59,7 +58,7 @@ export const Comments: FC<IProps> = ({ article, cb }): JSX.Element => {
 
       cb(
         article.id,
-        (articleCopy: Article): Article => {
+        (articleCopy: ArticleInterface): ArticleInterface => {
           const removedCommentIndex = articleCopy.comments.findIndex(
             (comment) => comment.id === commentId
           )
@@ -71,10 +70,16 @@ export const Comments: FC<IProps> = ({ article, cb }): JSX.Element => {
     [article, cb]
   )
 
+  const getUserAvatar = useCallback(
+    (url: string | null) =>
+      url ? `https://ya-praktikum.tech/${url}` : '/images/avatar.png',
+    []
+  )
+
   return (
     <>
       <div className={style.comments}>
-        {article.comments.map((comment: Comment) => (
+        {article.comments.map((comment: CommentInterface) => (
           <div className={style.comment} key={comment.id}>
             {userInfo.id === comment.user.id && (
               <button
@@ -89,11 +94,7 @@ export const Comments: FC<IProps> = ({ article, cb }): JSX.Element => {
             )}
             <div className={style.commentAvatar}>
               <img
-                src={
-                  comment.user.avatar
-                    ? `https://ya-praktikum.tech/${comment.user.avatar}`
-                    : '/images/avatar.png'
-                }
+                src={getUserAvatar(comment.user.avatar)}
                 alt={comment.user.login || 'User avatar'}
               />
             </div>

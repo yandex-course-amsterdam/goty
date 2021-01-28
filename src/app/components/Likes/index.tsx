@@ -4,22 +4,21 @@ import cn from 'classnames'
 
 import { postLike } from 'app/api/Api'
 
-import { Article, Like, LikeType } from 'app/interfaces'
+import { ArticleInterface, LikeInterface, LikeType } from 'app/interfaces'
 import { StoreState } from 'app/reducers'
 
 import style from './style.css'
 
 interface IProps {
-  article: Article
-  // eslint-disable-next-line
-  cb: Function
+  article: ArticleInterface
+  cb(id: number, article: (prop: ArticleInterface) => ArticleInterface): void
 }
 
 enum LikeEmoji {
-  like = '👍',
-  laugh = '🤣',
-  cry = '😿',
-  love = '💘'
+  Like = '👍',
+  Laugh = '🤣',
+  Cry = '😿',
+  Love = '💘'
 }
 
 export const Likes: FC<IProps> = ({ article, cb }): JSX.Element => {
@@ -35,7 +34,7 @@ export const Likes: FC<IProps> = ({ article, cb }): JSX.Element => {
 
       cb(
         article.id,
-        (articleCopy: Article): Article => {
+        (articleCopy: ArticleInterface): ArticleInterface => {
           // при попытке сохранить имеющийся лайк (лайк с таким же типом, newsId и userId) сервер отвечает 204
           if (data) {
             articleCopy.likes.push(data)
@@ -57,19 +56,19 @@ export const Likes: FC<IProps> = ({ article, cb }): JSX.Element => {
     const { likes } = article
 
     const count: Record<keyof typeof LikeType, number> = {
-      like: 0,
-      laugh: 0,
-      cry: 0,
-      love: 0
+      Like: 0,
+      Laugh: 0,
+      Cry: 0,
+      Love: 0
     }
     const userLikes: Record<keyof typeof LikeType, boolean> = {
-      like: false,
-      laugh: false,
-      cry: false,
-      love: false
+      Like: false,
+      Laugh: false,
+      Cry: false,
+      Love: false
     }
 
-    likes.forEach((like: Like) => {
+    likes.forEach((like: LikeInterface) => {
       const isUserLike = like.userId === userInfo.id
       const likeType = like.type
 
@@ -114,5 +113,5 @@ export const Likes: FC<IProps> = ({ article, cb }): JSX.Element => {
     )
   }, [article, userInfo, likeArticle])
 
-  return <>{processLikes()}</>
+  return processLikes()
 }
