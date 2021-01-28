@@ -59,10 +59,14 @@ export const updateTheme = async (
         id: req.params.id
       }
     })
-    theme!.baseColor = req.body.baseColor
-    await theme!.save()
 
-    return res.status(201).send(theme)
+    if (theme) {
+      theme!.baseColor = req.body.baseColor
+      await theme!.save()
+      return res.status(201).send(theme)
+    }
+
+    throw new Error('There is no such theme :c')
   } catch (error) {
     log(controllerName, 'updateTheme', error)
     return res.sendStatus(400).send('There is a problem updating your theme')

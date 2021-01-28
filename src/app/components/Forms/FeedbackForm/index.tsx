@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react'
+import React, { FC, useState, useCallback } from 'react'
 import { Button, Error, Input, Textarea } from 'app/components'
 import { Formik, Form, FormikValues } from 'formik'
 import * as Yup from 'yup'
@@ -9,15 +9,17 @@ import { displayResponseText } from 'app/utils'
 
 import style from './style.css'
 
+const { login, email } = VALIDATION_SCHEMA
+const initialValues = { login: '', email: '', feedback: '' }
+const validationSchema = Yup.object({ login, email })
+
 export const FeedbackForm: FC = (): JSX.Element => {
   const [responseText, setResponseText] = useState('')
   const [isFeedbackSent, setIsFeedbackSent] = useState(false)
 
-  const { login, email } = VALIDATION_SCHEMA
-  const initialValues = { login: '', email: '', feedback: '' }
-  const validationSchema = Yup.object({ login, email })
-
-  const sendUserFeedback = async (data: FormikValues): Promise<void> => {
+  const sendUserFeedback = useCallback(async (data: FormikValues): Promise<
+    void
+  > => {
     try {
       await sendFeedback(data)
 
@@ -25,15 +27,15 @@ export const FeedbackForm: FC = (): JSX.Element => {
     } catch (error) {
       displayResponseText(setResponseText, error.response.data.reason)
     }
-  }
+  }, [])
 
-  const handleSubmit = (
-    values: FormikValues,
-    { setSubmitting }: FormikValues
-  ) => {
-    sendUserFeedback(values)
-    setSubmitting(false)
-  }
+  const handleSubmit = useCallback(
+    (values: FormikValues, { setSubmitting }: FormikValues) => {
+      sendUserFeedback(values)
+      setSubmitting(false)
+    },
+    [sendUserFeedback]
+  )
 
   return isFeedbackSent ? (
     <div className={style.feedbackSuccess}>
