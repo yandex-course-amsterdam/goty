@@ -10,14 +10,14 @@ import { displayResponseText } from 'app/utils'
 
 import style from './style.css'
 
+const initialValues = { avatar: null }
+const validationSchema = Yup.object().shape({
+  avatar: Yup.mixed().required()
+})
+
 export const AvatarForm: FC = (): JSX.Element => {
   const [responseText, setResponseText] = useState('')
   const dispatch = useDispatch()
-
-  const initialValues = { avatar: null }
-  const validationSchema = Yup.object().shape({
-    avatar: Yup.mixed().required()
-  })
 
   const updateUserAvatar = async (values: FormikValues): Promise<void> => {
     try {

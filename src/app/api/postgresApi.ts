@@ -1,6 +1,7 @@
 import { AxiosResponse } from 'axios'
 
-import { UserInfo } from '../actions/types'
+import { JSONReponseTheme, JSONReponseThemeArr } from 'shared'
+import { UserInfoDTO } from 'app/actions'
 
 import { api } from './index'
 
@@ -14,13 +15,15 @@ const baseURLLike = '/like'
  * Юзер
  */
 
-export const setUser = (body: UserInfo): Promise<AxiosResponse> =>
+export const setUser = (body: UserInfoDTO): Promise<AxiosResponse> =>
   api.post('/', body, { baseURL: baseURLUsers })
 
 /**
  * Темизация
  */
-export const getUserTheme = (userId: number): Promise<AxiosResponse> =>
+export const getUserTheme = (
+  userId: number
+): Promise<AxiosResponse<JSONReponseTheme>> =>
   api.get(`/${userId}/theme`, { baseURL: baseURLUsers })
 
 export const setTheme = (
@@ -29,7 +32,7 @@ export const setTheme = (
 ): Promise<AxiosResponse> =>
   api.post('/theme', { userId, themeId }, { baseURL: baseURLUsers })
 
-export const getAllThemes = (): Promise<AxiosResponse> =>
+export const getAllThemes = (): Promise<AxiosResponse<JSONReponseThemeArr>> =>
   api.get('/', { baseURL: baseURLThemes })
 
 /**
@@ -66,7 +69,9 @@ export const createTheme = (
 ): Promise<AxiosResponse> =>
   api.post('/', { name, baseColor }, { baseURL: baseURLThemes })
 
-export const getTheme = (id: number): Promise<AxiosResponse> =>
+export const getTheme = (
+  id: number
+): Promise<AxiosResponse<JSONReponseTheme>> =>
   api.get(`/${id}`, { baseURL: baseURLThemes })
 
 export const updateTheme = (

@@ -8,44 +8,50 @@ import * as Yup from 'yup'
 import { signUp } from 'app/api/Api'
 import { VALIDATION_SCHEMA } from 'app/constants'
 import { route } from 'app/enums'
-import { fetchUserInfo, setUserInfo, UserInfoInitial } from 'app/actions'
+import {
+  fetchUserInfo,
+  setUserInfo,
+  UserInfoInitial,
+  UserInfo,
+  transformToDTO
+} from 'app/actions'
 import { displayResponseText } from 'app/utils'
 
 import style from './style.css'
+
+const {
+  firstName,
+  secondName,
+  login,
+  email,
+  password,
+  phone
+} = VALIDATION_SCHEMA
+const initialValues: UserInfo = {
+  firstName: '',
+  secondName: '',
+  login: '',
+  email: '',
+  password: '',
+  phone: ''
+}
+const validationSchema = Yup.object({
+  firstName,
+  secondName,
+  login,
+  email,
+  password,
+  phone
+})
 
 export const SignUpForm: FC = (): JSX.Element => {
   const [responseText, setResponseText] = useState('')
   const [isSignedUp, setIsSignedUp] = useState(false)
   const dispatch = useDispatch()
 
-  const {
-    first_name,
-    second_name,
-    login,
-    email,
-    password,
-    phone
-  } = VALIDATION_SCHEMA
-  const initialValues = {
-    first_name: '',
-    second_name: '',
-    login: '',
-    email: '',
-    password: '',
-    phone: ''
-  }
-  const validationSchema = Yup.object({
-    first_name,
-    second_name,
-    login,
-    email,
-    password,
-    phone
-  })
-
-  const signUpUser = async (data: FormikValues): Promise<void> => {
+  const signUpUser = async (data: UserInfo): Promise<void> => {
     try {
-      await signUp(data)
+      await signUp(transformToDTO(data))
       await dispatch(fetchUserInfo(true))
       setIsSignedUp(true)
     } catch (error) {
@@ -53,10 +59,7 @@ export const SignUpForm: FC = (): JSX.Element => {
     }
   }
 
-  const handleSubmit = (
-    values: FormikValues,
-    { setSubmitting }: FormikValues
-  ) => {
+  const handleSubmit = (values: UserInfo, { setSubmitting }: FormikValues) => {
     signUpUser(values)
     setSubmitting(false)
   }
@@ -76,13 +79,13 @@ export const SignUpForm: FC = (): JSX.Element => {
       <Form>
         <Input
           label="Name"
-          name="first_name"
+          name="firstName"
           type="text"
           placeholder="Enter your name"
         />
         <Input
           label="Surname"
-          name="second_name"
+          name="secondName"
           type="text"
           placeholder="Enter your surname"
         />

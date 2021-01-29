@@ -14,7 +14,7 @@ interface IUserInfo {
 
 const initialState: Record<string, IUserInfo> = {
   userInfo: {
-    display_name: 'Johnny'
+    displayName: 'Johnny'
   }
 }
 const mockStore = configureStore()

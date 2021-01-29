@@ -28,7 +28,7 @@ export const Comment: FC<IProps> = ({
   )
 
   const getUserAvatar = useCallback(
-    (url: string | null) =>
+    (url: string | null | undefined) =>
       url ? `https://ya-praktikum.tech/${url}` : '/images/avatar.png',
     []
   )

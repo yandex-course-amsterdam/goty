@@ -15,3 +15,15 @@ export enum LikeType {
   Cry = 'cry',
   Love = 'love'
 }
+
+type JSONResponse = {
+  status: 'success' | 'fail' | 'error'
+}
+
+export type JSONReponseTheme = JSONResponse & {
+  payload: ThemeFormatted
+}
+
+export type JSONReponseThemeArr = JSONResponse & {
+  payload: ThemeFormatted[]
+}

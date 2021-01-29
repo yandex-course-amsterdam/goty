@@ -5,7 +5,9 @@ import {
   FetchUserInfoAction,
   UserInfo,
   SetUserInfoAction,
-  setLoginStatus
+  setLoginStatus,
+  transformFromDTO,
+  normalizeUserInfo
 } from 'app/actions'
 import * as authApi from 'app/api/authApi'
 import * as yandexApi from 'app/api/yandexApi'
@@ -16,14 +18,8 @@ import { setUserTheme, storeUserTheme } from 'app/utils'
 export const fetchUserInfo = (isLogin = false) => {
   return async (dispatch: Dispatch) => {
     try {
-      const { data } = await yandexApi.getUserInfo()
-
-      // eslint-disable-next-line no-restricted-syntax
-      for (const item in data) {
-        if (data[item] === null) {
-          data[item] = ''
-        }
-      }
+      const res = await yandexApi.getUserInfo()
+      const data = normalizeUserInfo(transformFromDTO(res.data))
 
       dispatch<FetchUserInfoAction>({
         type: ActionTypes.fetchUserInfo,
@@ -31,13 +27,13 @@ export const fetchUserInfo = (isLogin = false) => {
       })
 
       if (isLogin) {
-        authApi.createToken(data.login)
+        authApi.createToken(data.login!)
         dispatch(setLoginStatus(true))
 
         // Сохранение юзера в postgres
         const {
           data: { payload: user }
-        } = await postgresApi.setUser(data)
+        } = await postgresApi.setUser(res.data)
         // Фетч темы из postgres по id найденного/созданного юзера
         const {
           data: { payload: theme }

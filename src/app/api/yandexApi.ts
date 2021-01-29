@@ -1,6 +1,7 @@
 import { AxiosResponse } from 'axios'
 import { FormikValues } from 'formik'
 
+import { UserInfoDTO } from 'app/actions'
 import { api } from './index'
 
 enum RequestRoot {
@@ -19,7 +20,7 @@ enum RequestRoot {
 
 const baseURL = 'https://ya-praktikum.tech/api/v2'
 
-export const getUserInfo = (): Promise<AxiosResponse> =>
+export const getUserInfo = (): Promise<AxiosResponse<UserInfoDTO>> =>
   api.get(RequestRoot.userInfo, { baseURL })
 
 export const signIn = (body: FormikValues): Promise<AxiosResponse> =>
@@ -31,10 +32,10 @@ export const signUp = (body: FormikValues): Promise<AxiosResponse> =>
 export const updatePassword = (body: FormikValues): Promise<AxiosResponse> =>
   api.put(RequestRoot.password, body, { baseURL })
 
-export const updateProfile = (body: FormikValues): Promise<AxiosResponse> =>
+export const updateProfile = (body: UserInfoDTO): Promise<AxiosResponse> =>
   api.put(RequestRoot.profile, body, { baseURL })
 
-export const updateAvatar = (body: FormData): Promise<AxiosResponse> =>
+export const updateAvatar = (body: FormikValues): Promise<AxiosResponse> =>
   api.put(RequestRoot.avatar, body, { baseURL })
 
 export const logout = (): Promise<AxiosResponse> =>
