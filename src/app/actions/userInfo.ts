@@ -16,7 +16,7 @@ import * as postgresApi from 'app/api/postgresApi'
 import { setUserTheme, storeUserTheme } from 'app/utils'
 
 export const fetchUserInfo = (isLogin = false) => {
-  return async (dispatch: Dispatch) => {
+  return async (dispatch: Dispatch): Promise<UserInfo | null> => {
     try {
       const res = await yandexApi.getUserInfo()
       const data = normalizeUserInfo(transformFromDTO(res.data))
@@ -45,6 +45,7 @@ export const fetchUserInfo = (isLogin = false) => {
       return data
     } catch (error) {
       console.log(error)
+      return null
     }
   }
 }

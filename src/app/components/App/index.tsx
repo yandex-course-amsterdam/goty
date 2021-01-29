@@ -62,14 +62,17 @@ export const App: FC = (): JSX.Element => {
     const fetchUser = async () => {
       try {
         const data = await dispatch(fetchUserInfo())
-        const {
-          data: { payload: theme }
-          // Очередной странный тайпинг, учитывая возвращаемое по факту значение
-          // Сейчас уже нет времени разбираться, буду потом сильнее вникать в ts
-          // @ts-ignore
-        } = await getUserTheme(data.id)
-        setUserTheme(theme)
-        storeUserTheme(theme)
+
+        if (data) {
+          const {
+            data: { payload: theme }
+            // Очередной странный тайпинг, учитывая возвращаемое по факту значение
+            // Сейчас уже нет времени разбираться, буду потом сильнее вникать в ts
+            // @ts-ignore
+          } = await getUserTheme(data.id)
+          setUserTheme(theme)
+          storeUserTheme(theme)
+        }
       } catch (error) {
         console.warn(error)
       }
