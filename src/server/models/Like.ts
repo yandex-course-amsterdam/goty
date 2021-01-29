@@ -8,7 +8,7 @@ export class Like extends Model {}
 
 Like.init(
   {
-    type: { type: DataType.ENUM(Object.values(LikeType).join(',')) }
+    type: { type: DataType.ENUM(...Object.values(LikeType)) }
   },
   { sequelize, tableName: 'likes' }
 )
