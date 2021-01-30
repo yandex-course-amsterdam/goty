@@ -7,7 +7,7 @@ import * as Yup from 'yup'
 import { updateProfile } from 'app/api/Api'
 import { VALIDATION_SCHEMA } from 'app/constants'
 import { StoreState } from 'app/reducers'
-import { fetchUserInfo, UserInfo, transformToDTO } from 'app/actions'
+import { fetchUserInfo, UserInfo } from 'app/actions'
 import { displayResponseText } from 'app/utils'
 
 import style from './style.css'
@@ -19,32 +19,32 @@ const selectUserData = (state: StoreState) => {
   return { firstName, secondName, login, email, phone, displayName }
 }
 
+const {
+  firstName,
+  secondName,
+  displayName,
+  login,
+  email,
+  phone
+} = VALIDATION_SCHEMA
+
+const validationSchema = Yup.object({
+  firstName,
+  secondName,
+  displayName,
+  login,
+  email,
+  phone
+})
+
 export const DetailsForm: FC = (): JSX.Element => {
   const [responseText, setResponseText] = useState('')
   const userData = useSelector(selectUserData)
   const dispatch = useDispatch()
 
-  const {
-    firstName,
-    secondName,
-    displayName,
-    login,
-    email,
-    phone
-  } = VALIDATION_SCHEMA
-
-  const validationSchema = Yup.object({
-    firstName,
-    secondName,
-    displayName,
-    login,
-    email,
-    phone
-  })
-
   const updateUserProfile = async (data: UserInfo): Promise<void> => {
     try {
-      await updateProfile(transformToDTO(data))
+      await updateProfile(data)
       await dispatch(fetchUserInfo())
       displayResponseText(setResponseText)
     } catch (error) {

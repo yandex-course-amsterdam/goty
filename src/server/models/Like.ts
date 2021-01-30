@@ -10,5 +10,5 @@ Like.init(
   {
     type: { type: DataType.ENUM(...Object.values(LikeType)) }
   },
-  { sequelize, tableName: 'likes' }
+  { sequelize, tableName: 'likes', underscored: true }
 )

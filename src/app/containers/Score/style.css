@@ -60,3 +60,8 @@
 
   margin-bottom: 30px;
 }
+
+.noResult {
+  font: normal 400 14px/16px var(--regular-font);
+  color: var(--text-color);
+}

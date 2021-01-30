@@ -12,8 +12,7 @@ import {
   fetchUserInfo,
   setUserInfo,
   UserInfoInitial,
-  UserInfo,
-  transformToDTO
+  UserInfo
 } from 'app/actions'
 import { displayResponseText } from 'app/utils'
 
@@ -51,7 +50,7 @@ export const SignUpForm: FC = (): JSX.Element => {
 
   const signUpUser = async (data: UserInfo): Promise<void> => {
     try {
-      await signUp(transformToDTO(data))
+      await signUp(data)
       await dispatch(fetchUserInfo(true))
       setIsSignedUp(true)
     } catch (error) {

@@ -20,7 +20,7 @@ export const setUser = async (
   try {
     const row = await User.findOrCreate({
       where: { id: req.body.id },
-      defaults: { ...req.body, themeId: 1 }
+      defaults: { ...req.body, theme_id: 1 }
     })
     const user = row.shift()
     return res.status(200).json({ status: status.success, payload: user })
@@ -58,9 +58,9 @@ export const setUserTheme = async (
   res: express.Response
 ): Promise<express.Response> => {
   try {
-    const { userId: id, themeId } = req.body
+    const { user_id: id, theme_id } = req.body
     await User.update(
-      { themeId },
+      { theme_id },
       {
         where: { id }
       }

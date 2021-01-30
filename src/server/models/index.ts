@@ -12,44 +12,44 @@ const {
 } = config
 
 Theme.hasMany(User, {
-  foreignKey: 'themeId'
+  foreignKey: 'theme_id'
 })
 User.belongsTo(Theme, {
-  foreignKey: 'themeId',
+  foreignKey: 'theme_id',
   as: aliases.theme
 })
 
 News.hasMany(Comment, {
-  foreignKey: 'newsId',
+  foreignKey: 'news_id',
   as: aliases.comments
 })
 Comment.belongsTo(News, {
-  foreignKey: 'newsId'
+  foreignKey: 'news_id'
 })
 
 User.hasMany(Comment, {
-  foreignKey: 'userId',
+  foreignKey: 'user_id',
   as: aliases.user
 })
 Comment.belongsTo(User, {
-  foreignKey: 'userId',
+  foreignKey: 'user_id',
   as: aliases.user
 })
 
 News.hasMany(Like, {
-  foreignKey: 'newsId',
+  foreignKey: 'news_id',
   as: aliases.likes
 })
 Like.belongsTo(News, {
-  foreignKey: 'newsId'
+  foreignKey: 'news_id'
 })
 
 User.hasMany(Like, {
-  foreignKey: 'userId',
+  foreignKey: 'user_id',
   as: aliases.likes
 })
 Like.belongsTo(User, {
-  foreignKey: 'userId'
+  foreignKey: 'user_id'
 })
 
 export { User, Theme, Feedback, News, Comment, Like }

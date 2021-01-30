@@ -10,24 +10,24 @@ const connectPostgres = async () => {
       {
         name: 'dark',
         default: true,
-        baseColor: '#17151c',
-        secondColor: '#000000',
-        fieldColor: '#2a2731',
-        accentColor: '#2264d1',
-        textColor: '#eeecf1',
-        articleBgColor: '#1c1a22',
-        subTextColor: '#7a7585'
+        base_color: '#17151c',
+        second_color: '#000000',
+        field_color: '#2a2731',
+        accent_color: '#2264d1',
+        text_color: '#eeecf1',
+        article_bg_color: '#1c1a22',
+        sub_text_color: '#7a7585'
       },
       {
         name: 'light',
         default: true,
-        baseColor: '#f1f1f1',
-        secondColor: '#000000',
-        fieldColor: '#ffffff',
-        accentColor: '#2264d1',
-        textColor: '#000000',
-        articleBgColor: '#ffffff',
-        subTextColor: '#7a7585'
+        base_color: '#f1f1f1',
+        second_color: '#000000',
+        field_color: '#ffffff',
+        accent_color: '#2264d1',
+        text_color: '#000000',
+        article_bg_color: '#ffffff',
+        sub_text_color: '#7a7585'
       }
     ])
   })
