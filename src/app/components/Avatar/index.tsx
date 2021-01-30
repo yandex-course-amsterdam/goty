@@ -17,7 +17,7 @@ export const Avatar: FC<IProps> = ({ className }): JSX.Element => {
     ? `https://ya-praktikum.tech/${userInfo.avatar}`
     : '/images/avatar.png'
 
-  const avatarName = userInfo.display_name || 'Top game'
+  const avatarName = userInfo.displayName || 'Top game'
 
   return (
     <div className={cn(style.avatar, className)}>

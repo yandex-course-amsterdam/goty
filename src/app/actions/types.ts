@@ -30,23 +30,35 @@ export type Action =
   | SetUserInfoAction
   | SetOAuthStatusAction
   | SetLoginStatusAction
-
-export interface UserInfo {
-  id: number | null
+export interface UserInfoDTO {
+  id?: number | null
   first_name: string | null
   second_name: string | null
-  display_name: string | null
+  display_name?: string | null
   login: string | null
   email: string | null
   phone: string | null
-  avatar: string | null
+  avatar?: string | null
+  password?: string | null
+}
+
+export interface UserInfo {
+  id?: number | null
+  firstName: string | null
+  secondName: string | null
+  displayName?: string | null
+  login: string | null
+  email: string | null
+  phone: string | null
+  avatar?: string | null
+  password?: string | null
 }
 
 export const UserInfoInitial: UserInfo = {
   id: null,
-  first_name: '',
-  second_name: '',
-  display_name: '',
+  firstName: '',
+  secondName: '',
+  displayName: '',
   login: '',
   email: '',
   phone: '',

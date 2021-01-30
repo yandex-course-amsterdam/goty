@@ -1,13 +1,13 @@
 import * as Yup from 'yup'
 
 export const VALIDATION_SCHEMA = {
-  first_name: Yup.string()
+  firstName: Yup.string()
     .matches(/^([\w\W]{2,30})$/, 'Name must be between 2 and 30 characters')
     .required('Name is required'),
-  second_name: Yup.string()
+  secondName: Yup.string()
     .matches(/^([\w\W]{2,30})$/, 'Surname must be between 2 and 30 characters')
     .required('Surname is required'),
-  display_name: Yup.string()
+  displayName: Yup.string()
     .matches(
       /^([\w\W]{2,30})$/,
       'Display name must be between 2 and 30 characters'
@@ -30,5 +30,6 @@ export const VALIDATION_SCHEMA = {
       /^(\+7((\(\d{3}\)\s?\d{3}-\d{2}-\d{2})|(\s\d{3}-\d{3}-\d{2}-\d{2})|(\d{10})))|(8\d{10})$/,
       'Phone must be valid'
     )
-    .required('Phone is required')
+    .required('Phone is required'),
+  comment: Yup.string().required('')
 }

@@ -9,7 +9,7 @@
 }
 
 .user:hover .name {
-  color: #eeecf1;
+  color: var(--text-color);
 }
 
 .user:hover .points {
@@ -18,7 +18,7 @@
 }
 
 .name {
-  font: normal 700 20px/36px 'Inter Bold', sans-serif;
+  font: normal 700 20px/36px var(--bold-font);
   letter-spacing: 0.22px;
   color: #9590a0;
 
@@ -34,11 +34,11 @@
 
   padding: 0 10px;
 
-  font: normal 700 14px/16px 'Inter Bold', sans-serif;
+  font: normal 700 14px/16px var(--bold-font);
   letter-spacing: 0.75px;
   color: #c4daff;
   text-align: right;
 
   border-radius: 10px 0 0 10px;
-  background-color: #1b4ea3;
+  background-color: var(--accent-color);
 }

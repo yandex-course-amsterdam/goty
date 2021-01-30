@@ -1,0 +1,7 @@
+export { authRouter } from './authRoutes'
+export { usersRouter } from './userRoutes'
+export { themesRouter } from './themeRoutes'
+export { feedbackRouter } from './feedbackRoutes'
+export { newsRouter } from './newsRoutes'
+export { commentsRouter } from './commentRoutes'
+export { likeRouter } from './likeRoutes'

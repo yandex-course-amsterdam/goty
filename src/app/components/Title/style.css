@@ -1,5 +1,5 @@
 .title {
-  font: normal 700 48px/56px 'Inter Bold', sans-serif;
-  color: #eeecf1;
+  font: normal 700 48px/56px var(--bold-font);
+  color: var(--text-color);
   letter-spacing: -1.25px;
 }

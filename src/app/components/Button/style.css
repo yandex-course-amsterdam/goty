@@ -2,8 +2,8 @@
   width: 337px;
   height: 56px;
 
-  font: normal 700 24px/36px 'Inter Bold', sans-serif;
-  color: #000000;
+  font: normal 700 24px/36px var(--bold-font);
+  color: var(--second-color);
 
   background: #ffb41f;
   border: none;

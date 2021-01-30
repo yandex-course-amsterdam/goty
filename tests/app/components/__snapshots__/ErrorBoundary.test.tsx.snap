@@ -3,6 +3,7 @@
 exports[`Error Boundary component Render children when there are no errors 1`] = `
 <button
   className=""
+  disabled={false}
   type="button"
 >
   Oh hi

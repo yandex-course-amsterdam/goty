@@ -11,8 +11,8 @@
 
   height: 40px;
 
-  color: #fff;
-  font: normal 400 16px/28px 'Inter Regular', sans-serif;
+  color: white;
+  font: normal 400 16px/28px var(--regular-font);
   text-align: center;
 
   background-color: #f6655a;

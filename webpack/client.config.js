@@ -27,8 +27,10 @@ module.exports = {
     mainFields: ['module', 'browser', 'main'],
     alias: {
       app: path.resolve(__dirname, '../src/app/'),
-      images: path.resolve(__dirname, '../src/images/'),
+      assets: path.resolve(__dirname, '../src/assets/'),
       icons: path.resolve(__dirname, '../src/icons/'),
+      images: path.resolve(__dirname, '../src/images/'),
+      shared: path.resolve(__dirname, '../src/shared/'),
       uikit: path.resolve(__dirname, '../src/uikit/')
     }
   },

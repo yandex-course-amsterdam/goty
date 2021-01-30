@@ -1,0 +1,62 @@
+.likes {
+  display: flex;
+  align-items: center;
+}
+
+.like {
+  display: flex;
+  align-items: center;
+
+  font: normal 700 14px var(--regular-font);
+
+  padding: 8px;
+
+  background: none;
+  border: 2px solid var(--sub-text-color);
+  border-radius: 25px;
+
+  cursor: pointer;
+
+  transform-origin: center;
+  transition: width 0.3s ease;
+}
+
+.like:not(:last-child) {
+  margin-right: 20px;
+}
+
+.emoji {
+  width: 20px;
+  height: 20px;
+}
+
+.count {
+  text-align: center;
+  color: var(--text-color);
+
+  width: 0px;
+
+  overflow: hidden;
+
+  transition: width 0.3s ease;
+}
+
+.likes {
+  margin-bottom: 30px;
+}
+
+.like:not(.likeTransparent):hover .count {
+  width: 20px;
+}
+
+.likeActive {
+  border-color: var(--accent-color);
+}
+
+.likeTransparent {
+  opacity: 0.5;
+}
+
+.likeTransparent:hover {
+  opacity: 1;
+}

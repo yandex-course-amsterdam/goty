@@ -1,0 +1,14 @@
+:root {
+  --base-color: #17151c;
+  --second-color: #000000;
+  --field-color: #2a2731;
+  --accent-color: #2264d1;
+  --text-color: #eeecf1;
+  --article-bg-color: #1c1a22;
+  --sub-text-color: #7a7585;
+  --input-correct: #87c289;
+  --input-wrong: #f6655a;
+  --input-placeholder: #9590a0;
+  --regular-font: 'Inter Regular', sans-serif;
+  --bold-font: 'Inter Bold', sans-serif;
+}

@@ -10,24 +10,35 @@ import {
   ProfileView,
   GameView,
   ScoreView,
-  NotFoundView
+  NotFoundView,
+  FeedbackView,
+  FeedView
 } from 'app/views'
 import { OfflineBar, PrivateRoute, Authorization } from 'app/components'
 
-import { postResult } from 'app/api/Api'
+import { postResult, getUserTheme } from 'app/api/Api'
 import { fetchUserInfo } from 'app/actions'
 
 import { StoreState } from 'app/reducers'
 import { route } from 'app/enums'
-import { getScore, removeScore, isServer } from 'app/utils'
+import {
+  getScore,
+  removeScore,
+  isServer,
+  setUserTheme,
+  storeUserTheme
+} from 'app/utils'
 
 import 'normalize.css'
+import 'assets/main.css'
 import '../../../fonts/fonts.css'
 
 // startServiceWorker()
 
 export const App: FC = (): JSX.Element => {
-  const [isOffline, setIsOffline] = useState(isServer || !navigator.onLine)
+  const [isOffline, setIsOffline] = useState(
+    isServer ? false : !navigator.onLine
+  )
 
   const dispatch = useDispatch()
 
@@ -50,9 +61,20 @@ export const App: FC = (): JSX.Element => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        await dispatch(fetchUserInfo())
-      } catch (e) {
-        console.warn(e)
+        const data = await dispatch(fetchUserInfo())
+
+        if (data) {
+          const {
+            data: { payload: theme }
+            // Очередной странный тайпинг, учитывая возвращаемое по факту значение
+            // Сейчас уже нет времени разбираться, буду потом сильнее вникать в ts
+            // @ts-ignore
+          } = await getUserTheme(data.id)
+          setUserTheme(theme)
+          storeUserTheme(theme)
+        }
+      } catch (error) {
+        console.warn(error)
       }
     }
 
@@ -93,6 +115,12 @@ export const App: FC = (): JSX.Element => {
         </PrivateRoute>
         <PrivateRoute path={route.score}>
           <ScoreView />
+        </PrivateRoute>
+        <PrivateRoute path={route.feedback}>
+          <FeedbackView />
+        </PrivateRoute>
+        <PrivateRoute path={route.feed}>
+          <FeedView />
         </PrivateRoute>
         <Route path="*">
           <NotFoundView />

@@ -1,5 +1,5 @@
 .main {
-  background-color: #17151c;
+  background-color: var(--base-color);
 
   flex-basis: 100%;
 }

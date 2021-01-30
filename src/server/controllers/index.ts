@@ -1,0 +1,7 @@
+export * as authController from './authController'
+export * as themeController from './themeController'
+export * as feedbackController from './feedbackController'
+export * as userController from './userController'
+export * as newsController from './newsController'
+export * as commentController from './commentController'
+export * as likeController from './likeController'
