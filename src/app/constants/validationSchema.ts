@@ -31,5 +31,5 @@ export const VALIDATION_SCHEMA = {
       'Phone must be valid'
     )
     .required('Phone is required'),
-  comment: Yup.string().required('Comment is required')
+  comment: Yup.string().required('')
 }

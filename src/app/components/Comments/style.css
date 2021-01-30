@@ -21,11 +21,7 @@
   width: 100%;
 }
 
-.commentForm [class*='error'] {
-  display: none;
-}
-
-.commentForm [class*='icon'] {
+.commentForm svg {
   right: 8px;
   left: unset;
 }
