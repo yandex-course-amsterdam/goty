@@ -4,8 +4,6 @@ services:
   postgres:
     image: postgres
     restart: always
-    ports:
-      - 5432:5432
     environment:
       POSTGRES_DB: ${DB_NAME}
       POSTGRES_USER: ${DB_USER}
@@ -14,8 +12,6 @@ services:
   mongo:
     image: mongo
     restart: always
-    ports:
-      - 27017:27017
 
   adminer:
     image: adminer
