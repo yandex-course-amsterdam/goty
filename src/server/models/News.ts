@@ -9,5 +9,5 @@ News.init(
     title: { type: DataType.STRING },
     description: { type: DataType.STRING }
   },
-  { sequelize, tableName: 'news' }
+  { sequelize, tableName: 'news', underscored: true }
 )

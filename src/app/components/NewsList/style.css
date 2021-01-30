@@ -14,14 +14,14 @@
 }
 
 .title {
-  font: normal 700 24px/36px 'Inter Bold', sans-serif;
+  font: normal 700 24px/36px var(--bold-font);
   color: var(--text-color);
 
   margin: 0 0 20px;
 }
 
 .description {
-  font: normal 700 16px/24px 'Inter Regular', sans-serif;
+  font: normal 700 16px/24px var(--regular-font);
   color: var(--text-color);
 
   margin: 0 0 20px;

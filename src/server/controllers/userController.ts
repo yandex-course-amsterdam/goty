@@ -3,13 +3,14 @@ import express from 'express'
 import { config } from '../config'
 
 import { format } from '../formatters'
-import { log } from '../utils'
+import { logError } from '../utils'
 import { User } from '../models'
 
-const controllerName = 'UserController'
+const controller = 'UserController'
 
 const {
-  models: { aliases }
+  models: { aliases },
+  status
 } = config
 
 export const setUser = async (
@@ -19,13 +20,15 @@ export const setUser = async (
   try {
     const row = await User.findOrCreate({
       where: { id: req.body.id },
-      defaults: { ...req.body, themeId: 1 }
+      defaults: { ...req.body, theme_id: 1 }
     })
     const user = row.shift()
-    return res.status(200).send(user)
+    return res.status(200).json({ status: status.success, payload: user })
   } catch (error) {
-    log(controllerName, 'setUser', error)
-    return res.sendStatus(400).send('There is a problem saving user')
+    logError({ controller, method: 'setUser', error })
+    return res
+      .status(400)
+      .json({ status: status.error, message: 'There is a problem saving user' })
   }
 }
 
@@ -35,15 +38,18 @@ export const getUserTheme = async (
 ): Promise<express.Response> => {
   try {
     const userWithTheme = await User.findOne({
-      where: { id: req.query.userId },
+      where: { id: req.params.id },
       include: [aliases.theme]
     })
     // @ts-ignore
     const theme = format.theme(userWithTheme[aliases.theme])
-    return res.status(200).send(theme)
+    return res.status(200).json({ status: status.success, payload: theme })
   } catch (error) {
-    log(controllerName, 'getUserTheme', error)
-    return res.sendStatus(400).send('There is a problem getting theme')
+    logError({ controller, method: 'getUserTheme', error })
+    return res.status(400).json({
+      status: status.error,
+      message: 'There is a problem getting theme'
+    })
   }
 }
 
@@ -52,16 +58,22 @@ export const setUserTheme = async (
   res: express.Response
 ): Promise<express.Response> => {
   try {
-    const { userId: id, themeId } = req.body
+    const { user_id: id, theme_id } = req.body
     await User.update(
-      { themeId },
+      { theme_id },
       {
         where: { id }
       }
     )
-    return res.status(201).send('Theme is set for user successfully')
+    return res.status(201).json({
+      status: status.success,
+      payload: null
+    })
   } catch (error) {
-    log(controllerName, 'setUserTheme', error)
-    return res.sendStatus(400).send('There is a problem setting theme for user')
+    logError({ controller, method: 'setUserTheme', error })
+    return res.status(400).json({
+      status: status.error,
+      message: 'There is a problem setting theme for user'
+    })
   }
 }

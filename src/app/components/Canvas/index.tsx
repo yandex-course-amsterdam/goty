@@ -34,7 +34,7 @@ enum SET_ACTION {
 }
 
 const selectUserName = (state: StoreState) =>
-  state.userInfo.display_name || state.userInfo.first_name
+  state.userInfo.displayName || state.userInfo.firstName
 
 export const Canvas: React.FC = (): JSX.Element => {
   const [state] = useState<State>(new State())

@@ -3,13 +3,13 @@ import { ThemeFormattedShallow, ThemeFormatted } from 'shared'
 import { Theme } from 'server/models'
 
 const themeProps = [
-  'baseColor',
-  'secondColor',
-  'fieldColor',
-  'accentColor',
-  'textColor',
-  'articleBgColor',
-  'subTextColor'
+  'base_color',
+  'second_color',
+  'field_color',
+  'accent_color',
+  'text_color',
+  'article_bg_color',
+  'sub_text_color'
 ]
 
 const format = (theme: Record<string, any>) => {

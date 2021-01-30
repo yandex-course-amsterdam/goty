@@ -6,14 +6,14 @@ export const createJWTToken = (
   req: express.Request,
   res: express.Response
 ): void => {
-  const { userLogin } = req.body
+  const { user_login } = req.body
 
-  if (!userLogin) {
+  if (!user_login) {
     res.status(401).send()
     return
   }
 
-  const token = createToken(userLogin)
+  const token = createToken(user_login)
 
   res.cookie('userToken', token, {
     maxAge: 1000 * 60 * 60 * 24,

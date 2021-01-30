@@ -7,42 +7,42 @@ import * as Yup from 'yup'
 import { updateProfile } from 'app/api/Api'
 import { VALIDATION_SCHEMA } from 'app/constants'
 import { StoreState } from 'app/reducers'
-import { fetchUserInfo } from 'app/actions'
+import { fetchUserInfo, UserInfo } from 'app/actions'
 import { displayResponseText } from 'app/utils'
 
 import style from './style.css'
 
 const selectUserData = (state: StoreState) => {
-  const { first_name, second_name, login, email, phone } = state.userInfo
-  const display_name = state.userInfo.display_name || ''
+  const { firstName, secondName, login, email, phone } = state.userInfo
+  const displayName = state.userInfo.displayName || ''
 
-  return { first_name, second_name, login, email, phone, display_name }
+  return { firstName, secondName, login, email, phone, displayName }
 }
+
+const {
+  firstName,
+  secondName,
+  displayName,
+  login,
+  email,
+  phone
+} = VALIDATION_SCHEMA
+
+const validationSchema = Yup.object({
+  firstName,
+  secondName,
+  displayName,
+  login,
+  email,
+  phone
+})
 
 export const DetailsForm: FC = (): JSX.Element => {
   const [responseText, setResponseText] = useState('')
   const userData = useSelector(selectUserData)
   const dispatch = useDispatch()
 
-  const {
-    first_name,
-    second_name,
-    display_name,
-    login,
-    email,
-    phone
-  } = VALIDATION_SCHEMA
-
-  const validationSchema = Yup.object({
-    first_name,
-    second_name,
-    display_name,
-    login,
-    email,
-    phone
-  })
-
-  const updateUserProfile = async (data: FormikValues): Promise<void> => {
+  const updateUserProfile = async (data: UserInfo): Promise<void> => {
     try {
       await updateProfile(data)
       await dispatch(fetchUserInfo())
@@ -52,10 +52,7 @@ export const DetailsForm: FC = (): JSX.Element => {
     }
   }
 
-  const handleSubmit = (
-    values: FormikValues,
-    { setSubmitting }: FormikValues
-  ) => {
+  const handleSubmit = (values: UserInfo, { setSubmitting }: FormikValues) => {
     updateUserProfile(values)
     setSubmitting(false)
   }
@@ -70,19 +67,19 @@ export const DetailsForm: FC = (): JSX.Element => {
       <Form>
         <Input
           label="Name"
-          name="first_name"
+          name="firstName"
           type="text"
           placeholder="Enter your name"
         />
         <Input
           label="Surname"
-          name="second_name"
+          name="secondName"
           type="text"
           placeholder="Enter your surname"
         />
         <Input
           label="Display name"
-          name="display_name"
+          name="displayName"
           type="text"
           placeholder="Enter your display surname"
         />

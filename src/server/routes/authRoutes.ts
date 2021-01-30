@@ -4,8 +4,8 @@ import { authController } from '../controllers'
 
 const authRouter = Router()
 
-authRouter.post('/createToken', authController.createJWTToken)
-
-authRouter.post('/invalidateToken', authController.invalidateToken)
+authRouter
+  .post('/createToken', authController.createJWTToken)
+  .post('/invalidateToken', authController.invalidateToken)
 
 export { authRouter }

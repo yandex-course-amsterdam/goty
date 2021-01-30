@@ -7,7 +7,7 @@
   display: flex;
   align-items: center;
 
-  font: normal 700 14px 'Inter Regular', sans-serif;
+  font: normal 700 14px var(--regular-font);
 
   padding: 8px;
 
@@ -45,7 +45,7 @@
   margin-bottom: 30px;
 }
 
-.like:not(.likeDim):hover .count {
+.like:not(.likeTransparent):hover .count {
   width: 20px;
 }
 
@@ -53,10 +53,10 @@
   border-color: var(--accent-color);
 }
 
-.likeDim {
+.likeTransparent {
   opacity: 0.5;
 }
 
-.likeDim:hover {
+.likeTransparent:hover {
   opacity: 1;
 }

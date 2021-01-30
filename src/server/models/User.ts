@@ -14,5 +14,5 @@ User.init(
     phone: { type: DataType.STRING },
     avatar: { type: DataType.STRING }
   },
-  { sequelize, tableName: 'users' }
+  { sequelize, tableName: 'users', underscored: true }
 )

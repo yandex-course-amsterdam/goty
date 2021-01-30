@@ -4,22 +4,22 @@ import cn from 'classnames'
 
 import { postLike } from 'app/api/Api'
 
-import { Article, Like, LikeType } from 'app/interfaces'
+import { LikeType } from 'shared'
+import { ArticleInterface, LikeInterface } from 'app/interfaces'
 import { StoreState } from 'app/reducers'
 
 import style from './style.css'
 
 interface IProps {
-  article: Article
-  // eslint-disable-next-line
-  cb: Function
+  article: ArticleInterface
+  cb(id: number, article: (prop: ArticleInterface) => ArticleInterface): void
 }
 
-enum LikeEmoji {
-  like = '👍',
-  laugh = '🤣',
-  cry = '😿',
-  love = '💘'
+const mapEmoji = {
+  like: '👍',
+  laugh: '🤣',
+  cry: '😿',
+  love: '💘'
 }
 
 export const Likes: FC<IProps> = ({ article, cb }): JSX.Element => {
@@ -27,18 +27,16 @@ export const Likes: FC<IProps> = ({ article, cb }): JSX.Element => {
 
   const likeArticle = useCallback(
     async (likeType: string) => {
-      const { data } = await postLike(
-        article.id,
-        likeType,
-        userInfo.id as number
-      )
+      const {
+        data: { payload }
+      } = await postLike(article.id, likeType, userInfo.id as number)
 
       cb(
         article.id,
-        (articleCopy: Article): Article => {
+        (articleCopy: ArticleInterface): ArticleInterface => {
           // при попытке сохранить имеющийся лайк (лайк с таким же типом, newsId и userId) сервер отвечает 204
-          if (data) {
-            articleCopy.likes.push(data)
+          if (payload) {
+            articleCopy.likes.push(payload)
           } else {
             const removedLikeIndex = articleCopy.likes.findIndex(
               (like) => like.type === likeType && like.userId === userInfo.id
@@ -56,20 +54,20 @@ export const Likes: FC<IProps> = ({ article, cb }): JSX.Element => {
   const processLikes = useCallback((): JSX.Element => {
     const { likes } = article
 
-    const count: Record<keyof typeof LikeType, number> = {
+    const count: Record<LikeType, number> = {
       like: 0,
       laugh: 0,
       cry: 0,
       love: 0
     }
-    const userLikes: Record<keyof typeof LikeType, boolean> = {
+    const userLikes: Record<LikeType, boolean> = {
       like: false,
       laugh: false,
       cry: false,
       love: false
     }
 
-    likes.forEach((like: Like) => {
+    likes.forEach((like: LikeInterface) => {
       const isUserLike = like.userId === userInfo.id
       const likeType = like.type
 
@@ -81,7 +79,7 @@ export const Likes: FC<IProps> = ({ article, cb }): JSX.Element => {
     })
 
     const processedLikes = Object.keys(count).map((like: string) => {
-      const castedLike = like as keyof typeof LikeType
+      const castedLike = like as LikeType
       return {
         type: castedLike,
         count: count[castedLike],
@@ -97,7 +95,7 @@ export const Likes: FC<IProps> = ({ article, cb }): JSX.Element => {
             className={cn(
               style.like,
               like.userLiked === true && style.likeActive,
-              !like.count && style.likeDim
+              !like.count && style.likeTransparent
             )}
             onClick={() => {
               likeArticle(like.type)
@@ -105,8 +103,8 @@ export const Likes: FC<IProps> = ({ article, cb }): JSX.Element => {
             key={like.type}
           >
             <span role="img" aria-label={like.type} className={style.emoji}>
-              {LikeEmoji[like.type]}
-            </span>{' '}
+              {mapEmoji[like.type]}
+            </span>
             <span className={style.count}>{like.count}</span>
           </button>
         ))}
@@ -114,5 +112,5 @@ export const Likes: FC<IProps> = ({ article, cb }): JSX.Element => {
     )
   }, [article, userInfo, likeArticle])
 
-  return <>{processLikes()}</>
+  return processLikes()
 }

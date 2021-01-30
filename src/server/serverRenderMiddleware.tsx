@@ -8,7 +8,7 @@ import { StaticRouterContext } from 'react-router'
 import { App } from 'app/components'
 import { configureStore } from 'app/store'
 import { StoreState } from 'app/reducers'
-import { log, verifyToken } from './utils'
+import { logError, verifyToken } from './utils'
 
 const getResponse = (jsx: JSX.Element, state: StoreState): string => {
   return `<!DOCTYPE html>
@@ -38,7 +38,11 @@ export const serverRenderMiddleware = (req: Request, res: Response): void => {
     verifyToken(tokenCookie)
     isTokenVerified = true
   } catch (error) {
-    log('SSR', 'serverRenderMiddleware', error)
+    logError({
+      controller: 'SSR',
+      method: 'serverRenderMiddleware',
+      error
+    })
   }
 
   const store = configureStore({ loginStatus: { status: isTokenVerified } })

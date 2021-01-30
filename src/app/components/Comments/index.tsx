@@ -5,19 +5,18 @@ import * as Yup from 'yup'
 
 import { VALIDATION_SCHEMA } from 'app/constants'
 
-import { postComment, deleteComment } from 'app/api/Api'
+import { postComment } from 'app/api/Api'
 
-import { Article, Comment } from 'app/interfaces'
+import { ArticleInterface, CommentInterface } from 'app/interfaces'
 import { StoreState } from 'app/reducers'
-import { Input, Button } from 'app/components'
+import { Input, Button, Comment } from 'app/components'
 import { sanitize } from 'app/utils'
 
 import style from './style.css'
 
 interface IProps {
-  article: Article
-  // eslint-disable-next-line
-  cb: Function
+  article: ArticleInterface
+  cb(id: number, article: (prop: ArticleInterface) => ArticleInterface): void
 }
 
 const { comment: commentText } = VALIDATION_SCHEMA
@@ -36,7 +35,9 @@ export const Comments: FC<IProps> = ({ article, cb }): JSX.Element => {
   const submitComment = useCallback(
     async (formData: FormikValues) => {
       const { commentText: comment } = formData
-      const { data } = await postComment(
+      const {
+        data: { payload }
+      } = await postComment(
         article.id,
         sanitize(comment),
         userInfo.id as number
@@ -44,8 +45,8 @@ export const Comments: FC<IProps> = ({ article, cb }): JSX.Element => {
 
       cb(
         article.id,
-        (articleCopy: Article): Article => {
-          articleCopy.comments.push(data)
+        (articleCopy: ArticleInterface): ArticleInterface => {
+          articleCopy.comments.push(payload)
           return articleCopy
         }
       )
@@ -53,13 +54,11 @@ export const Comments: FC<IProps> = ({ article, cb }): JSX.Element => {
     [article, cb, userInfo]
   )
 
-  const removeComment = useCallback(
+  const handleRemoveComment = useCallback(
     async (commentId: number) => {
-      await deleteComment(commentId)
-
       cb(
         article.id,
-        (articleCopy: Article): Article => {
+        (articleCopy: ArticleInterface): ArticleInterface => {
           const removedCommentIndex = articleCopy.comments.findIndex(
             (comment) => comment.id === commentId
           )
@@ -74,45 +73,12 @@ export const Comments: FC<IProps> = ({ article, cb }): JSX.Element => {
   return (
     <>
       <div className={style.comments}>
-        {article.comments.map((comment: Comment) => (
-          <div className={style.comment} key={comment.id}>
-            {userInfo.id === comment.user.id && (
-              <button
-                type="button"
-                className={style.commentDelete}
-                onClick={() => {
-                  removeComment(comment.id)
-                }}
-              >
-                Delete comment
-              </button>
-            )}
-            <div className={style.commentAvatar}>
-              <img
-                src={
-                  comment.user.avatar
-                    ? `https://ya-praktikum.tech/${comment.user.avatar}`
-                    : '/images/avatar.png'
-                }
-                alt={comment.user.login || 'User avatar'}
-              />
-            </div>
-            <div className={style.commentMain}>
-              <div className={style.commentText}>
-                {
-                  // unescape sanitized comments
-                  new DOMParser().parseFromString(comment.text, 'text/html')
-                    .documentElement.textContent
-                }
-              </div>
-              <div className={style.commentMeta}>
-                <div className={style.commentAuthor}>{comment.user.login}</div>
-                <div className={style.commentDate}>
-                  {new Date(comment.user.createdAt).toLocaleString()}
-                </div>
-              </div>
-            </div>
-          </div>
+        {article.comments.map((comment: CommentInterface) => (
+          <Comment
+            comment={comment}
+            handleRemoveComment={handleRemoveComment}
+            key={comment.id}
+          />
         ))}
       </div>
       <Formik

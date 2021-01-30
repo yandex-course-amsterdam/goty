@@ -8,5 +8,5 @@ Comment.init(
   {
     text: { type: DataType.STRING }
   },
-  { sequelize, tableName: 'comments' }
+  { sequelize, tableName: 'comments', underscored: true }
 )

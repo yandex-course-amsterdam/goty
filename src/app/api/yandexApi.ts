@@ -34,7 +34,7 @@ export const updatePassword = (body: FormikValues): Promise<AxiosResponse> =>
 export const updateProfile = (body: FormikValues): Promise<AxiosResponse> =>
   api.put(RequestRoot.profile, body, { baseURL })
 
-export const updateAvatar = (body: FormData): Promise<AxiosResponse> =>
+export const updateAvatar = (body: FormikValues): Promise<AxiosResponse> =>
   api.put(RequestRoot.avatar, body, { baseURL })
 
 export const logout = (): Promise<AxiosResponse> =>

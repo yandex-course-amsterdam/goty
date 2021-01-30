@@ -17,13 +17,16 @@ Theme.init(
   {
     name: { type: DataType.STRING },
     default: { type: DataType.BOOLEAN },
-    baseColor: { type: DataType.STRING, validate: { hexColorValidator } },
-    secondColor: { type: DataType.STRING, validate: { hexColorValidator } },
-    fieldColor: { type: DataType.STRING, validate: { hexColorValidator } },
-    accentColor: { type: DataType.STRING, validate: { hexColorValidator } },
-    textColor: { type: DataType.STRING, validate: { hexColorValidator } },
-    articleBgColor: { type: DataType.STRING, validate: { hexColorValidator } },
-    subTextColor: { type: DataType.STRING, validate: { hexColorValidator } }
+    base_color: { type: DataType.STRING, validate: { hexColorValidator } },
+    second_color: { type: DataType.STRING, validate: { hexColorValidator } },
+    field_color: { type: DataType.STRING, validate: { hexColorValidator } },
+    accent_color: { type: DataType.STRING, validate: { hexColorValidator } },
+    text_color: { type: DataType.STRING, validate: { hexColorValidator } },
+    article_bg_color: {
+      type: DataType.STRING,
+      validate: { hexColorValidator }
+    },
+    sub_text_color: { type: DataType.STRING, validate: { hexColorValidator } }
   },
-  { sequelize, tableName: 'themes' }
+  { sequelize, tableName: 'themes', underscored: true }
 )

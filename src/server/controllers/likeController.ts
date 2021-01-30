@@ -1,9 +1,12 @@
 import express from 'express'
 
-import { log } from '../utils'
+import { config } from '../config'
+import { logError } from '../utils'
 import { Like } from '../models'
 
-const controllerName = 'LikeController'
+const controller = 'LikeController'
+
+const { status } = config
 
 export const postLike = async (
   req: express.Request,
@@ -16,13 +19,19 @@ export const postLike = async (
     if (like) {
       like.destroy()
       // возвращаем id удалённого лайка для выполнения логики на фронте
-      return res.status(204).send()
+      return res.status(204).json({
+        status: 'success',
+        payload: null
+      })
     }
 
     like = await Like.create(req.body)
-    return res.status(200).send(like)
+    return res.status(200).json({ status: status.success, payload: like })
   } catch (error) {
-    log(controllerName, 'postLike', error)
-    return res.status(400).send('There is a problem saving your theme')
+    logError({ controller, method: 'postLike', error })
+    return res.status(400).json({
+      status: status.error,
+      message: 'There is a problem saving your theme'
+    })
   }
 }

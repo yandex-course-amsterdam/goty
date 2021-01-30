@@ -52,11 +52,16 @@
   justify-content: space-between;
   padding: 10px;
 
-  font: normal 700 14px/16px 'Inter Bold', sans-serif;
+  font: normal 700 14px/16px var(--bold-font);
   letter-spacing: 0.75px;
   color: #605b6a;
 
   border-bottom: 1px solid #3c3844;
 
   margin-bottom: 30px;
+}
+
+.noResult {
+  font: normal 400 14px/16px var(--regular-font);
+  color: var(--text-color);
 }

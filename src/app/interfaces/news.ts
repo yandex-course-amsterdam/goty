@@ -1,33 +1,27 @@
+import { LikeType } from 'shared'
 import { UserInfo } from 'app/actions'
 
-export enum LikeType {
-  like = 'like',
-  laugh = 'laugh',
-  cry = 'cry',
-  love = 'love'
-}
-
-export type Like = {
+export type LikeInterface = {
   id: number
-  type: keyof typeof LikeType
+  type: LikeType
   userId: number
 }
 
-export type User = UserInfo & {
+export type UserInterface = UserInfo & {
   createdAt: string
 }
 
-export type Comment = {
+export type CommentInterface = {
   id: number
   text: string
   createdAt: string
-  user: User
+  user: UserInterface
 }
 
-export type Article = {
+export type ArticleInterface = {
   id: number
   title: string
   description: string
-  likes: Like[]
-  comments: Comment[]
+  likes: LikeInterface[]
+  comments: CommentInterface[]
 }

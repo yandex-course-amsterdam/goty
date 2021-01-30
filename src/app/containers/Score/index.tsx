@@ -1,4 +1,5 @@
-import React, { FC, useEffect, useState } from 'react'
+import React, { FC, useCallback, useEffect, useState } from 'react'
+import { useSelector } from 'react-redux'
 import { useRouteMatch, Switch, Route } from 'react-router-dom'
 import {
   Avatar,
@@ -11,6 +12,7 @@ import {
   UserScore
 } from 'app/components'
 
+import { StoreState } from 'app/reducers'
 import { getLeaderboard } from 'app/api/Api'
 import { route } from 'app/enums'
 import { TRANSLATIONS } from './translations'
@@ -41,9 +43,13 @@ const sortUserData = (data: userScoreData[]) =>
         b.amsterdamScore - a.amsterdamScore
     )
 
+const selectUserName = (state: StoreState) =>
+  state.userInfo.displayName || state.userInfo.firstName
+
 export const Score: FC = (): JSX.Element => {
   const [scoreData, setScoreData] = useState<userScoreData[]>([])
   const { path } = useRouteMatch()
+  const userName = useSelector(selectUserName)
 
   useEffect(() => {
     async function fetchScoreData() {
@@ -56,24 +62,58 @@ export const Score: FC = (): JSX.Element => {
     fetchScoreData()
   }, [])
 
-  const renderUserScore = (): JSX.Element[] => {
+  const renderUserScore = useCallback((): JSX.Element => {
     const sortedData = sortUserData(scoreData)
     const maxScore = sortedData.length ? sortedData[0].amsterdamScore : 0
 
-    return sortedData.map((el: userScoreData, index: number) => {
-      const { amsterdamScore, name } = el
-      const width = `${index === 0 ? 100 : (amsterdamScore / maxScore) * 100}%`
+    return (
+      <>
+        <div className={style.table}>
+          <p className={style.header}>Name</p>
+          <p className={style.header}>Score</p>
+        </div>
+        {sortedData.map((el: userScoreData, index: number) => {
+          const { amsterdamScore, name } = el
+          const width = `${
+            index === 0 ? 100 : (amsterdamScore / maxScore) * 100
+          }%`
 
+          return (
+            <UserScore
+              key={name}
+              score={amsterdamScore}
+              name={name}
+              width={width}
+            />
+          )
+        })}
+      </>
+    )
+  }, [scoreData])
+
+  const renderPersonalStats = useCallback((): JSX.Element => {
+    const userScore = scoreData.find((sc) => sc.name === userName)
+
+    if (userScore) {
+      const { name, amsterdamScore } = userScore
       return (
-        <UserScore
-          key={name}
-          score={amsterdamScore}
-          name={name}
-          width={width}
-        />
+        <>
+          <div className={style.table}>
+            <p className={style.header}>Name</p>
+            <p className={style.header}>Score</p>
+          </div>
+          <UserScore
+            key={name}
+            score={amsterdamScore}
+            name={name}
+            width="100%"
+          />
+        </>
       )
-    })
-  }
+    }
+
+    return <div className={style.noResult}>There is no score for you yet.</div>
+  }, [scoreData, userName])
 
   return (
     <div className={style.score}>
@@ -95,10 +135,6 @@ export const Score: FC = (): JSX.Element => {
                   title={mainDescriptionTitle}
                   subtitle={mainDescriptionSubtitle}
                 />
-                <div className={style.table}>
-                  <p className={style.header}>Name</p>
-                  <p className={style.header}>Score</p>
-                </div>
                 <div className={style.overflow}>{renderUserScore()}</div>
               </div>
             </Route>
@@ -109,6 +145,7 @@ export const Score: FC = (): JSX.Element => {
                   title={mainDescriptionTitle}
                   subtitle={mainDescriptionSubtitle}
                 />
+                <div className={style.overflow}>{renderPersonalStats()}</div>
               </div>
             </Route>
           </Switch>

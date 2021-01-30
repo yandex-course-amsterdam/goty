@@ -9,4 +9,6 @@
   --input-correct: #87c289;
   --input-wrong: #f6655a;
   --input-placeholder: #9590a0;
+  --regular-font: 'Inter Regular', sans-serif;
+  --bold-font: 'Inter Bold', sans-serif;
 }

@@ -1,6 +1,6 @@
 import { ThemeFormatted } from 'shared'
 
-import { camelToCssVar } from './camelToCssVar'
+import { strToCSSVar } from './strToCSSVar'
 
 const parseUserTheme = (): ThemeFormatted | null => {
   const userThemeStringified = localStorage.getItem('userTheme')
@@ -13,7 +13,7 @@ export const setUserTheme = (theme = parseUserTheme()): void => {
   if (theme) {
     const { attributes } = theme
     Object.keys(attributes).forEach((key) => {
-      const keyParsed = camelToCssVar(key)
+      const keyParsed = strToCSSVar(key)
       document.documentElement.style.setProperty(keyParsed, attributes[key])
     })
   }

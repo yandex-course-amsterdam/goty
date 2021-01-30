@@ -2,17 +2,19 @@ import React, { FC, useState, useCallback, useEffect } from 'react'
 
 import { getAllNews } from 'app/api/Api'
 
-import { Article } from 'app/interfaces'
+import { ArticleInterface } from 'app/interfaces'
 import { Comments, Likes } from 'app/components'
 
 import style from './style.css'
 
 export const NewsList: FC = (): JSX.Element => {
-  const [news, setNews] = useState<Article[]>([])
+  const [news, setNews] = useState<ArticleInterface[]>([])
 
   const getNews = useCallback(async () => {
-    const res = await getAllNews()
-    setNews(res.data)
+    const {
+      data: { payload }
+    } = await getAllNews()
+    setNews(payload)
   }, [])
 
   const handleLocalUpdateError = useCallback(
@@ -29,7 +31,7 @@ export const NewsList: FC = (): JSX.Element => {
       try {
         const newsCopy = JSON.parse(JSON.stringify(news))
         const articleIndex = newsCopy.findIndex(
-          (article: Article) => article.id === newsId
+          (article: ArticleInterface) => article.id === newsId
         )
         newsCopy[articleIndex] = cb(
           JSON.parse(JSON.stringify(newsCopy[articleIndex]))

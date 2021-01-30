@@ -4,12 +4,10 @@ import { themeController } from '../controllers'
 
 const themesRouter = Router()
 
-themesRouter.get('/all', themeController.getAllThemes)
-
-themesRouter.post('/', themeController.createTheme)
-
-themesRouter.get('/', themeController.getTheme)
-
-themesRouter.put('/', themeController.updateTheme)
+themesRouter
+  .get('/', themeController.getAllThemes)
+  .post('/', themeController.createTheme)
+  .get('/:id', themeController.getTheme)
+  .put('/', themeController.updateTheme)
 
 export { themesRouter }

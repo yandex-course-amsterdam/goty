@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { FC, useCallback } from 'react'
 import cn from 'classnames'
 import { useField } from 'formik'
 
@@ -18,7 +18,7 @@ export const Textarea: FC<IProps> = ({ label, ...props }): JSX.Element => {
   const [field, meta] = useField(props)
   const { id, name } = props
 
-  const getInputBorderStyle = (): string => {
+  const getInputBorderStyle = useCallback((): string => {
     if (!meta.error && field.value.length !== 0) {
       return style.correctinput
     }
@@ -32,9 +32,9 @@ export const Textarea: FC<IProps> = ({ label, ...props }): JSX.Element => {
     }
 
     return style.correctinput
-  }
+  }, [field, meta])
 
-  const setInputIcon = (): JSX.Element | null => {
+  const setInputIcon = useCallback((): JSX.Element | null => {
     if (!meta.error && field.value.length !== 0) {
       return <CorrectIcon className={style.icon} />
     }
@@ -48,7 +48,7 @@ export const Textarea: FC<IProps> = ({ label, ...props }): JSX.Element => {
     }
 
     return <WrongIcon className={style.icon} />
-  }
+  }, [field, meta])
 
   return (
     <div className={style.wrapper}>

@@ -11,7 +11,7 @@ Welcome here, pal
 
 To start your local project please first install dependencies
 
-Please note that for local development you should use `config-local.env` file to set environment variables. This file is not commited to repo for security reason so make sure you create your local copy from `config-cample.env` scaffold
+Also note that you should use `.env` file for local development to set environment variables and have mongo and postgres databases running locally. You could make one off of `.env.sample`. Make sure environment variables match your local configuration.
 
 ```javascript
 npm install
@@ -53,7 +53,7 @@ npm run test:update
 
 We use [Docker Compose](https://docs.docker.com/compose/) to build project
 
-Make sure you have Docker installed on your machine before before proceed with following commands. Also please note that following commands use `config-prod.env` file to set environment variables. This file is not commited to repo for security reason so make sure you create your local copy from `config-cample.env` scaffold
+Make sure you have Docker installed on your machine before before proceed with following commands. Also please note that following commands use `.env` file to set environment variables. You could make one off of `.env.sample`
 
 Run project via Docker Compose
 

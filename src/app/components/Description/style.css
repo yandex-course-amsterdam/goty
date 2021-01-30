@@ -3,14 +3,14 @@
 }
 
 .title {
-  font: normal 700 24px/36px 'Inter Bold', sans-serif;
+  font: normal 700 24px/36px var(--bold-font);
   color: var(--text-color);
 
   margin: 0;
 }
 
 .subtitle {
-  font: normal 400 20px/32px 'Inter Regular', sans-serif;
+  font: normal 400 20px/32px var(--regular-font);
   color: var(--text-color);
 
   margin: 0;

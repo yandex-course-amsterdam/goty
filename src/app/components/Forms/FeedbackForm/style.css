@@ -12,6 +12,6 @@
 }
 
 .feedbackSuccess {
-  font: normal 400 20px/32px 'Inter Regular', sans-serif;
+  font: normal 400 20px/32px var(--regular-font);
   color: var(--text-color);
 }
