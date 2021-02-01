@@ -1,7 +1,7 @@
 name: Push goty to kotosha registry
 on:
   push:
-    branches: ["stable"]
+    branches: ["main"]
 jobs:
   check-bats-version:
     name: Push Docker image to Docker Hub
