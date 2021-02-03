@@ -16,3 +16,10 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
           repository: kotosha/goty
           tag_with_ref: true
+      - name: executing remote ssh commands using ssh key
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.KEY }}
+          script: whoami
