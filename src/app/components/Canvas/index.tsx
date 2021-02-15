@@ -2,7 +2,12 @@ import React, { useState, useRef, useCallback, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import cn from 'classnames'
 
-import { ENEMY_TYPE } from 'app/constants'
+import {
+  ENEMY_TYPE,
+  GAMEPAD_BUTTON,
+  KEYBOARD_MAP_BOOST_TYPE,
+  GAMEPAD_MAP_BOOST_TYPE
+} from 'app/constants'
 import { ITEM_NAME, storeScore, isServer } from 'app/utils'
 import { StoreState } from 'app/reducers'
 import { postResult } from 'app/api/Api'
@@ -113,7 +118,11 @@ export const Canvas: React.FC = (): JSX.Element => {
 
   const handleBoostChoiceCallback = useCallback(
     (evt: KeyboardEvent) => {
-      handleBoostChoice(evt, state, ctx as CanvasRenderingContext2D)
+      handleBoostChoice(
+        KEYBOARD_MAP_BOOST_TYPE[evt.code],
+        state,
+        ctx as CanvasRenderingContext2D
+      )
     },
     [state, ctx]
   )
@@ -141,11 +150,7 @@ export const Canvas: React.FC = (): JSX.Element => {
   const handleTriggerPush = useCallback(
     (gamepad: Gamepad) => {
       const { axes } = gamepad
-
       const angle = Math.atan2(axes[3], axes[2])
-
-      // TODO: добавить ограничение на один выстрел в n миллисекунд
-
       handleFire(angle, state, ctx as CanvasRenderingContext2D)
     },
     [state, ctx]
@@ -162,7 +167,6 @@ export const Canvas: React.FC = (): JSX.Element => {
       state.addEnemy(enemy)
     }, 750)
 
-    // TODO: подумать про вложенные таймауты. Плюсы — более точные промежутки, чем при интервалах. Минусы — надо придумать как очищать таймаут
     setEnemiesSpawnInterval(interval)
   }
 
@@ -229,6 +233,49 @@ export const Canvas: React.FC = (): JSX.Element => {
     let playerHorizontalVelocity = 0
     let playerVerticalVelocity = 0
 
+    if (!isServer) {
+      const [gamepad] = navigator.getGamepads()
+
+      if (gamepad) {
+        const { axes, buttons } = gamepad
+        const [horizontalLAxis, verticalLAxis] = axes
+
+        playerHorizontalVelocity = horizontalLAxis
+        playerVerticalVelocity = verticalLAxis
+
+        if (buttons[GAMEPAD_BUTTON.A].pressed) {
+          handleBoostChoice(
+            GAMEPAD_MAP_BOOST_TYPE[GAMEPAD_BUTTON.A],
+            state,
+            ctx as CanvasRenderingContext2D
+          )
+        }
+
+        if (buttons[GAMEPAD_BUTTON.X].pressed) {
+          handleBoostChoice(
+            GAMEPAD_MAP_BOOST_TYPE[GAMEPAD_BUTTON.X],
+            state,
+            ctx as CanvasRenderingContext2D
+          )
+        }
+
+        if (buttons[GAMEPAD_BUTTON.Y].pressed) {
+          handleBoostChoice(
+            GAMEPAD_MAP_BOOST_TYPE[GAMEPAD_BUTTON.Y],
+            state,
+            ctx as CanvasRenderingContext2D
+          )
+        }
+
+        if (buttons[GAMEPAD_BUTTON.RT].pressed) {
+          handleTriggerPush(gamepad)
+        }
+      }
+    }
+
+    // в коде выше мы устанавливаем значения playerVelocity на основе отклонения осей геймпада
+    // в коде ниже мы проверяем стек нажатий WASD
+    // такой порядок позволит перезаписать значения playerVelocity с клавиатуры при необходимости
     if (horizontalMoveDirection?.size) {
       playerHorizontalVelocity = Array.from(
         horizontalMoveDirection
@@ -241,14 +288,6 @@ export const Canvas: React.FC = (): JSX.Element => {
 
     player.setHorizontalVelocity(playerHorizontalVelocity)
     player.setVerticalVelocity(playerVerticalVelocity)
-
-    if (!isServer) {
-      const [gamepad] = navigator.getGamepads()
-      if (gamepad?.buttons[7].pressed) {
-        handleTriggerPush(gamepad)
-        // TODO: сделать это красиво
-      }
-    }
 
     animationFrameId.current = requestAnimationFrame(animate)
 

@@ -9,11 +9,14 @@ export function handleFire(
   context: CanvasRenderingContext2D
 ): void {
   const player = state.getPlayer() as Player
+  const cooldown = state.getFireCooldown()
   const { boost } = player
 
-  if (boost === BOOST_TYPE.SPREE) {
+  if (cooldown) {
     return
   }
+
+  state.holdFire(250)
 
   switch (boost) {
     case BOOST_TYPE.BURST:

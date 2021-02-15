@@ -10,6 +10,7 @@ export class State {
   private projectiles: Projectile[] = []
   private enemies: Enemy[] = []
   private particles: Particle[] = []
+  private fireCooldown = false
 
   getScore(): number {
     return this.score
@@ -73,6 +74,24 @@ export class State {
     this.particles = this.particles
       .slice(0, i)
       .concat(this.particles.slice(i + 1))
+  }
+
+  getFireCooldown(): boolean {
+    return this.fireCooldown
+  }
+
+  holdFire(cooldown?: number): void {
+    this.fireCooldown = true
+
+    if (cooldown) {
+      setTimeout(() => {
+        this.fireCooldown = false
+      }, cooldown)
+    }
+  }
+
+  openFire(): void {
+    this.fireCooldown = false
   }
 
   resetState(): void {

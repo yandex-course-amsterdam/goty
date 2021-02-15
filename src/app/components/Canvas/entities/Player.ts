@@ -1,3 +1,4 @@
+import { BOOST_TYPE } from 'app/constants'
 import { GameObjectInterface } from 'app/interfaces'
 
 interface PlayerInterface extends GameObjectInterface {
@@ -65,7 +66,7 @@ export class Player implements PlayerInterface {
     return !!this.boost
   }
 
-  useBoost(boost: string): void {
+  useBoost(boost: keyof typeof BOOST_TYPE): void {
     if (this.boostInterval) {
       clearInterval(this.boostInterval)
     }
