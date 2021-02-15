@@ -28,9 +28,9 @@ enum MOVE_DIRECTION_VERTICAL {
   BOTTOM = 1
 }
 
-enum SET_ACTION {
-  ADD = 'add',
-  DELETE = 'delete'
+enum MULTIPLIER {
+  START = 1,
+  STOP = 0
 }
 
 const selectUserName = (state: StoreState) =>
@@ -49,12 +49,8 @@ export const Canvas: React.FC = (): JSX.Element => {
   const [ctx, setCtx] = useState<CanvasRenderingContext2D | null>(null)
 
   // Сеты выбраны для удобства, которое предлагают методы add() и delete()
-  const [verticalMoveDirection, setVerticalMoveDirection] = useState<
-    Set<number>
-  >(new Set())
-  const [horizontalMoveDirection, setHorizontalMoveDirection] = useState<
-    Set<number>
-  >(new Set())
+  const [verticalMoveDirection, setVerticalMoveDirection] = useState(0)
+  const [horizontalMoveDirection, setHorizontalMoveDirection] = useState(0)
 
   const animationFrameId = useRef(0)
   const boardRef = useRef<HTMLCanvasElement>(null)
@@ -64,41 +60,35 @@ export const Canvas: React.FC = (): JSX.Element => {
   // Идея в том, чтобы проверять нажатую клавишу на каждый кадр анимации вместо того, чтобы мутировать state из внешних обработчиков
   // Также это удобно для ситуаций с перекрёстными нажатиями — теперь любая из WASD клавиш будет корректно триггерить движение в нужную сторону
   const handleMoveCallback = useCallback(
-    (code: string, action: 'add' | 'delete'): void => {
-      let tmp
-
+    (code: string, multiplier: number): void => {
       switch (code) {
         case 'KeyW':
-          tmp = verticalMoveDirection
-          tmp[action](MOVE_DIRECTION_VERTICAL.TOP)
-          setVerticalMoveDirection(tmp)
+          setVerticalMoveDirection(MOVE_DIRECTION_VERTICAL.TOP * multiplier)
           break
         case 'KeyD':
-          tmp = horizontalMoveDirection
-          tmp[action](MOVE_DIRECTION_HORIZONTAL.RIGHT)
-          setHorizontalMoveDirection(tmp)
+          setHorizontalMoveDirection(
+            MOVE_DIRECTION_HORIZONTAL.RIGHT * multiplier
+          )
           break
         case 'KeyS':
-          tmp = verticalMoveDirection
-          tmp[action](MOVE_DIRECTION_VERTICAL.BOTTOM)
-          setVerticalMoveDirection(tmp)
+          setVerticalMoveDirection(MOVE_DIRECTION_VERTICAL.BOTTOM * multiplier)
           break
         case 'KeyA':
-          tmp = horizontalMoveDirection
-          tmp[action](MOVE_DIRECTION_HORIZONTAL.LEFT)
-          setHorizontalMoveDirection(tmp)
+          setHorizontalMoveDirection(
+            MOVE_DIRECTION_HORIZONTAL.LEFT * multiplier
+          )
           break
         default:
           break
       }
     },
-    [horizontalMoveDirection, verticalMoveDirection]
+    []
   )
 
   const handleMoveStartCallback = useCallback(
     (evt: KeyboardEvent) => {
       const { code } = evt
-      handleMoveCallback(code, SET_ACTION.ADD)
+      handleMoveCallback(code, MULTIPLIER.START)
     },
     [handleMoveCallback]
   )
@@ -106,7 +96,7 @@ export const Canvas: React.FC = (): JSX.Element => {
   const handleMoveStopCallback = useCallback(
     (evt: KeyboardEvent) => {
       const { code } = evt
-      handleMoveCallback(code, SET_ACTION.DELETE)
+      handleMoveCallback(code, MULTIPLIER.STOP)
     },
     [handleMoveCallback]
   )
@@ -219,25 +209,15 @@ export const Canvas: React.FC = (): JSX.Element => {
     ctx.fillRect(0, 0, canvasWidth, canvasHeight)
   }
 
-  const animate = (): void => {
+  const animate = useCallback((): void => {
     const { canvas } = ctx as CanvasRenderingContext2D
     const player = state.getPlayer() as Player
     const projectiles = state.getProjectiles()
     const enemies = state.getEnemies()
     const particles = state.getParticles()
 
-    let playerHorizontalVelocity = 0
-    let playerVerticalVelocity = 0
-
-    if (horizontalMoveDirection?.size) {
-      playerHorizontalVelocity = Array.from(
-        horizontalMoveDirection
-      ).pop() as number
-    }
-
-    if (verticalMoveDirection?.size) {
-      playerVerticalVelocity = Array.from(verticalMoveDirection).pop() as number
-    }
+    const playerHorizontalVelocity = horizontalMoveDirection
+    const playerVerticalVelocity = verticalMoveDirection
 
     player.setHorizontalVelocity(playerHorizontalVelocity)
     player.setVerticalVelocity(playerVerticalVelocity)
@@ -326,7 +306,7 @@ export const Canvas: React.FC = (): JSX.Element => {
         particle.update()
       }
     })
-  }
+  }, [ctx, verticalMoveDirection, horizontalMoveDirection])
 
   const startGame = (): void => {
     state.resetState()
