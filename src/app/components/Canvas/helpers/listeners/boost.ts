@@ -1,7 +1,15 @@
-import { BOOST_TYPE } from 'app/constants'
+import { BOOST_TYPE, BOOST } from 'app/constants'
 
 import { State, Player } from '../../entities'
 import { fireSpree } from '../firemodes'
+
+const checkInsufficientCredits = (
+  boost: keyof typeof BOOST_TYPE,
+  state: State
+): boolean => {
+  const credits = state.getCredits()
+  return credits < BOOST[boost].price
+}
 
 export const handleBoostChoice = (
   boost: keyof typeof BOOST_TYPE,
@@ -10,9 +18,11 @@ export const handleBoostChoice = (
 ): void => {
   const player = state.getPlayer() as Player
 
-  if (player.hasBoost()) {
+  if (player.hasBoost() || checkInsufficientCredits(boost, state)) {
     return
   }
+
+  state.spendCredits(BOOST[boost].price)
 
   if (boost === BOOST_TYPE.SPREE) {
     player.useBoost(boost)

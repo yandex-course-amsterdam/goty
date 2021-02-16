@@ -16,7 +16,7 @@ export function handleFire(
     return
   }
 
-  state.holdFire(250)
+  state.holdFire(200)
 
   switch (boost) {
     case BOOST_TYPE.BURST:

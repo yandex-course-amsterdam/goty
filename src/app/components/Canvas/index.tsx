@@ -6,7 +6,9 @@ import {
   ENEMY_TYPE,
   GAMEPAD_BUTTON,
   KEYBOARD_MAP_BOOST_TYPE,
-  GAMEPAD_MAP_BOOST_TYPE
+  GAMEPAD_MAP_BOOST_TYPE,
+  BOOST,
+  BOOST_TYPE
 } from 'app/constants'
 import { ITEM_NAME, storeScore, isServer } from 'app/utils'
 import { StoreState } from 'app/reducers'
@@ -38,6 +40,11 @@ enum SET_ACTION {
   DELETE = 'delete'
 }
 
+enum INPUT_DEVICE {
+  KEYBOARD = 'KEYBOARD',
+  GAMEPAD = 'GAMEPAD'
+}
+
 const selectUserName = (state: StoreState) =>
   state.userInfo.displayName || state.userInfo.firstName
 
@@ -45,6 +52,10 @@ export const Canvas: React.FC = (): JSX.Element => {
   const [state] = useState<State>(new State())
   const [score, setScore] = useState(0)
   const [credits, setCredits] = useState(0)
+  const [boost, setBoost] = useState<keyof typeof BOOST_TYPE | null>(null)
+  const [inputDevice, setInputDevice] = useState<keyof typeof INPUT_DEVICE>(
+    INPUT_DEVICE.KEYBOARD
+  )
   const [enemiesSpawnInterval, setEnemiesSpawnInterval] = useState<ReturnType<
     typeof setInterval
   > | null>(null)
@@ -69,7 +80,7 @@ export const Canvas: React.FC = (): JSX.Element => {
   // Идея в том, чтобы проверять нажатую клавишу на каждый кадр анимации вместо того, чтобы мутировать state из внешних обработчиков
   // Также это удобно для ситуаций с перекрёстными нажатиями — теперь любая из WASD клавиш будет корректно триггерить движение в нужную сторону
   const handleMoveCallback = useCallback(
-    (code: string, action: 'add' | 'delete'): void => {
+    (code: string, action: SET_ACTION): void => {
       let tmp
 
       switch (code) {
@@ -102,6 +113,8 @@ export const Canvas: React.FC = (): JSX.Element => {
 
   const handleMoveStartCallback = useCallback(
     (evt: KeyboardEvent) => {
+      // «живая» реакция на смену устройства ввода
+      setInputDevice(INPUT_DEVICE.KEYBOARD)
       const { code } = evt
       handleMoveCallback(code, SET_ACTION.ADD)
     },
@@ -118,11 +131,16 @@ export const Canvas: React.FC = (): JSX.Element => {
 
   const handleBoostChoiceCallback = useCallback(
     (evt: KeyboardEvent) => {
-      handleBoostChoice(
-        KEYBOARD_MAP_BOOST_TYPE[evt.code],
-        state,
-        ctx as CanvasRenderingContext2D
-      )
+      // «живая» реакция на смену устройства ввода
+      setInputDevice(INPUT_DEVICE.KEYBOARD)
+      // проверяем, что нажатая клавиша назначена на буст
+      if (KEYBOARD_MAP_BOOST_TYPE[evt.code]) {
+        handleBoostChoice(
+          KEYBOARD_MAP_BOOST_TYPE[evt.code],
+          state,
+          ctx as CanvasRenderingContext2D
+        )
+      }
     },
     [state, ctx]
   )
@@ -238,10 +256,28 @@ export const Canvas: React.FC = (): JSX.Element => {
 
       if (gamepad) {
         const { axes, buttons } = gamepad
-        const [horizontalLAxis, verticalLAxis] = axes
+        const [
+          horizontalLAxis,
+          verticalLAxis,
+          horizontalRAxis,
+          verticalRAxis
+        ] = axes
 
         playerHorizontalVelocity = horizontalLAxis
         playerVerticalVelocity = verticalLAxis
+
+        const deadZone = 0.1
+        const isAxisUsed =
+          horizontalLAxis > deadZone ||
+          verticalLAxis > deadZone ||
+          horizontalRAxis > deadZone ||
+          verticalRAxis > deadZone
+        const isKeyPressed = buttons.some((button) => button.pressed)
+
+        // «живая» реакция на смену устройства ввода
+        if (isAxisUsed || isKeyPressed) {
+          setInputDevice(INPUT_DEVICE.GAMEPAD)
+        }
 
         if (buttons[GAMEPAD_BUTTON.A].pressed) {
           handleBoostChoice(
@@ -379,7 +415,8 @@ export const Canvas: React.FC = (): JSX.Element => {
       canvas.height / 2,
       10,
       'black',
-      ctx as CanvasRenderingContext2D
+      ctx as CanvasRenderingContext2D,
+      setBoost
     )
     state.registerPlayer(player)
 
@@ -418,9 +455,49 @@ export const Canvas: React.FC = (): JSX.Element => {
   )
 
   const createScoreWidget = (): JSX.Element => (
-    <div className={style.score}>
+    <div className={cn(style.widget, style.score)}>
       <div>Tokens: {score}</div>
       <div>Credits: {credits}</div>
+    </div>
+  )
+
+  const createBoostWidget = (): JSX.Element => (
+    <div className={cn(style.widget, style.boost)}>
+      {Object.keys(BOOST).map((key) => (
+        <div
+          className={cn({
+            [style.boostItem]: true,
+            [style.boostItemActive]:
+              credits >= BOOST[key as keyof typeof BOOST_TYPE].price
+          })}
+        >
+          <img
+            width="30"
+            src={
+              inputDevice === INPUT_DEVICE.KEYBOARD
+                ? BOOST[key as keyof typeof BOOST_TYPE].keyboardControlIcon
+                : BOOST[key as keyof typeof BOOST_TYPE].gamepadControlIcon
+            }
+            alt={key}
+          />
+          <img
+            className={style.boostIcon}
+            src={BOOST[key as keyof typeof BOOST_TYPE].icon}
+            alt={key}
+          />
+        </div>
+      ))}
+    </div>
+  )
+
+  const createBoostBar = (): JSX.Element => (
+    <div className={style.boostTime}>
+      <img
+        className={cn(style.boostIcon, style.boostIconBig)}
+        src={BOOST[boost!].icon}
+        alt={boost!}
+      />
+      <div className={style.boostProgressBar} />
     </div>
   )
 
@@ -468,6 +545,9 @@ export const Canvas: React.FC = (): JSX.Element => {
       {gameState === GAME_STATE.INITIAL && createInitialPopup()}
       {gameState === GAME_STATE.GAME_OVER && createGameOverPopup()}
       {gameState !== GAME_STATE.INITIAL && createScoreWidget()}
+      {gameState !== GAME_STATE.INITIAL && createBoostWidget()}
+
+      {boost && createBoostBar()}
       <canvas
         id="board"
         ref={boardRef}

@@ -28,6 +28,10 @@ export class State {
     this.credits += value
   }
 
+  spendCredits(value: number): void {
+    this.credits -= value
+  }
+
   getPlayer(): Player | null {
     return this.player
   }
@@ -96,6 +100,7 @@ export class State {
 
   resetState(): void {
     this.score = 0
+    this.credits = 0
     this.player = null
     this.projectiles = []
     this.enemies = []

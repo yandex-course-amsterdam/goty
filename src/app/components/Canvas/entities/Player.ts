@@ -4,7 +4,6 @@ import { GameObjectInterface } from 'app/interfaces'
 interface PlayerInterface extends GameObjectInterface {
   velocityMultiplier: number
   boost: string | null
-  boostInterval: ReturnType<typeof setTimeout> | null
 }
 
 export class Player implements PlayerInterface {
@@ -18,21 +17,27 @@ export class Player implements PlayerInterface {
     y: 0
   }
   velocityMultiplier = 1
-  boost: string | null = null
-  boostInterval: ReturnType<typeof setTimeout> | null = null
+  boost: keyof typeof BOOST_TYPE | null = null
+  boostCallback: React.Dispatch<
+    React.SetStateAction<keyof typeof BOOST_TYPE | null>
+  > | null = null
 
   constructor(
     x: number,
     y: number,
     radius: number,
     color: string,
-    context: CanvasRenderingContext2D
+    context: CanvasRenderingContext2D,
+    boostCallback: React.Dispatch<
+      React.SetStateAction<keyof typeof BOOST_TYPE | null>
+    >
   ) {
     this.x = x
     this.y = y
     this.radius = radius
     this.color = color
     this.context = context
+    this.boostCallback = boostCallback
   }
 
   draw(): void {
@@ -67,14 +72,12 @@ export class Player implements PlayerInterface {
   }
 
   useBoost(boost: keyof typeof BOOST_TYPE): void {
-    if (this.boostInterval) {
-      clearInterval(this.boostInterval)
-    }
-
     this.boost = boost
+    this.boostCallback!(boost)
 
-    this.boostInterval = setTimeout(() => {
+    setTimeout(() => {
       this.boost = null
+      this.boostCallback!(null)
     }, 3000)
   }
 }
