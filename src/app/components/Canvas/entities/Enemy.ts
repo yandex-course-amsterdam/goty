@@ -1,3 +1,4 @@
+import { ENEMY_TYPE } from 'app/constants'
 import { GameObjectInterface } from 'app/interfaces'
 
 import { Player } from './Player'
@@ -7,17 +8,50 @@ interface EnemyInterface extends GameObjectInterface {
   target: Player
 }
 
-type EnemyType = {
-  type: string
+interface EnemyType {
+  hitReward: number
   killReward: number
   radius: number
   color: string
   velocityMultiplier: number
 }
 
+const EnemyMap: Record<keyof typeof ENEMY_TYPE, EnemyType> = {
+  [ENEMY_TYPE.SMALL]: {
+    hitReward: 100,
+    killReward: 1,
+    radius: 30,
+    color: 'red',
+    velocityMultiplier: 5
+  },
+  [ENEMY_TYPE.MEDIUM]: {
+    hitReward: 100,
+    killReward: 2,
+    radius: 45,
+    color: 'red',
+    velocityMultiplier: 3
+  },
+  [ENEMY_TYPE.BIG]: {
+    hitReward: 100,
+    killReward: 3,
+    radius: 60,
+    color: 'red',
+    velocityMultiplier: 2
+  },
+  [ENEMY_TYPE.ULTIMATE]: {
+    hitReward: 100,
+    killReward: 5,
+    radius: 90,
+    color: 'red',
+    velocityMultiplier: 1
+  }
+}
+
 export class Enemy implements EnemyInterface {
   x = 0
   y = 0
+  hitReward
+  killReward
   radius
   color
   context
@@ -26,13 +60,22 @@ export class Enemy implements EnemyInterface {
   target
 
   constructor(
-    type: EnemyType,
+    type: keyof typeof ENEMY_TYPE,
     context: CanvasRenderingContext2D,
     player: Player
   ) {
-    this.radius = type.radius
-    this.color = type.color
-    this.velocityMultiplier = type.velocityMultiplier
+    const {
+      hitReward,
+      killReward,
+      radius,
+      color,
+      velocityMultiplier
+    } = EnemyMap[type]
+    this.hitReward = hitReward
+    this.killReward = killReward
+    this.radius = radius
+    this.color = color
+    this.velocityMultiplier = velocityMultiplier
 
     this.context = context
 

@@ -183,7 +183,7 @@ export const Canvas: React.FC = (): JSX.Element => {
         player
       )
       state.addEnemy(enemy)
-    }, 750)
+    }, 1000)
 
     setEnemiesSpawnInterval(interval)
   }
@@ -248,6 +248,10 @@ export const Canvas: React.FC = (): JSX.Element => {
     const enemies = state.getEnemies()
     const particles = state.getParticles()
 
+    // обновляем кредиты и текущий буст каждый кадр
+    setCredits(state.getCredits())
+    setBoost(player.getBoost())
+
     let playerHorizontalVelocity = 0
     let playerVerticalVelocity = 0
 
@@ -266,6 +270,7 @@ export const Canvas: React.FC = (): JSX.Element => {
         playerHorizontalVelocity = horizontalLAxis
         playerVerticalVelocity = verticalLAxis
 
+        // исключаем небольшой люфт по осям
         const deadZone = 0.1
         const isAxisUsed =
           horizontalLAxis > deadZone ||
@@ -381,11 +386,11 @@ export const Canvas: React.FC = (): JSX.Element => {
 
           state.removeProjectile(projectileIndex)
 
-          state.addScore(100)
+          state.addScore(enemy.hitReward)
           setScore(state.getScore())
 
           if (isDead) {
-            state.addCredits(1)
+            state.addCredits(enemy.killReward)
             setCredits(state.getCredits())
 
             state.removeEnemy(enemyIndex)
@@ -415,8 +420,7 @@ export const Canvas: React.FC = (): JSX.Element => {
       canvas.height / 2,
       10,
       'black',
-      ctx as CanvasRenderingContext2D,
-      setBoost
+      ctx as CanvasRenderingContext2D
     )
     state.registerPlayer(player)
 

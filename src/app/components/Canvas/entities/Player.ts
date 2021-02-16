@@ -27,17 +27,13 @@ export class Player implements PlayerInterface {
     y: number,
     radius: number,
     color: string,
-    context: CanvasRenderingContext2D,
-    boostCallback: React.Dispatch<
-      React.SetStateAction<keyof typeof BOOST_TYPE | null>
-    >
+    context: CanvasRenderingContext2D
   ) {
     this.x = x
     this.y = y
     this.radius = radius
     this.color = color
     this.context = context
-    this.boostCallback = boostCallback
   }
 
   draw(): void {
@@ -71,13 +67,15 @@ export class Player implements PlayerInterface {
     return !!this.boost
   }
 
+  getBoost(): keyof typeof BOOST_TYPE | null {
+    return this.boost
+  }
+
   useBoost(boost: keyof typeof BOOST_TYPE): void {
     this.boost = boost
-    this.boostCallback!(boost)
 
     setTimeout(() => {
       this.boost = null
-      this.boostCallback!(null)
     }, 3000)
   }
 }
