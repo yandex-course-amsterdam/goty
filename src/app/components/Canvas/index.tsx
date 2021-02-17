@@ -8,7 +8,8 @@ import {
   KEYBOARD_MAP_BOOST_TYPE,
   GAMEPAD_MAP_BOOST_TYPE,
   BOOST,
-  BOOST_TYPE
+  BOOST_TYPE,
+  GAME_LEVEL
 } from 'app/constants'
 import { ITEM_NAME, storeScore, isServer } from 'app/utils'
 import { StoreState } from 'app/reducers'
@@ -56,9 +57,6 @@ export const Canvas: React.FC = (): JSX.Element => {
   const [inputDevice, setInputDevice] = useState<keyof typeof INPUT_DEVICE>(
     INPUT_DEVICE.KEYBOARD
   )
-  const [enemiesSpawnInterval, setEnemiesSpawnInterval] = useState<ReturnType<
-    typeof setInterval
-  > | null>(null)
   const [gameState, setGameState] = useState<keyof typeof GAME_STATE>(
     GAME_STATE.INITIAL
   )
@@ -74,6 +72,10 @@ export const Canvas: React.FC = (): JSX.Element => {
 
   const animationFrameId = useRef(0)
   const boardRef = useRef<HTMLCanvasElement>(null)
+  const level = useRef(GAME_LEVEL.EASY)
+  const enemiesSpawnInterval = useRef<ReturnType<typeof setInterval> | null>(
+    null
+  )
 
   const userName = useSelector(selectUserName)
 
@@ -174,18 +176,40 @@ export const Canvas: React.FC = (): JSX.Element => {
     [state, ctx]
   )
 
+  const chooseEnemy = (): keyof typeof ENEMY_TYPE | null => {
+    const difficulty = state.getDifficulty()
+    const enemyMap = state.getEnemyMap()
+    const availableEnemyTypes = level.current.enemyTypes
+
+    for (let i = availableEnemyTypes.length - 1; i >= 0; i -= 1) {
+      const enemy = availableEnemyTypes[i]
+      if (
+        enemyMap[enemy.type] < enemy.maxCount &&
+        difficulty + enemy.killReward <= level.current.difficultyCap
+      ) {
+        return enemy.type
+      }
+    }
+
+    return null
+  }
+
   const spawnEnemies = (): void => {
     const interval = setInterval(() => {
       const player = state.getPlayer() as Player
-      const enemy = new Enemy(
-        ENEMY_TYPE.SMALL,
-        ctx as CanvasRenderingContext2D,
-        player
-      )
-      state.addEnemy(enemy)
+      const enemyType = chooseEnemy()
+      if (enemyType) {
+        const enemy = new Enemy(
+          enemyType,
+          ctx as CanvasRenderingContext2D,
+          player,
+          level.current.chaseMode
+        )
+        state.addEnemy(enemy)
+      }
     }, 1000)
 
-    setEnemiesSpawnInterval(interval)
+    enemiesSpawnInterval.current = interval
   }
 
   const attachKeyboardListeners = (): void => {
@@ -225,7 +249,9 @@ export const Canvas: React.FC = (): JSX.Element => {
     setHorizontalMoveDirection(new Set())
     setVerticalMoveDirection(new Set())
 
-    clearInterval(enemiesSpawnInterval as ReturnType<typeof setInterval>)
+    clearInterval(
+      enemiesSpawnInterval.current as ReturnType<typeof setInterval>
+    )
     cancelAnimationFrame(animationFrameId.current)
 
     detachKeyboardListeners()
@@ -339,6 +365,9 @@ export const Canvas: React.FC = (): JSX.Element => {
     player.update()
 
     projectiles.forEach((projectile, i) => {
+      projectile.updateGlobalVelocityMultiplier(
+        level.current.velocityMultiplier
+      )
       projectile.update()
 
       if (
@@ -352,7 +381,19 @@ export const Canvas: React.FC = (): JSX.Element => {
     })
 
     enemies.forEach((enemy, enemyIndex) => {
+      enemy.updateGlobalVelocityMultiplier(level.current.velocityMultiplier)
       enemy.update()
+
+      const isOutOfBoard =
+        enemy.x < 0 - enemy.radius - 50 ||
+        enemy.x > boardRef.current!.width + enemy.radius + 50 ||
+        enemy.y < 0 - enemy.radius - 50 ||
+        enemy.y > boardRef.current!.height + enemy.radius + 50
+
+      if (isOutOfBoard) {
+        state.removeEnemy(enemyIndex)
+        return
+      }
 
       const enemyPlayerDistance = Math.hypot(
         enemy.x - player.x,
@@ -386,8 +427,11 @@ export const Canvas: React.FC = (): JSX.Element => {
 
           state.removeProjectile(projectileIndex)
 
-          state.addScore(enemy.hitReward)
-          setScore(state.getScore())
+          setScore(state.addScore(enemy.hitReward))
+          level.current = state.getLevel()
+          player.updateGlobalVelocityMultiplier(
+            level.current.velocityMultiplier
+          )
 
           if (isDead) {
             state.addCredits(enemy.killReward)
@@ -413,6 +457,7 @@ export const Canvas: React.FC = (): JSX.Element => {
 
     setScore(0)
     setCredits(0)
+    level.current = GAME_LEVEL.EASY
 
     const { canvas } = ctx as CanvasRenderingContext2D
     const player = new Player(
@@ -462,6 +507,12 @@ export const Canvas: React.FC = (): JSX.Element => {
     <div className={cn(style.widget, style.score)}>
       <div>Tokens: {score}</div>
       <div>Credits: {credits}</div>
+      <div className={style.stars}>
+        Wanted:
+        {new Array(level.current.stars).fill(null).map(() => (
+          <img src="../../../images/level-star.png" alt="Star" />
+        ))}
+      </div>
     </div>
   )
 
@@ -511,7 +562,9 @@ export const Canvas: React.FC = (): JSX.Element => {
     }
 
     if (document.visibilityState === 'hidden') {
-      clearInterval(enemiesSpawnInterval as ReturnType<typeof setInterval>)
+      clearInterval(
+        enemiesSpawnInterval.current as ReturnType<typeof setInterval>
+      )
     } else {
       spawnEnemies()
     }

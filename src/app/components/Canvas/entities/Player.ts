@@ -2,7 +2,7 @@ import { BOOST_TYPE } from 'app/constants'
 import { GameObjectInterface } from 'app/interfaces'
 
 interface PlayerInterface extends GameObjectInterface {
-  velocityMultiplier: number
+  globalVelocityMultiplier: number
   boost: string | null
 }
 
@@ -16,7 +16,7 @@ export class Player implements PlayerInterface {
     x: 0,
     y: 0
   }
-  velocityMultiplier = 1
+  globalVelocityMultiplier = 1
   boost: keyof typeof BOOST_TYPE | null = null
   boostCallback: React.Dispatch<
     React.SetStateAction<keyof typeof BOOST_TYPE | null>
@@ -47,20 +47,20 @@ export class Player implements PlayerInterface {
 
   update(): void {
     this.draw()
-    this.x += this.velocity.x
-    this.y += this.velocity.y
+    this.x += this.velocity.x * this.globalVelocityMultiplier
+    this.y += this.velocity.y * this.globalVelocityMultiplier
+  }
+
+  updateGlobalVelocityMultiplier(value: number): void {
+    this.globalVelocityMultiplier = value
   }
 
   setHorizontalVelocity(dx: number): void {
-    this.velocity.x = dx * this.velocityMultiplier
+    this.velocity.x = dx
   }
 
   setVerticalVelocity(dy: number): void {
-    this.velocity.y = dy * this.velocityMultiplier
-  }
-
-  setVelocityMultiplier(multiplier: number): void {
-    this.velocityMultiplier = multiplier
+    this.velocity.y = dy
   }
 
   hasBoost(): boolean {

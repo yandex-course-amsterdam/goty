@@ -1,53 +1,18 @@
-import { ENEMY_TYPE } from 'app/constants'
+import { ENEMY_TYPE, ENEMY_ROSTER } from 'app/constants'
 import { GameObjectInterface } from 'app/interfaces'
 
 import { Player } from './Player'
 
 interface EnemyInterface extends GameObjectInterface {
+  type: keyof typeof ENEMY_TYPE
   velocityMultiplier: number
+  globalVelocityMultiplier: number
   target: Player
-}
-
-interface EnemyType {
-  hitReward: number
-  killReward: number
-  radius: number
-  color: string
-  velocityMultiplier: number
-}
-
-const EnemyMap: Record<keyof typeof ENEMY_TYPE, EnemyType> = {
-  [ENEMY_TYPE.SMALL]: {
-    hitReward: 100,
-    killReward: 1,
-    radius: 30,
-    color: 'red',
-    velocityMultiplier: 5
-  },
-  [ENEMY_TYPE.MEDIUM]: {
-    hitReward: 100,
-    killReward: 2,
-    radius: 45,
-    color: 'red',
-    velocityMultiplier: 3
-  },
-  [ENEMY_TYPE.BIG]: {
-    hitReward: 100,
-    killReward: 3,
-    radius: 60,
-    color: 'red',
-    velocityMultiplier: 2
-  },
-  [ENEMY_TYPE.ULTIMATE]: {
-    hitReward: 100,
-    killReward: 5,
-    radius: 90,
-    color: 'red',
-    velocityMultiplier: 1
-  }
+  chaseMode: boolean
 }
 
 export class Enemy implements EnemyInterface {
+  type
   x = 0
   y = 0
   hitReward
@@ -57,12 +22,15 @@ export class Enemy implements EnemyInterface {
   context
   velocity = { x: 0, y: 0 }
   velocityMultiplier
+  globalVelocityMultiplier = 1
   target
+  chaseMode
 
   constructor(
     type: keyof typeof ENEMY_TYPE,
     context: CanvasRenderingContext2D,
-    player: Player
+    player: Player,
+    chaseMode: boolean
   ) {
     const {
       hitReward,
@@ -70,7 +38,8 @@ export class Enemy implements EnemyInterface {
       radius,
       color,
       velocityMultiplier
-    } = EnemyMap[type]
+    } = ENEMY_ROSTER[type]
+    this.type = type
     this.hitReward = hitReward
     this.killReward = killReward
     this.radius = radius
@@ -80,6 +49,8 @@ export class Enemy implements EnemyInterface {
     this.context = context
 
     this.target = player
+
+    this.chaseMode = chaseMode
 
     this.spawn()
   }
@@ -96,18 +67,27 @@ export class Enemy implements EnemyInterface {
   update(): void {
     this.draw()
 
-    // const angle = Math.atan2(this.target.y - this.y, this.target.x - this.x)
-    // this.velocity = {
-    //   x: Math.cos(angle) * this.velocityMultiplier,
-    //   y: Math.sin(angle) * this.velocityMultiplier,
-    // }
+    if (this.chaseMode) {
+      const angle = Math.atan2(this.target.y - this.y, this.target.x - this.x)
+      this.velocity = {
+        x: Math.cos(angle),
+        y: Math.sin(angle)
+      }
+    }
 
-    this.x += this.velocity.x
-    this.y += this.velocity.y
+    this.x +=
+      this.velocity.x * this.velocityMultiplier * this.globalVelocityMultiplier
+    this.y +=
+      this.velocity.y * this.velocityMultiplier * this.globalVelocityMultiplier
+  }
+
+  updateGlobalVelocityMultiplier(value: number): void {
+    this.globalVelocityMultiplier = value
   }
 
   handleHit(): boolean {
     this.radius -= 15
+    this.velocityMultiplier += 1
     return this.radius - 30 < 0
   }
 
@@ -126,8 +106,8 @@ export class Enemy implements EnemyInterface {
 
     const angle = Math.atan2(this.target.y - this.y, this.target.x - this.x)
     this.velocity = {
-      x: Math.cos(angle) * this.velocityMultiplier,
-      y: Math.sin(angle) * this.velocityMultiplier
+      x: Math.cos(angle),
+      y: Math.sin(angle)
     }
   }
 }

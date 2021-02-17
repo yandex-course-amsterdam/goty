@@ -7,6 +7,7 @@ export class Projectile implements GameObjectInterface {
   color
   context
   velocity
+  globalVelocityMultiplier = 1
 
   constructor(
     x: number,
@@ -35,7 +36,11 @@ export class Projectile implements GameObjectInterface {
 
   update(): void {
     this.draw()
-    this.x += this.velocity.x
-    this.y += this.velocity.y
+    this.x += this.velocity.x * this.globalVelocityMultiplier
+    this.y += this.velocity.y * this.globalVelocityMultiplier
+  }
+
+  updateGlobalVelocityMultiplier(value: number): void {
+    this.globalVelocityMultiplier = value
   }
 }
