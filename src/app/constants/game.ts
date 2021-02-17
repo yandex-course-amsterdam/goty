@@ -14,24 +14,21 @@ export enum BOOST_TYPE {
 export const BOOST: Boost = {
   [BOOST_TYPE.BURST]: {
     price: 5,
-    icon: 'https://static.thenounproject.com/png/319760-200.png',
-    keyboardControlIcon: '',
-    gamepadControlIcon:
-      'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d2/Xbox_button_A.svg/1200px-Xbox_button_A.svg.png'
+    icon: '../../images/burst.png',
+    keyboardControlIcon: '../../images/key-1.png',
+    gamepadControlIcon: '../../images/gamepad-a.png'
   },
   [BOOST_TYPE.FRACTION]: {
     price: 10,
-    icon: 'https://static.thenounproject.com/png/172003-200.png',
-    keyboardControlIcon: '',
-    gamepadControlIcon:
-      'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8c/Xbox_button_X.svg/120px-Xbox_button_X.svg.png'
+    icon: '../../images/fraction.png',
+    keyboardControlIcon: '../../images/key-2.png',
+    gamepadControlIcon: '../../images/gamepad-x.png'
   },
   [BOOST_TYPE.SPREE]: {
     price: 25,
-    icon: 'http://kf-wiki.com/images/4/43/UI_PerkIcon_Gunslinger_black.png',
-    keyboardControlIcon: '',
-    gamepadControlIcon:
-      'https://upload.wikimedia.org/wikipedia/commons/thumb/d/df/Xbox_button_Y.svg/120px-Xbox_button_Y.svg.png'
+    icon: '../../images/spree.png',
+    keyboardControlIcon: '../../images/key-3.png',
+    gamepadControlIcon: '../../images/gamepad-y.png'
   }
 }
 export const PROJECTILE_RADIUS = 5
