@@ -44,7 +44,7 @@ export const SignInForm: FC = (): JSX.Element => {
   const redirectToYandexOAuth = async () => {
     try {
       const res = await getServiceId()
-      document.location.href = `https://oauth.yandex.ru/authorize?response_type=code&client_id=${res.data.service_id}`
+      document.location.href = `https://oauth.yandex.ru/authorize?response_type=code&client_id=${res.data.serviceId}`
     } catch (error) {
       console.log(error)
     }
