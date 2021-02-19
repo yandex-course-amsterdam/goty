@@ -29,6 +29,7 @@ export const fireSpree = (
   const player = state.getPlayer() as Player
   let i = 0
   let round = 0
+  state.holdFire()
 
   const spreeInterval = setInterval(() => {
     const angle = Math.atan2(
@@ -46,6 +47,7 @@ export const fireSpree = (
     }
     if (round === SPREE_ROUND_COUNT) {
       clearInterval(spreeInterval)
+      state.openFire()
     }
   }, 50)
 }

@@ -13,11 +13,9 @@
   user-select: none;
 }
 
-.score {
+.widget {
   position: absolute;
   top: 0;
-  right: 0;
-  left: 0;
   z-index: 1;
 
   height: 40px;
@@ -26,6 +24,88 @@
   font: normal 400 20px/32px var(--regular-font);
 
   user-select: none;
+}
+
+.score {
+  left: 0;
+}
+
+.boost {
+  right: 0;
+}
+
+.stars {
+  display: flex;
+}
+
+.stars img {
+  width: 15px;
+
+  margin-right: 10px;
+
+  object-fit: contain;
+  object-position: center;
+}
+
+.stars img:first-child {
+  margin-left: 10px;
+}
+
+.boostItem {
+  display: flex;
+  align-items: center;
+
+  opacity: 0.1;
+}
+
+.boostItem.boostItemActive {
+  opacity: 1;
+}
+
+.boostTime {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+
+  width: 50vw;
+}
+
+.boostProgressBar {
+  transform-origin: center;
+
+  height: 2px;
+
+  background: red;
+
+  animation: boostProgressBar 3s linear;
+}
+
+@keyframes boostProgressBar {
+  from {
+    width: 100%;
+    opacity: 1;
+  }
+
+  to {
+    width: 0;
+    opacity: 0;
+  }
+}
+
+.boostIcon {
+  width: 60px;
+  height: 60px;
+
+  margin: 0 15px;
+
+  object-fit: contain;
+  object-position: center;
+}
+
+.boostIcon.boostIconBig {
+  display: block;
+  margin: 0 auto 20px;
 }
 
 .popup {

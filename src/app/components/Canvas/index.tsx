@@ -2,7 +2,15 @@ import React, { useState, useRef, useCallback, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import cn from 'classnames'
 
-import { ENEMY_TYPE } from 'app/constants'
+import {
+  ENEMY_TYPE,
+  GAMEPAD_BUTTON,
+  KEYBOARD_MAP_BOOST_TYPE,
+  GAMEPAD_MAP_BOOST_TYPE,
+  BOOST,
+  BOOST_TYPE,
+  GAME_LEVEL
+} from 'app/constants'
 import { ITEM_NAME, storeScore, isServer } from 'app/utils'
 import { StoreState } from 'app/reducers'
 import { postResult } from 'app/api/Api'
@@ -33,6 +41,11 @@ enum SET_ACTION {
   DELETE = 'delete'
 }
 
+enum INPUT_DEVICE {
+  KEYBOARD = 'KEYBOARD',
+  GAMEPAD = 'GAMEPAD'
+}
+
 const selectUserName = (state: StoreState) =>
   state.userInfo.displayName || state.userInfo.firstName
 
@@ -40,9 +53,10 @@ export const Canvas: React.FC = (): JSX.Element => {
   const [state] = useState<State>(new State())
   const [score, setScore] = useState(0)
   const [credits, setCredits] = useState(0)
-  const [enemiesSpawnInterval, setEnemiesSpawnInterval] = useState<ReturnType<
-    typeof setInterval
-  > | null>(null)
+  const [boost, setBoost] = useState<keyof typeof BOOST_TYPE | null>(null)
+  const [inputDevice, setInputDevice] = useState<keyof typeof INPUT_DEVICE>(
+    INPUT_DEVICE.KEYBOARD
+  )
   const [gameState, setGameState] = useState<keyof typeof GAME_STATE>(
     GAME_STATE.INITIAL
   )
@@ -58,13 +72,17 @@ export const Canvas: React.FC = (): JSX.Element => {
 
   const animationFrameId = useRef(0)
   const boardRef = useRef<HTMLCanvasElement>(null)
+  const level = useRef(GAME_LEVEL.EASY)
+  const enemiesSpawnInterval = useRef<ReturnType<typeof setInterval> | null>(
+    null
+  )
 
   const userName = useSelector(selectUserName)
 
   // Идея в том, чтобы проверять нажатую клавишу на каждый кадр анимации вместо того, чтобы мутировать state из внешних обработчиков
   // Также это удобно для ситуаций с перекрёстными нажатиями — теперь любая из WASD клавиш будет корректно триггерить движение в нужную сторону
   const handleMoveCallback = useCallback(
-    (code: string, action: 'add' | 'delete'): void => {
+    (code: string, action: SET_ACTION): void => {
       let tmp
 
       switch (code) {
@@ -97,6 +115,8 @@ export const Canvas: React.FC = (): JSX.Element => {
 
   const handleMoveStartCallback = useCallback(
     (evt: KeyboardEvent) => {
+      // «живая» реакция на смену устройства ввода
+      setInputDevice(INPUT_DEVICE.KEYBOARD)
       const { code } = evt
       handleMoveCallback(code, SET_ACTION.ADD)
     },
@@ -113,7 +133,16 @@ export const Canvas: React.FC = (): JSX.Element => {
 
   const handleBoostChoiceCallback = useCallback(
     (evt: KeyboardEvent) => {
-      handleBoostChoice(evt, state, ctx as CanvasRenderingContext2D)
+      // «живая» реакция на смену устройства ввода
+      setInputDevice(INPUT_DEVICE.KEYBOARD)
+      // проверяем, что нажатая клавиша назначена на буст
+      if (KEYBOARD_MAP_BOOST_TYPE[evt.code]) {
+        handleBoostChoice(
+          KEYBOARD_MAP_BOOST_TYPE[evt.code],
+          state,
+          ctx as CanvasRenderingContext2D
+        )
+      }
     },
     [state, ctx]
   )
@@ -141,29 +170,46 @@ export const Canvas: React.FC = (): JSX.Element => {
   const handleTriggerPush = useCallback(
     (gamepad: Gamepad) => {
       const { axes } = gamepad
-
       const angle = Math.atan2(axes[3], axes[2])
-
-      // TODO: добавить ограничение на один выстрел в n миллисекунд
-
       handleFire(angle, state, ctx as CanvasRenderingContext2D)
     },
     [state, ctx]
   )
 
+  const chooseEnemy = (): keyof typeof ENEMY_TYPE | null => {
+    const difficulty = state.getDifficulty()
+    const enemyMap = state.getEnemyMap()
+    const availableEnemyTypes = level.current.enemyTypes
+
+    for (let i = availableEnemyTypes.length - 1; i >= 0; i -= 1) {
+      const enemy = availableEnemyTypes[i]
+      if (
+        enemyMap[enemy.type] < enemy.maxCount &&
+        difficulty + enemy.killReward <= level.current.difficultyCap
+      ) {
+        return enemy.type
+      }
+    }
+
+    return null
+  }
+
   const spawnEnemies = (): void => {
     const interval = setInterval(() => {
       const player = state.getPlayer() as Player
-      const enemy = new Enemy(
-        ENEMY_TYPE.SMALL,
-        ctx as CanvasRenderingContext2D,
-        player
-      )
-      state.addEnemy(enemy)
-    }, 750)
+      const enemyType = chooseEnemy()
+      if (enemyType) {
+        const enemy = new Enemy(
+          enemyType,
+          ctx as CanvasRenderingContext2D,
+          player,
+          level.current.chaseMode
+        )
+        state.addEnemy(enemy)
+      }
+    }, 1000)
 
-    // TODO: подумать про вложенные таймауты. Плюсы — более точные промежутки, чем при интервалах. Минусы — надо придумать как очищать таймаут
-    setEnemiesSpawnInterval(interval)
+    enemiesSpawnInterval.current = interval
   }
 
   const attachKeyboardListeners = (): void => {
@@ -203,7 +249,9 @@ export const Canvas: React.FC = (): JSX.Element => {
     setHorizontalMoveDirection(new Set())
     setVerticalMoveDirection(new Set())
 
-    clearInterval(enemiesSpawnInterval as ReturnType<typeof setInterval>)
+    clearInterval(
+      enemiesSpawnInterval.current as ReturnType<typeof setInterval>
+    )
     cancelAnimationFrame(animationFrameId.current)
 
     detachKeyboardListeners()
@@ -226,9 +274,75 @@ export const Canvas: React.FC = (): JSX.Element => {
     const enemies = state.getEnemies()
     const particles = state.getParticles()
 
+    // обновляем кредиты и текущий буст каждый кадр
+    setCredits(state.getCredits())
+    setBoost(player.getBoost())
+
     let playerHorizontalVelocity = 0
     let playerVerticalVelocity = 0
 
+    if (!isServer) {
+      const [gamepad] = navigator.getGamepads()
+
+      if (gamepad) {
+        const { axes, buttons } = gamepad
+        const [
+          horizontalLAxis,
+          verticalLAxis,
+          horizontalRAxis,
+          verticalRAxis
+        ] = axes
+
+        playerHorizontalVelocity = horizontalLAxis
+        playerVerticalVelocity = verticalLAxis
+
+        // исключаем небольшой люфт по осям
+        const deadZone = 0.1
+        const isAxisUsed =
+          horizontalLAxis > deadZone ||
+          verticalLAxis > deadZone ||
+          horizontalRAxis > deadZone ||
+          verticalRAxis > deadZone
+        const isKeyPressed = buttons.some((button) => button.pressed)
+
+        // «живая» реакция на смену устройства ввода
+        if (isAxisUsed || isKeyPressed) {
+          setInputDevice(INPUT_DEVICE.GAMEPAD)
+        }
+
+        if (buttons[GAMEPAD_BUTTON.A].pressed) {
+          handleBoostChoice(
+            GAMEPAD_MAP_BOOST_TYPE[GAMEPAD_BUTTON.A],
+            state,
+            ctx as CanvasRenderingContext2D
+          )
+        }
+
+        if (buttons[GAMEPAD_BUTTON.X].pressed) {
+          handleBoostChoice(
+            GAMEPAD_MAP_BOOST_TYPE[GAMEPAD_BUTTON.X],
+            state,
+            ctx as CanvasRenderingContext2D
+          )
+        }
+
+        if (buttons[GAMEPAD_BUTTON.Y].pressed) {
+          handleBoostChoice(
+            GAMEPAD_MAP_BOOST_TYPE[GAMEPAD_BUTTON.Y],
+            state,
+            ctx as CanvasRenderingContext2D
+          )
+        }
+
+        if (buttons[GAMEPAD_BUTTON.RT].pressed) {
+          handleTriggerPush(gamepad)
+        }
+      }
+    }
+
+    // в коде выше мы устанавливаем значения playerVelocity на основе отклонения осей геймпада
+    // в коде ниже мы проверяем стек нажатий WASD
+    // такой порядок позволит перезаписать значения playerVelocity с клавиатуры при необходимости
     if (horizontalMoveDirection?.size) {
       playerHorizontalVelocity = Array.from(
         horizontalMoveDirection
@@ -242,14 +356,6 @@ export const Canvas: React.FC = (): JSX.Element => {
     player.setHorizontalVelocity(playerHorizontalVelocity)
     player.setVerticalVelocity(playerVerticalVelocity)
 
-    if (!isServer) {
-      const [gamepad] = navigator.getGamepads()
-      if (gamepad?.buttons[7].pressed) {
-        handleTriggerPush(gamepad)
-        // TODO: сделать это красиво
-      }
-    }
-
     animationFrameId.current = requestAnimationFrame(animate)
 
     if (ctx) {
@@ -259,6 +365,9 @@ export const Canvas: React.FC = (): JSX.Element => {
     player.update()
 
     projectiles.forEach((projectile, i) => {
+      projectile.updateGlobalVelocityMultiplier(
+        level.current.velocityMultiplier
+      )
       projectile.update()
 
       if (
@@ -272,7 +381,19 @@ export const Canvas: React.FC = (): JSX.Element => {
     })
 
     enemies.forEach((enemy, enemyIndex) => {
+      enemy.updateGlobalVelocityMultiplier(level.current.velocityMultiplier)
       enemy.update()
+
+      const isOutOfBoard =
+        enemy.x < 0 - enemy.radius - 50 ||
+        enemy.x > boardRef.current!.width + enemy.radius + 50 ||
+        enemy.y < 0 - enemy.radius - 50 ||
+        enemy.y > boardRef.current!.height + enemy.radius + 50
+
+      if (isOutOfBoard) {
+        state.removeEnemy(enemyIndex)
+        return
+      }
 
       const enemyPlayerDistance = Math.hypot(
         enemy.x - player.x,
@@ -306,11 +427,14 @@ export const Canvas: React.FC = (): JSX.Element => {
 
           state.removeProjectile(projectileIndex)
 
-          state.addScore(100)
-          setScore(state.getScore())
+          setScore(state.addScore(enemy.hitReward))
+          level.current = state.getLevel()
+          player.updateGlobalVelocityMultiplier(
+            level.current.velocityMultiplier
+          )
 
           if (isDead) {
-            state.addCredits(1)
+            state.addCredits(enemy.killReward)
             setCredits(state.getCredits())
 
             state.removeEnemy(enemyIndex)
@@ -333,6 +457,7 @@ export const Canvas: React.FC = (): JSX.Element => {
 
     setScore(0)
     setCredits(0)
+    level.current = GAME_LEVEL.EASY
 
     const { canvas } = ctx as CanvasRenderingContext2D
     const player = new Player(
@@ -379,9 +504,55 @@ export const Canvas: React.FC = (): JSX.Element => {
   )
 
   const createScoreWidget = (): JSX.Element => (
-    <div className={style.score}>
+    <div className={cn(style.widget, style.score)}>
       <div>Tokens: {score}</div>
       <div>Credits: {credits}</div>
+      <div className={style.stars}>
+        Wanted:
+        {new Array(level.current.stars).fill(null).map(() => (
+          <img src="../../../images/level-star.png" alt="Star" />
+        ))}
+      </div>
+    </div>
+  )
+
+  const createBoostWidget = (): JSX.Element => (
+    <div className={cn(style.widget, style.boost)}>
+      {Object.keys(BOOST).map((key) => (
+        <div
+          className={cn({
+            [style.boostItem]: true,
+            [style.boostItemActive]:
+              credits >= BOOST[key as keyof typeof BOOST_TYPE].price
+          })}
+        >
+          <img
+            width="30"
+            src={
+              inputDevice === INPUT_DEVICE.KEYBOARD
+                ? BOOST[key as keyof typeof BOOST_TYPE].keyboardControlIcon
+                : BOOST[key as keyof typeof BOOST_TYPE].gamepadControlIcon
+            }
+            alt={key}
+          />
+          <img
+            className={style.boostIcon}
+            src={BOOST[key as keyof typeof BOOST_TYPE].icon}
+            alt={key}
+          />
+        </div>
+      ))}
+    </div>
+  )
+
+  const createBoostBar = (): JSX.Element => (
+    <div className={style.boostTime}>
+      <img
+        className={cn(style.boostIcon, style.boostIconBig)}
+        src={BOOST[boost!].icon}
+        alt={boost!}
+      />
+      <div className={style.boostProgressBar} />
     </div>
   )
 
@@ -391,7 +562,9 @@ export const Canvas: React.FC = (): JSX.Element => {
     }
 
     if (document.visibilityState === 'hidden') {
-      clearInterval(enemiesSpawnInterval as ReturnType<typeof setInterval>)
+      clearInterval(
+        enemiesSpawnInterval.current as ReturnType<typeof setInterval>
+      )
     } else {
       spawnEnemies()
     }
@@ -429,6 +602,9 @@ export const Canvas: React.FC = (): JSX.Element => {
       {gameState === GAME_STATE.INITIAL && createInitialPopup()}
       {gameState === GAME_STATE.GAME_OVER && createGameOverPopup()}
       {gameState !== GAME_STATE.INITIAL && createScoreWidget()}
+      {gameState !== GAME_STATE.INITIAL && createBoostWidget()}
+
+      {boost && createBoostBar()}
       <canvas
         id="board"
         ref={boardRef}

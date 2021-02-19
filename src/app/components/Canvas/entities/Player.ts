@@ -1,9 +1,9 @@
+import { BOOST_TYPE } from 'app/constants'
 import { GameObjectInterface } from 'app/interfaces'
 
 interface PlayerInterface extends GameObjectInterface {
-  velocityMultiplier: number
+  globalVelocityMultiplier: number
   boost: string | null
-  boostInterval: ReturnType<typeof setTimeout> | null
 }
 
 export class Player implements PlayerInterface {
@@ -16,9 +16,11 @@ export class Player implements PlayerInterface {
     x: 0,
     y: 0
   }
-  velocityMultiplier = 1
-  boost: string | null = null
-  boostInterval: ReturnType<typeof setTimeout> | null = null
+  globalVelocityMultiplier = 1
+  boost: keyof typeof BOOST_TYPE | null = null
+  boostCallback: React.Dispatch<
+    React.SetStateAction<keyof typeof BOOST_TYPE | null>
+  > | null = null
 
   constructor(
     x: number,
@@ -45,34 +47,34 @@ export class Player implements PlayerInterface {
 
   update(): void {
     this.draw()
-    this.x += this.velocity.x
-    this.y += this.velocity.y
+    this.x += this.velocity.x * this.globalVelocityMultiplier
+    this.y += this.velocity.y * this.globalVelocityMultiplier
+  }
+
+  updateGlobalVelocityMultiplier(value: number): void {
+    this.globalVelocityMultiplier = value
   }
 
   setHorizontalVelocity(dx: number): void {
-    this.velocity.x = dx * this.velocityMultiplier
+    this.velocity.x = dx
   }
 
   setVerticalVelocity(dy: number): void {
-    this.velocity.y = dy * this.velocityMultiplier
-  }
-
-  setVelocityMultiplier(multiplier: number): void {
-    this.velocityMultiplier = multiplier
+    this.velocity.y = dy
   }
 
   hasBoost(): boolean {
     return !!this.boost
   }
 
-  useBoost(boost: string): void {
-    if (this.boostInterval) {
-      clearInterval(this.boostInterval)
-    }
+  getBoost(): keyof typeof BOOST_TYPE | null {
+    return this.boost
+  }
 
+  useBoost(boost: keyof typeof BOOST_TYPE): void {
     this.boost = boost
 
-    this.boostInterval = setTimeout(() => {
+    setTimeout(() => {
       this.boost = null
     }, 3000)
   }

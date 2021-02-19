@@ -36,7 +36,6 @@ app.get('/images/:src', (req, res) => {
     root: path.join(__dirname, '../')
   }
 
-  // TODO: перенести статику в build/
   res.sendFile(`/src/images/${src}`, options)
 })
 
