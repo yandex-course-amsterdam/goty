@@ -5,7 +5,7 @@ import { Button, Error, Input } from 'app/components'
 import { Formik, Form, FormikValues } from 'formik'
 import * as Yup from 'yup'
 
-import { getServiceId, signIn } from 'app/api/Api'
+import { signIn } from 'app/api/Api'
 import { VALIDATION_SCHEMA } from 'app/constants'
 import { route } from 'app/enums'
 import { fetchUserInfo, setUserInfo, UserInfoInitial } from 'app/actions'
@@ -43,7 +43,7 @@ export const SignInForm: FC = (): JSX.Element => {
 
   const redirectToYandexOAuth = async () => {
     try {
-      const res = await getServiceId()
+      // const res = await getServiceId()
       document.location.href = `https://oauth.yandex.ru/authorize?response_type=code&client_id=9185a10ccf4f478b9fba82679ef06222`
     } catch (error) {
       console.log(error)
