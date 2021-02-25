@@ -17,6 +17,13 @@ export const fetchUserInfo = (isLogin = false) => {
   return async (dispatch: Dispatch): Promise<UserInfo | null> => {
     try {
       const { data } = await yandexApi.getUserInfo()
+      // stub null fields to make sure forms will work properly
+      // eslint-disable-next-line no-restricted-syntax
+      for (const item in data) {
+        if (data[item] === null) {
+          data[item] = ''
+        }
+      }
 
       dispatch<FetchUserInfoAction>({
         type: ActionTypes.fetchUserInfo,

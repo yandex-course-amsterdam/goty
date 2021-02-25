@@ -46,7 +46,7 @@ export const getServiceId = (): Promise<AxiosResponse> =>
 export const authWithYandexOauth = (
   codeString: string | null
 ): Promise<AxiosResponse> =>
-  api.post(RequestRoot.oauth, { baseURL, code: codeString })
+  api.post(RequestRoot.oauth, { code: codeString }, { baseURL })
 
 export const postResult = (body: Record<string, any>): Promise<AxiosResponse> =>
   api.post(RequestRoot.storeResult, body, { baseURL })

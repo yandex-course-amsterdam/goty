@@ -9,7 +9,7 @@ const api = axios.create({
 
 api.interceptors.request.use(
   (config) => {
-    // Не вся апи в яндексе в underscore_case + для формдату обрабатывать тоже не нужно
+    // Не вся апи в яндексе в underscore_case + формдату обрабатывать тоже не нужно
     if (!config.data || config.url?.match(/(leaderboard|avatar|password)/)) {
       return config
     }
