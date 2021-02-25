@@ -35,7 +35,7 @@ import 'assets/main.css'
 import '../../../fonts/fonts.css'
 
 if (!isServer) {
-  startServiceWorker()
+  // startServiceWorker()
 }
 
 export const App: FC = (): JSX.Element => {
