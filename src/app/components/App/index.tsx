@@ -26,8 +26,8 @@ import {
   removeScore,
   isServer,
   setUserTheme,
-  storeUserTheme,
-  startServiceWorker
+  storeUserTheme
+  // startServiceWorker
 } from 'app/utils'
 
 import 'normalize.css'
