@@ -32,6 +32,7 @@ const getResponse = (jsx: JSX.Element, state: StoreState): string => {
 
 export const serverRenderMiddleware = (req: Request, res: Response): void => {
   const tokenCookie = req.cookies.userToken
+  console.log(tokenCookie)
   let isTokenVerified = false
 
   try {
@@ -49,7 +50,9 @@ export const serverRenderMiddleware = (req: Request, res: Response): void => {
   const state = store.getState()
 
   const fallbackLocation =
-    req.url === '/sign-up' || req.url === '/sign-in' ? req.url : '/sign-in'
+    req.url === '/' || req.url === '/sign-up' || req.url === '/sign-in'
+      ? req.url
+      : '/sign-in'
   const location = isTokenVerified ? req.url : fallbackLocation
 
   const context: StaticRouterContext = {}

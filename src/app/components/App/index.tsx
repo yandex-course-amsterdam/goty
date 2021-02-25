@@ -26,14 +26,17 @@ import {
   removeScore,
   isServer,
   setUserTheme,
-  storeUserTheme
+  storeUserTheme,
+  startServiceWorker
 } from 'app/utils'
 
 import 'normalize.css'
 import 'assets/main.css'
 import '../../../fonts/fonts.css'
 
-// startServiceWorker()
+if (!isServer) {
+  startServiceWorker()
+}
 
 export const App: FC = (): JSX.Element => {
   const [isOffline, setIsOffline] = useState(
@@ -127,14 +130,16 @@ export const App: FC = (): JSX.Element => {
         </Route>
       </Switch>
 
-      <CSSTransition
-        in={isOffline}
-        appear={isOffline}
-        timeout={0}
-        classNames="bar"
-      >
-        <OfflineBar />
-      </CSSTransition>
+      {!isServer && (
+        <CSSTransition
+          in={isOffline}
+          appear={isOffline}
+          timeout={0}
+          classNames="bar"
+        >
+          <OfflineBar />
+        </CSSTransition>
+      )}
     </>
   )
 }
