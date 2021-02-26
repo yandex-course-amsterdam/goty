@@ -44,7 +44,9 @@ export const SignInForm: FC = (): JSX.Element => {
   const redirectToYandexOAuth = async () => {
     try {
       const res = await getServiceId()
-      document.location.href = `https://oauth.yandex.ru/authorize?response_type=code&client_id=9185a10ccf4f478b9fba82679ef06222`
+      // для локальной работы следует указать localhost:5000/
+      const redirectUri = 'https://amsterdam-goty-01.ya-praktikum.tech/'
+      document.location.href = `https://oauth.yandex.ru/authorize?response_type=code&client_id=${res.data.serviceId}&redirect_uri=${redirectUri}`
     } catch (error) {
       console.log(error)
     }
