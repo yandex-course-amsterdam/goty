@@ -57,7 +57,7 @@ export const ENEMY_ROSTER: Record<keyof typeof ENEMY_TYPE, EnemyType> = {
     hitReward: 100,
     killReward: 1,
     radius: 30,
-    color: 'red',
+    color: '#ea8888',
     velocityMultiplier: 5,
     maxCount: 999
   },
@@ -66,7 +66,7 @@ export const ENEMY_ROSTER: Record<keyof typeof ENEMY_TYPE, EnemyType> = {
     hitReward: 100,
     killReward: 2,
     radius: 45,
-    color: 'red',
+    color: '#f06262',
     velocityMultiplier: 3,
     maxCount: 10
   },
@@ -75,7 +75,7 @@ export const ENEMY_ROSTER: Record<keyof typeof ENEMY_TYPE, EnemyType> = {
     hitReward: 100,
     killReward: 3,
     radius: 60,
-    color: 'red',
+    color: '#fd5151',
     velocityMultiplier: 2,
     maxCount: 5
   },
@@ -84,7 +84,7 @@ export const ENEMY_ROSTER: Record<keyof typeof ENEMY_TYPE, EnemyType> = {
     hitReward: 100,
     killReward: 6,
     radius: 120,
-    color: 'red',
+    color: '#e82d2d',
     velocityMultiplier: 1,
     maxCount: 1
   }
